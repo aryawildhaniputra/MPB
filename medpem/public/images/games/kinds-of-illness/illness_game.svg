@@ -1,0 +1,25 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f0f0f0"/>
+
+  <!-- Thermometer -->
+  <rect x="140" y="100" width="20" height="120" rx="10" stroke="#333" stroke-width="2" fill="#fff"/>
+  <circle cx="150" cy="220" r="20" stroke="#333" stroke-width="2" fill="#ff6666"/>
+  <rect x="145" y="120" width="10" height="100" rx="5" fill="#ff6666"/>
+
+  <!-- Medicine bottle -->
+  <rect x="200" y="150" width="40" height="80" rx="5" stroke="#333" stroke-width="2" fill="#9370db"/>
+  <rect x="205" y="140" width="30" height="15" rx="2" stroke="#333" stroke-width="2" fill="#b19cd9"/>
+  <line x1="210" y1="170" x2="230" y2="170" stroke="#fff" stroke-width="3"/>
+  <line x1="210" y1="180" x2="230" y2="180" stroke="#fff" stroke-width="3"/>
+
+  <!-- Stethoscope -->
+  <circle cx="80" cy="150" r="15" stroke="#333" stroke-width="2" fill="#4682b4"/>
+  <path d="M80,165 C80,185 110,185 110,205" stroke="#333" stroke-width="5" fill="none"/>
+  <path d="M110,205 C110,225 140,225 140,205" stroke="#333" stroke-width="5" fill="none"/>
+  <path d="M140,205 C140,185 170,185 170,165" stroke="#333" stroke-width="5" fill="none"/>
+  <circle cx="170" cy="150" r="15" stroke="#333" stroke-width="2" fill="#4682b4"/>
+
+  <!-- Text -->
+  <text x="150" y="30" font-family="Arial" font-size="18" text-anchor="middle" fill="#333">ILLNESS GAME</text>
+  <text x="150" y="280" font-family="Arial" font-size="14" text-anchor="middle" fill="#333">Kinds of Illness</text>
+</svg>

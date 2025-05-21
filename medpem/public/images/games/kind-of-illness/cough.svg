@@ -1,0 +1,35 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="transparent"/>
+
+  <!-- Face outline -->
+  <circle cx="100" cy="90" r="60" fill="#ffd699" stroke="#333" stroke-width="2"/>
+
+  <!-- Mouth coughing -->
+  <ellipse cx="100" cy="110" rx="20" ry="15" fill="#ff9999" stroke="#333" stroke-width="1.5"/>
+  <path d="M85,110 Q100,120 115,110" fill="none" stroke="#333" stroke-width="1.5"/>
+
+  <!-- Eyes -->
+  <path d="M70,80 Q80,70 90,80 Q80,85 70,80" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <path d="M110,80 Q120,70 130,80 Q120,85 110,80" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <circle cx="80" cy="77" r="3" fill="#333"/>
+  <circle cx="120" cy="77" r="3" fill="#333"/>
+
+  <!-- Nose -->
+  <path d="M100,85 Q105,95 100,100 Q95,95 100,85" fill="#ffcb8e" stroke="#333" stroke-width="1"/>
+
+  <!-- Hand covering mouth -->
+  <path d="M45,120 Q55,110 65,110 Q75,110 80,120" fill="none" stroke="#ffbb7d" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- Coughing visualization -->
+  <path d="M120,110 L150,110" stroke="#ccc" stroke-width="2" stroke-dasharray="5,3"/>
+  <circle cx="135" cy="105" r="5" fill="#eee" stroke="#ccc" stroke-width="1"/>
+  <circle cx="150" cy="110" r="7" fill="#eee" stroke="#ccc" stroke-width="1"/>
+  <circle cx="165" cy="105" r="4" fill="#eee" stroke="#ccc" stroke-width="1"/>
+  <circle cx="155" cy="115" r="3" fill="#eee" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Throat indication -->
+  <path d="M80,150 Q100,160 120,150" fill="none" stroke="#ff9999" stroke-width="3"/>
+
+  <!-- Text label -->
+  <text x="100" y="185" font-family="Arial" font-size="16" text-anchor="middle" fill="#333" font-weight="bold">COUGH</text>
+</svg>

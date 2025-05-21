@@ -1,0 +1,32 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="transparent"/>
+
+  <!-- Face outline -->
+  <circle cx="100" cy="90" r="60" fill="#ffd699" stroke="#333" stroke-width="2"/>
+
+  <!-- Nose -->
+  <path d="M100,90 Q100,110 90,110 Q100,115 110,110 Q100,110 100,90" fill="#ffcb8e" stroke="#333" stroke-width="1.5"/>
+
+  <!-- Runny nose / drip -->
+  <path d="M100,110 C100,115 95,125 100,130 C105,125 100,115 100,110" fill="#a0e6ff" stroke="#333" stroke-width="1"/>
+  <path d="M100,130 C100,135 95,145 100,150" fill="none" stroke="#a0e6ff" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Eyes -->
+  <path d="M70,80 Q80,70 90,80 Q80,90 70,80" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <path d="M110,80 Q120,70 130,80 Q120,90 110,80" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <circle cx="80" cy="80" r="3" fill="#333"/>
+  <circle cx="120" cy="80" r="3" fill="#333"/>
+
+  <!-- Mouth -->
+  <path d="M85,110 Q100,100 115,110" fill="none" stroke="#333" stroke-width="1.5"/>
+
+  <!-- Sneezing effect / air -->
+  <path d="M120,90 Q130,85 140,90 Q130,95 120,90" fill="#eef" stroke="#ccc" stroke-width="1"/>
+  <path d="M135,90 Q150,85 165,90 Q150,95 135,90" fill="#eef" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Tissue -->
+  <rect x="60" y="150" width="80" height="10" rx="2" fill="#fff" stroke="#ddd" stroke-width="1"/>
+
+  <!-- Text label -->
+  <text x="100" y="185" font-family="Arial" font-size="16" text-anchor="middle" fill="#333" font-weight="bold">COLD</text>
+</svg>

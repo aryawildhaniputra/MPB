@@ -1,0 +1,46 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="transparent"/>
+
+  <!-- Tooth outline -->
+  <path d="M100,50
+           C120,50 130,60 130,80
+           C130,100 120,130 110,150
+           C105,155 95,155 90,150
+           C80,130 70,100 70,80
+           C70,60 80,50 100,50Z"
+        fill="white" stroke="#333" stroke-width="2"/>
+
+  <!-- Tooth root lines -->
+  <path d="M90,120 C90,130 90,140 90,150" fill="none" stroke="#ddd" stroke-width="1.5"/>
+  <path d="M110,120 C110,130 110,140 110,150" fill="none" stroke="#ddd" stroke-width="1.5"/>
+
+  <!-- Pain indicators -->
+  <path d="M75,70 L65,60" stroke="#ff5252" stroke-width="2"/>
+  <path d="M65,70 L75,60" stroke="#ff5252" stroke-width="2"/>
+
+  <path d="M125,70 L135,60" stroke="#ff5252" stroke-width="2"/>
+  <path d="M135,70 L125,60" stroke="#ff5252" stroke-width="2"/>
+
+  <path d="M95,45 L85,35" stroke="#ff5252" stroke-width="2"/>
+  <path d="M85,45 L95,35" stroke="#ff5252" stroke-width="2"/>
+
+  <path d="M105,45 L115,35" stroke="#ff5252" stroke-width="2"/>
+  <path d="M115,45 L105,35" stroke="#ff5252" stroke-width="2"/>
+
+  <!-- Cavity/decay spot -->
+  <circle cx="100" cy="90" r="15" fill="#ffcf9f" stroke="#c87137" stroke-width="1.5"/>
+  <circle cx="100" cy="90" r="8" fill="#8a4a17" stroke="#6a3110" stroke-width="1"/>
+
+  <!-- Throbbing effect -->
+  <path d="M50,90 Q60,80 70,90" stroke="#ff5252" stroke-width="2" fill="none"/>
+  <path d="M130,90 Q140,80 150,90" stroke="#ff5252" stroke-width="2" fill="none"/>
+
+  <!-- Face with hand on cheek -->
+  <circle cx="35" cy="140" r="20" fill="#ffd699" stroke="#333" stroke-width="1.5"/> <!-- Face -->
+  <circle cx="30" cy="135" r="2" fill="#333"/> <!-- Eye -->
+  <path d="M30,150 C35,148 40,150 45,148" fill="none" stroke="#333" stroke-width="1"/> <!-- Frown -->
+  <path d="M50,145 C60,150 65,160 55,160" fill="#ffbb7d" stroke="#333" stroke-width="1.5"/> <!-- Hand -->
+
+  <!-- Text label -->
+  <text x="100" y="185" font-family="Arial" font-size="16" text-anchor="middle" fill="#333" font-weight="bold">TOOTHACHE</text>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#58CC02" />
+      <stop offset="100%" stop-color="#1CB0F6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Main circle background -->
+  <circle cx="100" cy="100" r="90" fill="url(#bgGradient)" />
+
+  <!-- Book icon - more prominent and with 3D effect -->
+  <g transform="translate(50, 60) scale(1.0)">
+    <!-- Open book pages -->
+    <path d="M30,30 L30,110 L80,90 L130,110 L130,30 L80,50 Z" fill="#FFFFFF" stroke="#333333" stroke-width="1" />
+    <!-- Center fold line -->
+    <path d="M80,50 L80,90" stroke="#CCCCCC" stroke-width="1" />
+    <!-- Book edges -->
+    <path d="M30,30 L80,50 L130,30" fill="none" stroke="#CCCCCC" stroke-width="1" />
+  </g>
+
+  <!-- 'M' letter on the left side of the book -->
+  <text x="58" y="105" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF">M</text>
+</svg>
