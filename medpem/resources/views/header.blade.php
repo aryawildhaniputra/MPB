@@ -20,29 +20,31 @@
                     <i class="fas fa-gem"></i>
                 </div>
                 <span>120</span>
-            </div> --}}
+            --}}
 
-            <div class="points-counter" style="display: flex; align-items: center; gap: 8px;">
-                <div class="points-icon" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; background: #FFD700;">
-                    <i class="fas fa-star" style="font-size: 14px;"></i>
+                                                <div class="user-menu-items" style="display: flex; align-items: center; gap: 16px; margin-right: 10px; height: 70px;">
+                <div class="points-counter" style="display: flex; align-items: center; gap: 6px; height: 36px;">
+                    <div class="points-icon" style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; background: #FFD700; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i class="fas fa-star" style="font-size: 16px;"></i>
                 </div>
-                <span style="font-weight: 700; font-size: 18px; color: #333333;">{{ Auth::user()->total_points ?? 0 }}</span>
+                    <span style="font-weight: 700; font-size: 16px; color: #333333; line-height: 36px;">{{ Auth::user()->total_points ?? 0 }}</span>
+                </div>
             </div>
 
             <!-- Dropdown paling sederhana dengan inline style-->
-            <div style="position: relative;" class="header-dropdown-container">
-                <div id="userAvatarControl" class="user-avatar" style="cursor: pointer; position: relative; display: flex; align-items: center;" onclick="document.getElementById('userDropdownDiv').style.display = document.getElementById('userDropdownDiv').style.display === 'block' ? 'none' : 'block'">
+            <div style="position: relative; height: 70px; display: flex; align-items: center;" class="header-dropdown-container">
+                <div id="userAvatarControl" class="user-avatar" style="cursor: pointer; position: relative; display: flex; align-items: center; height: 36px;" onclick="document.getElementById('userDropdownDiv').style.display = document.getElementById('userDropdownDiv').style.display === 'block' ? 'none' : 'block'">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&color=fff&size=128" alt="{{ Auth::user()->name }}" style="border-radius: 50%; width: 40px; height: 40px;">
-                        <span style="font-weight: 600; color: #333333; font-size: 16px;">{{ Auth::user()->name }}</span>
+                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&color=fff&size=128" alt="{{ Auth::user()->name }}" style="border-radius: 50%; width: 36px; height: 36px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <span style="font-weight: 600; color: #333333; font-size: 16px; line-height: 36px;">{{ Auth::user()->name }}</span>
+                        <i class="fas fa-chevron-down text-gray-400" style="font-size: 14px;"></i>
                     </div>
-                <i class="fas fa-chevron-down ml-2 text-gray-400"></i>
 
                     <!-- Tambahkan overlay transparan untuk menangkap klik -->
                     <div id="avatarClickOverlay" style="position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px; cursor: pointer;" onclick="var e=event; e.stopPropagation(); document.getElementById('userDropdownDiv').style.display = document.getElementById('userDropdownDiv').style.display === 'block' ? 'none' : 'block';"></div>
                 </div>
 
-                <div id="userDropdownDiv" style="display: none; position: absolute; top: 60px; right: 0; width: 280px; background: white; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,.15); z-index: 9999;">
+                <div id="userDropdownDiv" style="display: none; position: absolute; top: 60px; right: 0; width: 280px; background: white; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,.15); z-index: 1000;">
                     <div style="padding: 16px; display: flex; align-items: center; border-bottom: 1px solid #eee;">
                         <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&color=fff&size=128" alt="{{ Auth::user()->name }}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 12px;">
                         <div>
@@ -52,6 +54,10 @@
                         </div>
                     </div>
                     <div style="padding: 8px;">
+                        <a href="{{ route('achievements.index') }}" style="display: flex; align-items: center; padding: 12px; color: #333; text-decoration: none; border-radius: 8px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'">
+                            <i class="fas fa-medal" style="width: 20px; margin-right: 12px; color: #14b8a6;"></i>
+                            <span>Pencapaian</span>
+                        </a>
                         <a href="{{ route('profile') }}" style="display: flex; align-items: center; padding: 12px; color: #333; text-decoration: none; border-radius: 8px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'">
                             <i class="fas fa-user" style="width: 20px; margin-right: 12px;"></i>
                         <span>Profil Saya</span>
@@ -200,7 +206,8 @@
     .user-profile {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        gap: 1rem;
+        height: 70px;
     }
 
     .streak-counter, .gems-counter, .points-counter {
@@ -210,6 +217,7 @@
         font-weight: 700;
         font-size: 1rem;
         color: #333333;
+        height: 36px;
     }
 
     .streak-icon, .gems-icon, .points-icon {
@@ -259,6 +267,7 @@
         border-radius: 2rem;
         transition: all 0.2s;
         position: relative;
+        height: 36px;
     }
 
     .user-avatar:hover {
@@ -428,7 +437,7 @@
     .logout-modal {
         display: none;
         position: fixed;
-        z-index: 10000;
+        z-index: 9999;
         left: 0;
         top: 0;
         width: 100%;
@@ -454,14 +463,14 @@
     }
 
     .logout-modal-content {
-        background-color: #ffffff;
-        width: 400px;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        animation: slideDown 0.4s;
         position: relative;
-        text-align: center;
+        z-index: 10000;
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 400px;
     }
 
     .close-modal {
@@ -642,6 +651,8 @@
         transition: filter 0.3s ease;
     }
 </style>
+
+@include('components.achievement-notification')
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -562,5 +562,7 @@
             </div>
         </div>
     </div>
+
+    @include('components.achievement-notification')
 </body>
 </html>

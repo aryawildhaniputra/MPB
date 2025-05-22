@@ -30,6 +30,7 @@
             width: calc(100% - 250px);
             transition: all 0.3s;
             pointer-events: none;
+            z-index: 1; /* Ensure main content is below modals */
         }
 
         .main-content > * {
@@ -700,10 +701,24 @@
             }
         }
 
-        /* Pastikan header selalu terlihat dan dapat diklik */
-        .duolingo-header, .user-avatar, .dropdown-toggle {
-            z-index: 10000 !important;
+        /* Fix untuk header dropdown pada halaman belajar */
+        .header-dropdown-container, .duolingo-header, .user-avatar, #userAvatarControl, #avatarClickOverlay {
+            z-index: 1000 !important;
             position: relative !important;
+        }
+
+        /* Pastikan user dropdown muncul di atas konten */
+        #userDropdownDiv {
+            z-index: 1001 !important;
+        }
+
+        /* Tambahkan style untuk memastikan modal achievement muncul di atas semua konten */
+        #achievementModalOverlay {
+            z-index: 9999 !important;
+        }
+
+        #achievementModal {
+            z-index: 10000 !important;
         }
 
         /* Tambahkan visual debug area untuk pointer events */
@@ -1073,6 +1088,8 @@
     <div class="debug-area" style="display: none;">
         Debug area
     </div>
+
+    @include('components.achievement-notification')
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

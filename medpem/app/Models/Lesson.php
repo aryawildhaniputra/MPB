@@ -37,8 +37,13 @@ class Lesson extends Model
                     ->withPivot('completed', 'mistakes_count', 'current_streak', 'xp_earned',
                                'started_at', 'completed_at', 'progress',
                                'part1_completed', 'part2_completed', 'part3_completed',
+                               'part4_completed', 'part5_completed', 'part6_completed',
                                'part1_points_awarded', 'part2_points_awarded', 'part3_points_awarded',
-                               'part1_example', 'part2_example', 'part3_example')
+                               'part4_points_awarded', 'part5_points_awarded', 'part6_points_awarded',
+                               'part1_example', 'part2_example', 'part3_example',
+                               'part4_example', 'part5_example', 'part6_example',
+                               'part1_completed_at', 'part2_completed_at', 'part3_completed_at',
+                               'part4_completed_at', 'part5_completed_at', 'part6_completed_at')
                     ->withTimestamps();
     }
 
@@ -69,9 +74,15 @@ class Lesson extends Model
                 'part1_completed' => false,
                 'part2_completed' => false,
                 'part3_completed' => false,
+                'part4_completed' => false,
+                'part5_completed' => false,
+                'part6_completed' => false,
                 'part1_example' => null,
                 'part2_example' => null,
                 'part3_example' => null,
+                'part4_example' => null,
+                'part5_example' => null,
+                'part6_example' => null,
                 'unlocked' => true     // Always unlocked
             ];
         }
@@ -88,9 +99,21 @@ class Lesson extends Model
             'part1_completed' => (bool)$userLesson->pivot->part1_completed,
             'part2_completed' => (bool)$userLesson->pivot->part2_completed,
             'part3_completed' => (bool)$userLesson->pivot->part3_completed,
+            'part4_completed' => (bool)$userLesson->pivot->part4_completed,
+            'part5_completed' => (bool)$userLesson->pivot->part5_completed,
+            'part6_completed' => (bool)$userLesson->pivot->part6_completed,
             'part1_example' => $userLesson->pivot->part1_example,
             'part2_example' => $userLesson->pivot->part2_example,
             'part3_example' => $userLesson->pivot->part3_example,
+            'part4_example' => $userLesson->pivot->part4_example,
+            'part5_example' => $userLesson->pivot->part5_example,
+            'part6_example' => $userLesson->pivot->part6_example,
+            'part1_completed_at' => $userLesson->pivot->part1_completed_at,
+            'part2_completed_at' => $userLesson->pivot->part2_completed_at,
+            'part3_completed_at' => $userLesson->pivot->part3_completed_at,
+            'part4_completed_at' => $userLesson->pivot->part4_completed_at,
+            'part5_completed_at' => $userLesson->pivot->part5_completed_at,
+            'part6_completed_at' => $userLesson->pivot->part6_completed_at,
             'unlocked' => true  // Always unlocked
         ];
     }

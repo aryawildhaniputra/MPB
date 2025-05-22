@@ -23,6 +23,16 @@
             min-height: calc(100vh - 70px);
             width: calc(100% - 250px);
             transition: all 0.3s;
+            z-index: 1;
+        }
+
+        .header-dropdown-container, .duolingo-header, .user-avatar, #userAvatarControl, #avatarClickOverlay {
+            z-index: 1000 !important;
+            position: relative !important;
+        }
+
+        #userDropdownDiv {
+            z-index: 1001 !important;
         }
 
         .attempt-counter {
@@ -35,7 +45,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            z-index: 10;
+            z-index: 100;
         }
 
         .attempt-icon {
@@ -155,6 +165,14 @@
             background-color: #e9ecef;
         }
 
+        #achievementModalOverlay {
+            z-index: 9999 !important;
+        }
+
+        #achievementModal {
+            z-index: 10000 !important;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
@@ -236,5 +254,7 @@
             </div>
         </div>
     </div>
+
+    @include('components.achievement-notification')
 </body>
 </html>

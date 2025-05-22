@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             ['username' => 'user'],
             [
             'name' => 'User',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('12345'),
             'role' => 'user',
                 'total_points' => 0,
             ]
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             ['username' => 'admin'],
             [
             'name' => 'Admin',
-            'password' => Hash::make('a123'),
+            'password' => Hash::make('12345'),
             'role' => 'admin',
                 'total_points' => 0,
             ]
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
             ['username' => 'superadmin'],
             [
             'name' => 'Superadmin',
-            'password' => Hash::make('sa123'),
+            'password' => Hash::make('12345'),
             'role' => 'superadmin',
                 'total_points' => 0,
             ]
@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
                 ['username' => $username],
                 [
                 'name' => $name,
-                'password' => Hash::make('123'),
+                'password' => Hash::make('12345'),
                 'role' => 'user',
                     'total_points' => 0,
                 ]

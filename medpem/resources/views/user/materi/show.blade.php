@@ -1034,19 +1034,20 @@
                     // Hide loader
                     loaderOverlay.classList.remove('show');
 
-                    // Show notification regardless of points
+                    // Show success notification
                         const notification = document.getElementById('successNotification');
                         notification.classList.add('show');
 
-                    // Hide notification after a few seconds (increased to 5 seconds)
+                    // Check if achievements were unlocked
+                    if (data.has_achievements && data.achievements && data.achievements.length > 0) {
+                        // Don't show achievements here, they will be shown on the index page
+                        window.location.href = '{{ route('user.materi.index') }}';
+                    } else {
+                        // No achievements, redirect after notification as usual
                     setTimeout(() => {
-                        notification.classList.remove('show');
-                        // Wait for animation to complete before redirecting to index
-                            setTimeout(() => {
-                            // Redirect to index page instead of reloading
-                                window.location.href = "{{ route('user.materi.index') }}";
-                        }, 500);
-                    }, 5000);
+                            window.location.href = '{{ route('user.materi.index') }}';
+                        }, 2000);
+                    }
                 })
                 .catch(error => {
                     // Hide loader even on error
@@ -1065,6 +1066,8 @@
         });
     </script>
     @endauth
+
+    {{-- @include('components.achievement-notification') --}}
 </body>
 </html>
 

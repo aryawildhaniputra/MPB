@@ -8,6 +8,7 @@ use App\Models\UserHeart;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\AchievementService;
 
 class LessonController extends Controller
 {
@@ -128,23 +129,30 @@ class LessonController extends Controller
             if ($userLesson) {
                 // Set part-specific completion flag based on which part was completed
                 $partField = '';
+                $partPointsField = '';
                 if ($lessonPart == 1) {
                     $partField = 'part1_completed';
+                    $partPointsField = 'part1_points_awarded';
                     $progress = 16;
                 } elseif ($lessonPart == 2) {
                     $partField = 'part2_completed';
+                    $partPointsField = 'part2_points_awarded';
                     $progress = 33;
                 } elseif ($lessonPart == 3) {
                     $partField = 'part3_completed';
+                    $partPointsField = 'part3_points_awarded';
                     $progress = 50;
                 } elseif ($lessonPart == 4) {
                     $partField = 'part4_completed';
+                    $partPointsField = 'part4_points_awarded';
                     $progress = 66;
                 } elseif ($lessonPart == 5) {
                     $partField = 'part5_completed';
+                    $partPointsField = 'part5_points_awarded';
                     $progress = 83;
                 } elseif ($lessonPart == 6) {
                     $partField = 'part6_completed';
+                    $partPointsField = 'part6_points_awarded';
                     $progress = 100;
                 }
 
@@ -152,6 +160,31 @@ class LessonController extends Controller
                 if (!empty($partField)) {
                     // Update the specific part completion
                     $userLesson->pivot->$partField = true;
+
+                    // Record the timestamp when this part was completed
+                    $partCompletedAtField = 'part' . $lessonPart . '_completed_at';
+                    $userLesson->pivot->$partCompletedAtField = now();
+
+                    // Debug logs for part completion timing
+                    $startTime = $userLesson->pivot->started_at;
+                    $completionTime = $userLesson->pivot->$partCompletedAtField;
+                    $durationSeconds = \Carbon\Carbon::parse($completionTime)->diffInSeconds(\Carbon\Carbon::parse($startTime));
+
+                    \Illuminate\Support\Facades\Log::info("Part completion: Lesson {$lessonId}, Part {$lessonPart}");
+                    \Illuminate\Support\Facades\Log::info("  Started at: {$startTime}");
+                    \Illuminate\Support\Facades\Log::info("  Completed at: {$completionTime}");
+                    \Illuminate\Support\Facades\Log::info("  Duration: {$durationSeconds} seconds");
+
+                    // Award 15 points if not already awarded for this part
+                    $pointsAwarded = 0;
+                    if (!empty($partPointsField) && !$userLesson->pivot->$partPointsField) {
+                        $userLesson->pivot->$partPointsField = true;
+                        $pointsAwarded = 15;
+
+                        // Update user's total points
+                        $user->total_points = ($user->total_points ?? 0) + $pointsAwarded;
+                        $user->save();
+                    }
 
                     // Store example answers for this part
                     $partAnswers = [];
@@ -180,6 +213,29 @@ class LessonController extends Controller
                     }
 
                     $userLesson->pivot->save();
+
+                    // Log that we successfully saved the part completion
+                    \Illuminate\Support\Facades\Log::info("  Part completion saved: {$partField} = true, {$partCompletedAtField} = {$completionTime}");
+
+                    // Check for speed achievement specifically after part completion
+                    try {
+                        \Illuminate\Support\Facades\Log::info("Checking speed achievements immediately after part completion");
+                        $achievementService = app(AchievementService::class);
+                        $speedAchievements = $achievementService->checkSpeedAchievements($user);
+                        if (!empty($speedAchievements)) {
+                            \Illuminate\Support\Facades\Log::info("Unlocked " . count($speedAchievements) . " speed achievements");
+                            foreach ($speedAchievements as $achievementData) {
+                                \Illuminate\Support\Facades\Log::info("Speed achievement unlocked: " . $achievementData['achievement']->name);
+                            }
+                        } else {
+                            \Illuminate\Support\Facades\Log::info("No new speed achievements unlocked");
+                        }
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error("Error checking speed achievements: " . $e->getMessage());
+                    }
+
+                    // Store the awarded points in session for display
+                    session(['last_awarded_points' => $pointsAwarded]);
                 }
             }
 
@@ -187,6 +243,12 @@ class LessonController extends Controller
             if ($lessonPart == 6) {
                 $user->completeLesson($lessonId, $mistakesCount);
             }
+
+            // Retrieve the lesson object from the database
+            $lesson = Lesson::find($lessonId);
+
+            // Check for achievements after completing any part
+            $this->checkAchievements($user, $lesson, $lessonPart);
 
             // Clear session data
             session()->forget([
@@ -197,13 +259,11 @@ class LessonController extends Controller
                 'mistakes_count'
             ]);
 
-            // If part is completed, redirect to the complete page with points info
-            session(['last_awarded_points' => 0]);
-
             if ($lessonPart == 6) {
                 return redirect()->route('belajar.complete', $lessonId);
             } else {
-                $partCompletionMsg = "Hebat! Kamu telah menyelesaikan Bagian {$lessonPart}.";
+                $pointsMsg = $pointsAwarded > 0 ? " Kamu mendapatkan {$pointsAwarded} poin!" : "";
+                $partCompletionMsg = "Hebat! Kamu telah menyelesaikan Bagian {$lessonPart}.{$pointsMsg}";
 
                 // Flash the message for display on both pages
                 session()->flash('learning_completed', $partCompletionMsg);
@@ -329,16 +389,24 @@ class LessonController extends Controller
         $userLesson = $user->lessons()->where('lesson_id', $id)->first();
         $status = $lesson->getCompletionStatusForUser($user->id);
 
-        // Get the points awarded for the most recently completed part (should be part 6)
+        // Get the points awarded for the most recently completed part
         $pointsAwarded = session('last_awarded_points', 0);
 
-        // Fallback: if session doesn't have points, check the database
-        if ($pointsAwarded == 0 && $userLesson && $userLesson->pivot->part6_points_awarded) {
-            $pointsAwarded = 0;
+        // If session doesn't have points, calculate total from all parts
+        if ($pointsAwarded == 0 && $userLesson) {
+            $totalPoints = 0;
+            // Check each part's points_awarded field
+            for ($i = 1; $i <= 6; $i++) {
+                $fieldName = "part{$i}_points_awarded";
+                if (isset($userLesson->pivot->$fieldName) && $userLesson->pivot->$fieldName) {
+                    $totalPoints += 15; // Each part awards 15 points
+                }
+            }
+            $pointsAwarded = $totalPoints;
         }
 
         // Check for achievements after completing a lesson
-        $this->checkAchievements($user);
+        $this->checkAchievements($user, $lesson);
 
         // Store a learning completion message that will be displayed on dashboard
         session()->flash('learning_completed', "Hebat! Kamu telah menyelesaikan pelajaran \"{$lesson->title}\".");
@@ -347,15 +415,41 @@ class LessonController extends Controller
     }
 
     /**
-     * Check and update user's achievements.
+     * Check user achievements after completion
      */
-    private function checkAchievements($user)
+    private function checkAchievements($user, $lesson = null, $part = null)
     {
-        // Get app's DashboardController instance to use its achievement check method
-        $dashboardController = app()->make('App\Http\Controllers\DashboardController');
+        // Get the achievement service
+        $achievementService = app(AchievementService::class);
 
-        // Call the checkAndUpdateAchievements method
-        $dashboardController->checkAndUpdateAchievements($user);
+        // Log for debugging
+        \Illuminate\Support\Facades\Log::info("Checking achievements for user {$user->id}");
+        if ($lesson) {
+            \Illuminate\Support\Facades\Log::info("After completing lesson {$lesson->id} part {$part}");
+        }
+
+        // Check all achievement types
+        $unlockedAchievements = $achievementService->checkAchievements($user);
+
+        // Add a separate direct check for speed achievements which needs fresh database data
+        if ($lesson && $part) {
+            \Illuminate\Support\Facades\Log::info("Directly checking speed achievements for lesson {$lesson->id} part {$part}");
+            $speedAchievements = $achievementService->checkSpeedAchievements($user);
+
+            // Merge any speed achievements into the results
+            if (!empty($speedAchievements)) {
+                $unlockedAchievements = array_merge($unlockedAchievements, $speedAchievements);
+                \Illuminate\Support\Facades\Log::info("Unlocked " . count($speedAchievements) . " speed achievements");
+            }
+        }
+
+        // Flash newly unlocked achievements to the session for notification modal
+        if (!empty($unlockedAchievements)) {
+            session()->flash('achievement_unlocked', $unlockedAchievements);
+        }
+
+        // Return unlocked achievements
+        return $unlockedAchievements;
     }
 
     /**

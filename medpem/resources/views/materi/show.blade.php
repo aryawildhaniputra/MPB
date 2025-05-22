@@ -761,27 +761,5 @@
         </div>
     </div>
 
-    @auth
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to show/hide document section based on content
-            function updateDocumentSection() {
-                const documentsContainer = document.getElementById('documents-container');
-                const documentsSection = documentsContainer.closest('.content-container');
-
-                if (documentsSection) {
-                    if (documentsContainer.children.length > 0) {
-                        documentsSection.style.display = 'block';
-                    } else {
-                        documentsSection.style.display = 'none';
-                    }
-                }
-            }
-
-            // Call initially to set visibility
-            updateDocumentSection();
-        });
-    </script>
-    @endauth
 </body>
 </html>

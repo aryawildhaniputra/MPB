@@ -1450,7 +1450,7 @@
                 <h1 class="welcome-title">Halo, {{ $user->name }}! 👋</h1>
                 <p class="text-xl text-white max-w-2xl">
                     <span class="emoji-bullet">🎮</span> Selamat datang kembali di petualangan belajarmu!<br>
-                    <span class="emoji-bullet">🔥</span> Kamu sudah belajar <span class="font-bold text-yellow-300 text-2xl">{{ $stats['learning_streak'] }} hari berturut-turut</span>.<br>
+                    {{-- <span class="emoji-bullet">🔥</span> Kamu sudah belajar <span class="font-bold text-yellow-300 text-2xl">{{ $stats['learning_streak'] }} hari berturut-turut</span>.<br> --}}
                     <span class="emoji-bullet">⭐</span> Terus semangat untuk jadi juara kelas!
                 </p>
             </div>
@@ -1490,7 +1490,7 @@
                 </div>
 
                 <!-- Streak Card -->
-                <div class="stat-card small-card streak-card">
+                {{-- <div class="stat-card small-card streak-card">
                     <div class="card-icon">
                         <i class="fas fa-fire"></i>
                     </div>
@@ -1499,7 +1499,7 @@
                     <p class="text-base text-white mt-2">
                         {{ $stats['learning_streak'] < 3 ? 'Belajar tiap hari biar makin pintar!' : 'Keren! Pertahankan semangat belajarmu!' }}
                     </p>
-                </div>
+                </div> --}}
 
                 <!-- Modify Learning Progress Card to only show materials -->
                 <div class="stat-card wide-card progress-card">

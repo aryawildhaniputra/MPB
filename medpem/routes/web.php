@@ -40,6 +40,22 @@ Route::middleware('auth')->group(function () {
         return view('profile');
     })->name('profile');
 
+    // Achievement routes
+    Route::get('/achievements', [App\Http\Controllers\AchievementController::class, 'index'])->name('achievements.index');
+    Route::get('/achievements/check', [App\Http\Controllers\AchievementController::class, 'checkAchievements'])->name('achievements.check');
+    Route::get('/achievements/{id}', [App\Http\Controllers\AchievementController::class, 'show'])->name('achievements.show');
+
+    // Test route to directly check achievements and show the page
+    Route::get('/test-achievements', function () {
+        $user = \App\Models\Users::find(Auth::id());
+        $achievementService = app(\App\Services\AchievementService::class);
+        $achievementService->checkAchievements($user);
+        return redirect()->route('achievements.index');
+    })->name('test.achievements');
+
+    // Test route to verify speed achievements
+    Route::get('/test-speed-achievement', [\App\Http\Controllers\AchievementController::class, 'testSpeedAchievement'])->name('test.speed.achievement');
+
     // Show current question
     Route::get('/belajar/question/current', [LessonController::class, 'showQuestion'])->name('belajar.question');
 

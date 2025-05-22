@@ -222,81 +222,9 @@
                 font-size: 1.75rem;
             }
         }
-
-        /* Success notification */
-        .success-notification {
-            position: fixed;
-            top: 90px;
-            right: 20px;
-            left: auto;
-            transform: translateX(100px);
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            z-index: 1001;
-            opacity: 0;
-            transition: all 0.3s ease;
-            max-width: 90%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            text-align: left;
-        }
-
-        .success-notification.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .success-notification .icon {
-            font-size: 1.3rem;
-            margin-right: 10px;
-        }
-
-        .success-notification .message {
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        /* Mobile responsiveness for notification */
-        @media (max-width: 768px) {
-            .success-notification {
-                right: 10px;
-                max-width: 280px;
-                padding: 12px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .success-notification {
-                font-size: 0.9rem;
-                padding: 10px 15px;
-                width: 90%;
-                max-width: 90%;
-            }
-
-            .success-notification .icon {
-                font-size: 1.2rem;
-            }
-
-            .success-notification .message {
-                font-size: 0.9rem;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Success notification for learning completion -->
-    @if(session('learning_completed'))
-    <div class="success-notification" id="learningNotification">
-        <span class="icon">✓</span>
-        <span class="message">{{ session('learning_completed') }}</span>
-    </div>
-    @endif
-
     <div class="container">
         <div class="lesson-complete">
             <div class="badge">
@@ -335,74 +263,5 @@
     </div>
 
     <div class="confetti" id="confetti-container"></div>
-
-    <script>
-        // Simple confetti effect
-        document.addEventListener('DOMContentLoaded', function() {
-            const confettiContainer = document.getElementById('confetti-container');
-
-            // Create confetti pieces
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.style.position = 'absolute';
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = Math.random() * 10 + 5 + 'px';
-                confetti.style.backgroundColor = getRandomColor();
-                confetti.style.borderRadius = (Math.random() > 0.5) ? '50%' : '0';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = -20 + 'px';
-                confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
-                confetti.style.opacity = Math.random() * 0.7 + 0.3;
-
-                // Animation
-                const duration = Math.random() * 3 + 2;
-                const delay = Math.random() * 5;
-
-                confetti.style.animation = `fall ${duration}s ease-in ${delay}s forwards`;
-
-                confettiContainer.appendChild(confetti);
-            }
-
-            // Generate random color
-            function getRandomColor() {
-                const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE', '#B2FF59', '#EEFF41', '#FFFF00', '#FFD740', '#FFAB40', '#FF6E40'];
-                return colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            // Keyframe animation
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes fall {
-                    0% {
-                        transform: translateY(0) rotate(0deg);
-                        opacity: 1;
-                    }
-                    100% {
-                        transform: translateY(100vh) rotate(720deg);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        });
-
-        // Handle success notifications
-        const successNotification = document.getElementById('learningNotification');
-        if (successNotification) {
-            // Show the notification with animation
-            setTimeout(() => {
-                successNotification.classList.add('show');
-            }, 100);
-
-            // Auto-hide notifications after 5 seconds
-            setTimeout(() => {
-                successNotification.style.opacity = '0';
-                successNotification.style.transform = 'translateX(100px)';
-                setTimeout(() => {
-                    successNotification.style.display = 'none';
-                }, 500);
-            }, 5000);
-        }
-    </script>
 </body>
 </html>

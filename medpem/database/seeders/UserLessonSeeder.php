@@ -30,7 +30,7 @@ class UserLessonSeeder extends Seeder
                         'completed' => true,
                         'mistakes_count' => 0,
                         'current_streak' => 5,
-                        'xp_earned' => $lesson->xp_reward,
+                        'xp_earned' => 0,
                         'progress' => 100, // 100% progress
                         'started_at' => now()->subDays(10),
                         'completed_at' => now()->subDays(9),
@@ -39,7 +39,7 @@ class UserLessonSeeder extends Seeder
                     ]);
                 }
             } else if ($user->role === 'user') {
-                // For regular users, complete a few lessons
+                // For regular users, initialize lessons but not completed
                 $lessonCount = min(5, $lessons->count());
 
                 for ($i = 0; $i < $lessonCount; $i++) {
@@ -48,33 +48,32 @@ class UserLessonSeeder extends Seeder
                     DB::table('user_lessons')->insert([
                         'user_id' => $user->id,
                         'lesson_id' => $lesson->id,
-                        'completed' => true,
-                        'mistakes_count' => rand(0, 3),
-                        'current_streak' => 5,
-                        'xp_earned' => $lesson->xp_reward,
-                        'progress' => 100, // 100% progress
-                        'started_at' => now()->subDays(rand(5, 15)),
-                        'completed_at' => now()->subDays(rand(1, 5)),
+                        'completed' => false,
+                        'mistakes_count' => 0,
+                        'current_streak' => 0,
+                        'xp_earned' => 0,
+                        'progress' => 0, // 0% progress
+                        'started_at' => now()->subDays(rand(1, 5)),
+                        'completed_at' => null,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
                 }
 
-                // Add a couple of in-progress lessons
+                // Add a couple more lessons
                 if ($lessons->count() > $lessonCount) {
                     for ($i = $lessonCount; $i < min($lessonCount + 2, $lessons->count()); $i++) {
                         $lesson = $lessons[$i];
-                        $progress = rand(20, 80);
 
                         DB::table('user_lessons')->insert([
                             'user_id' => $user->id,
                             'lesson_id' => $lesson->id,
                             'completed' => false,
-                            'mistakes_count' => rand(0, 2),
-                            'current_streak' => rand(1, 3),
-                            'xp_earned' => round($lesson->xp_reward * ($progress / 100)),
-                            'progress' => $progress,
-                            'started_at' => now()->subDays(rand(1, 5)),
+                            'mistakes_count' => 0,
+                            'current_streak' => 0,
+                            'xp_earned' => 0,
+                            'progress' => 0,
+                            'started_at' => now()->subDays(rand(1, 3)),
                             'completed_at' => null,
                             'created_at' => now(),
                             'updated_at' => now(),

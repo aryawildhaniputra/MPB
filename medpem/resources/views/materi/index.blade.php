@@ -829,5 +829,7 @@
             });
         });
     </script>
+
+    @include('components.achievement-notification')
 </body>
 </html>

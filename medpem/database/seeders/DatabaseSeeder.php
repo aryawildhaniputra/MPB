@@ -35,21 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserLessonSeeder::class);
         $this->call(UserMateriSeeder::class);
 
-        // Seed some initial points to users if the users table exists
-        if (Schema::hasTable('users')) {
-            $users = DB::table('users')->get();
-            foreach ($users as $user) {
-                // Only update if total_points is null or 0
-                if (!isset($user->total_points) || $user->total_points == 0) {
-                    // Assign random points between 10 and 100
-                    $points = rand(10, 100);
-                    DB::table('users')
-                        ->where('id', $user->id)
-                        ->update(['total_points' => $points]);
-                }
-            }
-        }
-
         // Seed games
         $this->call(GameSeeder::class);
 

@@ -84,27 +84,13 @@ class DashboardController extends Controller
             ->wherePivot('unlocked', true)
             ->count();
 
-        // Calculate learning streak (placeholder for now)
-        $learningStreak = $this->calculateLearningStreak($user->id);
-
         return [
             'completed_materials' => $completedMaterials,
             'completed_lessons' => $completedLessons,
             'total_points' => $totalPoints,
             'rank' => $userRank,
-            'achievements' => $achievementsCount,
-            'learning_streak' => $learningStreak
+            'achievements' => $achievementsCount
         ];
-    }
-
-    /**
-     * Calculate a user's current learning streak based on activity
-     */
-    private function calculateLearningStreak($userId)
-    {
-        // This would ideally calculate continuous days of activity
-        // For now, we'll return a placeholder value between 1-7
-        return rand(1, 7);
     }
 
     private function getUserAchievements($user)
@@ -120,7 +106,7 @@ class DashboardController extends Controller
 
         // Mark achievements as unlocked if they are in the user's unlocked list
         foreach ($allAchievements as $achievement) {
-            $achievement->unlocked = in_array($achievement->id, $unlockedAchievementIds);
+            $achievement->is_unlocked = in_array($achievement->id, $unlockedAchievementIds);
         }
 
         return $allAchievements;
@@ -134,76 +120,137 @@ class DashboardController extends Controller
      */
     public function checkAndUpdateAchievements($user)
     {
-        // Get user stats that are needed for achievement calculations
-        $completedMaterials = $user->materi()
-            ->wherePivot('completed', true)
-            ->count();
+        try {
+            // Log the start of the method
+            \Illuminate\Support\Facades\Log::info("DashboardController: Starting checkAndUpdateAchievements for user {$user->id}");
 
-        $completedLessons = $user->lessons()
-            ->wherePivot('completed', true)
-            ->count();
+            // Array to collect newly unlocked achievements
+            $newlyUnlocked = [];
 
-        $totalPoints = $user->total_points ?? 0;
+            // Get user stats that are needed for achievement calculations
+            $completedMaterials = $user->materi()
+                ->wherePivot('completed', true)
+                ->count();
 
-        $rank = Users::where('role', 'user')
-            ->where('total_points', '>', $totalPoints)
-            ->count() + 1;
+            // Count completed bagian (parts/sections)
+            $completedBagian = 0;
 
-        $learningStreak = $this->calculateLearningStreak($user->id);
+            // Direct SQL query to count completed parts
+            $userLessons = \Illuminate\Support\Facades\DB::table('user_lessons')
+                ->where('user_id', $user->id)
+                ->get();
 
-        // Check for lesson-based achievements
-        $lessonAchievements = Achievement::where('type', 'lesson')
-            ->where('active', true)
-            ->get();
-
-        foreach ($lessonAchievements as $achievement) {
-            if ($completedLessons >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                $achievement->unlockForUser($user->id);
+            // Check direct database state for counting
+            foreach ($userLessons as $lesson) {
+                // Count all completed parts
+                if ($lesson->part1_completed) $completedBagian++;
+                if ($lesson->part2_completed) $completedBagian++;
+                if ($lesson->part3_completed) $completedBagian++;
+                if ($lesson->part4_completed) $completedBagian++;
+                if ($lesson->part5_completed) $completedBagian++;
+                if ($lesson->part6_completed) $completedBagian++;
             }
-        }
 
-        // Check for materi-based achievements
-        $materiAchievements = Achievement::where('type', 'materi')
-            ->where('active', true)
-            ->get();
+            \Illuminate\Support\Facades\Log::info("Direct SQL count in DashboardController: User has completed {$completedBagian} parts");
 
-        foreach ($materiAchievements as $achievement) {
-            if ($completedMaterials >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                $achievement->unlockForUser($user->id);
+            // Count completed Belajar Singkat materials
+            // Note: 'type' column doesn't exist in materi table yet
+            // Setting to 0 until a proper way to identify Belajar Singkat materials is implemented
+            $completedBelajarSingkat = 0;
+
+            $totalPoints = $user->total_points ?? 0;
+
+            $rank = Users::where('role', 'user')
+                ->where('total_points', '>', $totalPoints)
+                ->count() + 1;
+
+            // Check for bagian (section) completion achievements
+            $bagianAchievements = Achievement::where('type', 'bagian_completion')
+                ->where('active', true)
+                ->get();
+
+            \Illuminate\Support\Facades\Log::info("Found {$bagianAchievements->count()} bagian_completion achievements");
+
+            foreach ($bagianAchievements as $achievement) {
+                \Illuminate\Support\Facades\Log::info("Checking bagian achievement: {$achievement->name}, requirement: {$achievement->requirement}, user has: {$completedBagian}");
+                if ($completedBagian >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
+                    \Illuminate\Support\Facades\Log::info("Unlocking bagian achievement: {$achievement->name} for user {$user->id}");
+                    $pivot = $achievement->unlockForUser($user->id);
+                    if ($pivot) {
+                        $newlyUnlocked[] = [
+                            'achievement' => $achievement,
+                            'pivot' => $pivot
+                        ];
+                    }
+                }
             }
-        }
 
-        // Check for points-based achievements
-        $pointsAchievements = Achievement::where('type', 'points')
-            ->where('active', true)
-            ->get();
+            // Check for materi-based achievements
+            $materiAchievements = Achievement::where('type', 'materi_completion')
+                ->where('active', true)
+                ->get();
 
-        foreach ($pointsAchievements as $achievement) {
-            if ($totalPoints >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                $achievement->unlockForUser($user->id);
+            foreach ($materiAchievements as $achievement) {
+                if ($completedMaterials >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
+                    $pivot = $achievement->unlockForUser($user->id);
+                    if ($pivot) {
+                        $newlyUnlocked[] = [
+                            'achievement' => $achievement,
+                            'pivot' => $pivot
+                        ];
+                    }
+                }
             }
-        }
 
-        // Check for streak-based achievements
-        $streakAchievements = Achievement::where('type', 'streak')
-            ->where('active', true)
-            ->get();
+            // Check for Belajar Singkat materi achievements
+            $belajarSingkatAchievements = Achievement::where('type', 'belajar_singkat_materi')
+                ->where('active', true)
+                ->get();
 
-        foreach ($streakAchievements as $achievement) {
-            if ($learningStreak >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                $achievement->unlockForUser($user->id);
+            foreach ($belajarSingkatAchievements as $achievement) {
+                if ($completedBelajarSingkat >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
+                    $pivot = $achievement->unlockForUser($user->id);
+                    if ($pivot) {
+                        $newlyUnlocked[] = [
+                            'achievement' => $achievement,
+                            'pivot' => $pivot
+                        ];
+                    }
+                }
             }
-        }
 
-        // Check for rank-based achievements
-        $rankAchievements = Achievement::where('type', 'rank')
-            ->where('active', true)
-            ->get();
+            // Check for points-based achievements
+            $pointsAchievements = Achievement::where('type', 'points')
+                ->where('active', true)
+                ->get();
 
-        foreach ($rankAchievements as $achievement) {
-            if ($rank <= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                $achievement->unlockForUser($user->id);
+            foreach ($pointsAchievements as $achievement) {
+                if ($totalPoints >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
+                    $pivot = $achievement->unlockForUser($user->id);
+                    if ($pivot) {
+                        $newlyUnlocked[] = [
+                            'achievement' => $achievement,
+                            'pivot' => $pivot
+                        ];
+                    }
+                }
             }
+
+            // Flash newly unlocked achievements to the session so they can be displayed
+            if (!empty($newlyUnlocked)) {
+                \Illuminate\Support\Facades\Log::info("DashboardController: Flashing " . count($newlyUnlocked) . " newly unlocked achievements to session");
+                session()->flash('achievement_unlocked', $newlyUnlocked);
+            }
+
+            \Illuminate\Support\Facades\Log::info("DashboardController: Completed checkAndUpdateAchievements for user {$user->id}");
+
+            // Return the newly unlocked achievements in case needed by the caller
+            return $newlyUnlocked;
+        } catch (\Exception $e) {
+            // Log any errors
+            \Illuminate\Support\Facades\Log::error("Error in checkAndUpdateAchievements: " . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error($e->getTraceAsString());
+            return [];
         }
     }
 
@@ -501,5 +548,19 @@ class DashboardController extends Controller
         });
 
         return $activities;
+    }
+
+    /**
+     * Calculate a user's current learning streak based on activity
+     * Note: This method is kept but not used as streak tracking is removed
+     *
+     * @param int $userId
+     * @return int
+     */
+    private function calculateLearningStreak($userId)
+    {
+        // This would ideally calculate continuous days of activity
+        // For now, we'll return a placeholder value between 1-7
+        return rand(1, 7);
     }
 }

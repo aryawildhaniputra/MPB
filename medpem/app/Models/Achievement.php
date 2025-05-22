@@ -43,33 +43,47 @@ class Achievement extends Model
      */
     public function unlockForUser($userId)
     {
-        // Check if already unlocked
-        if ($this->isUnlockedByUser($userId)) {
-            return null;
-        }
+        try {
+            \Illuminate\Support\Facades\Log::info("Achievement {$this->id} ({$this->name}): Attempting to unlock for user {$userId}");
 
-        // Update or create record
-        $this->users()->syncWithoutDetaching([
-            $userId => [
-                'unlocked' => true,
-                'unlocked_at' => now(),
-            ]
-        ]);
-
-        // Award points if not already awarded
-        $userAchievement = $this->users()->where('user_id', $userId)->first();
-
-        if (!$userAchievement->pivot->points_awarded) {
-            $user = Users::find($userId);
-            if ($user) {
-                $user->increment('total_points', $this->points_reward);
+            // Check if already unlocked
+            if ($this->isUnlockedByUser($userId)) {
+                \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Already unlocked for user {$userId}");
+                return null;
             }
 
-            $this->users()->updateExistingPivot($userId, [
-                'points_awarded' => true
+            // Update or create record
+            \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Creating/updating record for user {$userId}");
+            $this->users()->syncWithoutDetaching([
+                $userId => [
+                    'unlocked' => true,
+                    'unlocked_at' => now(),
+                ]
             ]);
-        }
 
-        return $this->users()->where('user_id', $userId)->first()->pivot;
+            // Award points if not already awarded
+            $userAchievement = $this->users()->where('user_id', $userId)->first();
+            \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Checking if points should be awarded");
+
+            if (!$userAchievement->pivot->points_awarded) {
+                $user = Users::find($userId);
+                if ($user) {
+                    \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Awarding {$this->points_reward} points to user {$userId}");
+                    $user->increment('total_points', $this->points_reward);
+                }
+
+                \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Marking points as awarded");
+                $this->users()->updateExistingPivot($userId, [
+                    'points_awarded' => true
+                ]);
+            }
+
+            \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Successfully unlocked for user {$userId}");
+            return $this->users()->where('user_id', $userId)->first()->pivot;
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Error unlocking achievement {$this->id} for user {$userId}: " . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error($e->getTraceAsString());
+            return null;
+        }
     }
 }

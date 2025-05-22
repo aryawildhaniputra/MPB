@@ -190,6 +190,15 @@ class Users extends Authenticatable
         $userLesson = $this->lessons()->where('lesson_id', $lessonId)->first();
         $currentStreak = $userLesson ? $userLesson->pivot->current_streak : 0;
 
+        // Calculate completion time if we have started_at time
+        $startedAt = $userLesson ? $userLesson->pivot->started_at : null;
+        $completedAt = now();
+        $completionTime = null;
+
+        if ($startedAt) {
+            $completionTime = $completedAt->diffInSeconds(\Carbon\Carbon::parse($startedAt));
+        }
+
         // We don't need to award points here anymore as they're awarded after each part
         // But we still mark the lesson as completed for tracking purposes
 
@@ -198,9 +207,9 @@ class Users extends Authenticatable
             $lessonId => [
                 'completed' => true,
                 'mistakes_count' => $mistakesCount,
+                'completed_at' => $completedAt,
                 'current_streak' => $currentStreak + 1,
                 'xp_earned' => $xpEarned,
-                'completed_at' => now(),
                 'progress' => 100
             ]
         ]);
@@ -208,6 +217,13 @@ class Users extends Authenticatable
         // Add logging for debugging purposes
         Log::info("Lesson {$lessonId} marked as completed for user {$this->id}. Points are awarded separately for each part.");
 
-        return $this->lessons()->where('lesson_id', $lessonId)->first()->pivot;
+        // Check for achievements
+        $achievementService = app(\App\Services\AchievementService::class);
+        $newlyUnlocked = $achievementService->checkAchievements($this);
+
+        return [
+            'lesson_pivot' => $this->lessons()->where('lesson_id', $lessonId)->first()->pivot,
+            'achievements' => $newlyUnlocked
+        ];
     }
 }

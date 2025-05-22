@@ -28,13 +28,13 @@
 
         /* Fix untuk header dropdown pada halaman materi */
         .header-dropdown-container, .duolingo-header, .user-avatar, #userAvatarControl, #avatarClickOverlay {
-            z-index: 10000 !important;
+            z-index: 1000 !important;
             position: relative !important;
         }
 
         /* Pastikan user dropdown muncul di atas konten */
         #userDropdownDiv {
-            z-index: 10001 !important;
+            z-index: 1001 !important;
         }
 
         /* Fix untuk main content yang mungkin menutupi header */
@@ -390,6 +390,15 @@
             height: 20px;
             background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
         }
+
+        /* Tambahkan style untuk memastikan modal achievement muncul di atas semua konten */
+        #achievementModalOverlay {
+            z-index: 9999 !important;
+        }
+
+        #achievementModal {
+            z-index: 10000 !important;
+        }
     </style>
 </head>
 <body>
@@ -628,5 +637,7 @@
             // Dropdown functionality is now handled in the header.blade.php file
         });
     </script>
+
+    @include('components.achievement-notification')
 </body>
 </html>

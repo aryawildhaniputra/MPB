@@ -18,27 +18,27 @@ class RandomUserSeeder extends Seeder
             [
                 'name' => 'Rina Handayani',
                 'username' => 'rinahandayani',
-                'points' => rand(80, 250),
+                'points' => 0,
             ],
             [
                 'name' => 'Joko Susilo',
                 'username' => 'jokosusilo',
-                'points' => rand(80, 250),
+                'points' => 0,
             ],
             [
                 'name' => 'Maya Sari',
                 'username' => 'mayasari',
-                'points' => rand(80, 250),
+                'points' => 0,
             ],
             [
                 'name' => 'Dian Pratama',
                 'username' => 'dianpratama',
-                'points' => rand(80, 250),
+                'points' => 0,
             ],
             [
                 'name' => 'Andi Gunawan',
                 'username' => 'andigunawan',
-                'points' => rand(80, 250),
+                'points' => 0,
             ],
         ];
 
@@ -46,7 +46,7 @@ class RandomUserSeeder extends Seeder
             Users::create([
                 'name' => $user['name'],
                 'username' => $user['username'],
-                'password' => Hash::make('123456'),
+                'password' => Hash::make('12345'),
                 'role' => 'user',
                 'total_points' => $user['points'],
             ]);

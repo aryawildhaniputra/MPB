@@ -1,0 +1,26 @@
+2025-05-22 09:54:30 - Testing with user: 1
+2025-05-22 09:54:30 - Testing with lesson: 1
+2025-05-22 09:54:30 - Updated existing record with speed data
+2025-05-22 09:54:30 - Record details:
+2025-05-22 09:54:30 -   started_at: 2025-05-22 09:53:30
+2025-05-22 09:54:30 -   part1_completed: true
+2025-05-22 09:54:30 -   part1_completed_at: 2025-05-22 09:54:10
+2025-05-22 09:54:30 -   Time difference: -40 seconds
+2025-05-22 09:54:30 -   Started at: 2025-05-22 09:53:30
+2025-05-22 09:54:30 -   Completed at: 2025-05-22 09:54:10
+2025-05-22 09:54:30 - Updated record with extremely fast completion time (15 seconds)
+2025-05-22 09:54:30 - New time difference: -15 seconds
+2025-05-22 09:54:30 - New started at: 2025-05-22 09:49:30
+2025-05-22 09:54:30 - New completed at: 2025-05-22 09:49:45
+2025-05-22 09:54:30 - Part1 completed: true
+2025-05-22 09:54:30 - Checking for speed achievements in database...
+2025-05-22 09:54:30 - Found 3 speed achievements:
+2025-05-22 09:54:30 -   - Kecepatan Bagus (req: 120s)
+2025-05-22 09:54:30 -   - Kecepatan Hebat (req: 60s)
+2025-05-22 09:54:30 -   - Kecepatan Kilat (req: 30s)
+2025-05-22 09:54:30 - Checking speed achievements...
+2025-05-22 09:54:30 - Unlocked 3 speed achievements:
+2025-05-22 09:54:30 -   - Kecepatan Bagus
+2025-05-22 09:54:30 -   - Kecepatan Hebat
+2025-05-22 09:54:30 -   - Kecepatan Kilat
+2025-05-22 09:54:30 - Done

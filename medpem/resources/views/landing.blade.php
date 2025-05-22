@@ -596,5 +596,14 @@
             }
         });
     </script>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.5.1/dist/simpleParallax.min.js"></script>
+    <script src="{{ asset('js/scripts.js') }}"></script>
+
+    @include('components.achievement-notification')
 </body>
 </html>

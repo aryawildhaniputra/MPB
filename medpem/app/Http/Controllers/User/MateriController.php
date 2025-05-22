@@ -111,6 +111,7 @@ class MateriController extends Controller
         // Points awarding is disabled
         $pointsAwarded = 0;
 
+        $newAchievements = [];
         if ($completed && $progress->completed) {
             // Log that points are not awarded (disabled)
             Log::info("Points NOT awarded for materi completion (disabled): user {$user->id} for materi {$materi->id}");
@@ -119,26 +120,31 @@ class MateriController extends Controller
             $materi->users()->updateExistingPivot($user->id, ['points_awarded' => 0]);
 
             // Check for achievements after completing a materi
-            $this->checkAchievements($user);
+            $newAchievements = $this->checkAchievements($user);
         }
 
         return response()->json([
             'progress' => $progress->progress,
             'completed' => $progress->completed,
             'last_accessed_at' => $progress->last_accessed_at,
-            'points_awarded' => 0
+            'points_awarded' => 0,
+            'has_achievements' => !empty($newAchievements),
+            'achievements' => $newAchievements
         ]);
     }
 
     /**
      * Check and update user's achievements.
+     *
+     * @param Users $user
+     * @return array The newly unlocked achievements
      */
     private function checkAchievements($user)
     {
         // Get app's DashboardController instance to use its achievement check method
         $dashboardController = app()->make('App\Http\Controllers\DashboardController');
 
-        // Call the checkAndUpdateAchievements method
-        $dashboardController->checkAndUpdateAchievements($user);
+        // Call the checkAndUpdateAchievements method and return the unlocked achievements
+        return $dashboardController->checkAndUpdateAchievements($user);
     }
 }
