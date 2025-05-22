@@ -131,16 +131,16 @@ Route::get('/mengerjakan-tugas', function () {
 
 // Admin-only materi routes
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
-    Route::get('/materi/create', [MateriController::class, 'create'])->name('materi.create');
-    Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
-    Route::get('/materi/{materi}', [MateriController::class, 'show'])->name('materi.show');
-    Route::get('/materi/{materi}/edit', [MateriController::class, 'edit'])->name('materi.edit');
-    Route::put('/materi/{materi}', [MateriController::class, 'update'])->name('materi.update');
-    Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
+    Route::get('/admin/materi', [MateriController::class, 'index'])->name('admin.materi.index');
+    Route::get('/admin/materi/create', [MateriController::class, 'create'])->name('admin.materi.create');
+    Route::post('/admin/materi', [MateriController::class, 'store'])->name('admin.materi.store');
+    Route::get('/admin/materi/{materi}', [MateriController::class, 'show'])->name('admin.materi.show');
+    Route::get('/admin/materi/{materi}/edit', [MateriController::class, 'edit'])->name('admin.materi.edit');
+    Route::put('/admin/materi/{materi}', [MateriController::class, 'update'])->name('admin.materi.update');
+    Route::delete('/admin/materi/{materi}', [MateriController::class, 'destroy'])->name('admin.materi.destroy');
 
     // Document deletion route
-    Route::delete('/materi/document/{id}/delete', [MateriController::class, 'deleteDocument'])->name('materi.document.delete');
+    Route::delete('/admin/materi/document/{id}/delete', [MateriController::class, 'deleteDocument'])->name('admin.materi.document.delete');
 
     // User management routes - available to both admin and superadmin
     Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');

@@ -508,18 +508,18 @@
             <!-- Search and Add Button -->
             <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
                 <div class="w-full md:w-auto flex flex-col md:flex-row gap-6 items-start">
-                    <a href="{{ route('materi.create') }}" class="add-button group">
+                    <a href="{{ route('admin.materi.create') }}" class="add-button group">
                         <i class="fas fa-plus-circle mr-2 text-xl transition-transform group-hover:rotate-90 duration-300"></i>
                         <span>Tambah Materi Baru</span>
                     </a>
 
-                    <form action="{{ route('materi.index') }}" method="GET" class="w-full md:w-auto">
+                    <form action="{{ route('admin.materi.index') }}" method="GET" class="w-full md:w-auto">
                         <div class="search-container" style="width: auto; min-width: 320px;">
                             <i class="fas fa-search search-icon"></i>
                             <input type="text" name="search" value="{{ $search ?? '' }}" class="search-input" placeholder="Mau belajar apa hari ini? 🔎">
 
                             @if(isset($search) && $search)
-                            <a href="{{ route('materi.index') }}" class="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <a href="{{ route('admin.materi.index') }}" class="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
                                 <i class="fas fa-times-circle text-xl"></i>
                             </a>
                             @endif
@@ -637,10 +637,7 @@
 
                             <div class="card-body">
                                 <div class="card-description">
-                                    {{-- <a href="{{ route('materi.show', $materi->id) }}" class="text-xl font-bold {{ $theme['text'] }} hover:underline">
-                                        {{ $materi->title }}
-                                        <span class="admin-badge"><i class="fas fa-user-shield"></i> Admin</span>
-                                    </a> --}}
+                                    {{-- <a href="{{ route('admin.materi.show', $materi->id) }}" class="text-xl font-bold {{ $theme['text'] }} hover:underline"> --}}
                                     <div class="description-text">
                                         <p class="text-gray-500 mt-1 mb-2 text-sm">{{ Str::limit($materi->description, 150) }}</p>
                                     </div>
@@ -651,17 +648,17 @@
                                 <div class="mt-4">
                                     <div class="action-buttons-container">
                                         <div class="action-wrapper">
-                                            <a href="{{ route('materi.edit', $materi->id) }}" class="action-button edit-button">
+                                            <a href="{{ route('admin.materi.edit', $materi->id) }}" class="action-button edit-button">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                         </div>
                                         <div class="action-wrapper">
-                                            <a href="{{ route('materi.show', $materi->id) }}" class="action-button view-button">
+                                            <a href="{{ route('admin.materi.show', $materi->id) }}" class="action-button view-button">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                         </div>
                                         <div class="action-wrapper">
-                                            <form id="delete-form-{{ $materi->id }}" action="{{ route('materi.destroy', $materi->id) }}" method="POST">
+                                            <form id="delete-form-{{ $materi->id }}" action="{{ route('admin.materi.destroy', $materi->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" onclick="confirmDelete({{ $materi->id }})" class="action-button delete-button">
@@ -689,12 +686,12 @@
 
                             @if(isset($search) && $search)
                                 <p class="text-gray-700 dark:text-gray-300 mb-8 text-xl">Tidak ada materi tentang "{{ $search }}"</p>
-                                <a href="{{ route('materi.index') }}" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full hover:from-purple-700 hover:to-indigo-700 inline-block font-bold transition shadow-lg transform hover:scale-105">
+                                <a href="{{ route('admin.materi.index') }}" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full hover:from-purple-700 hover:to-indigo-700 inline-block font-bold transition shadow-lg transform hover:scale-105">
                                     <i class="fas fa-home mr-2"></i> Lihat Semua Materi
                                 </a>
                             @else
                                 <p class="text-gray-700 dark:text-gray-300 mb-8 text-xl">Ayo tambahkan materi pembelajaran pertamamu!</p>
-                                <a href="{{ route('materi.create') }}" class="px-8 py-4 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full hover:from-green-600 hover:to-teal-600 inline-block font-bold transition shadow-lg transform hover:scale-105">
+                                <a href="{{ route('admin.materi.create') }}" class="px-8 py-4 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full hover:from-green-600 hover:to-teal-600 inline-block font-bold transition shadow-lg transform hover:scale-105">
                                     <i class="fas fa-plus-circle mr-2"></i> Buat Materi Baru
                                 </a>
                             @endif

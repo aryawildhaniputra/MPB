@@ -29,22 +29,23 @@
         .main-content {
             min-height: calc(100vh - 70px);
             margin-left: 250px;
-            padding-top: 90px;
+            padding-top: 80px;
             padding-bottom: 2rem;
             transition: all 0.3s;
             width: calc(100% - 250px);
         }
 
         .welcome-banner {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
-            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
+            border-radius: 20px;
             backdrop-filter: blur(10px);
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 2.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
             box-shadow: 0 20px 30px -15px rgba(2, 6, 23, 0.5);
             position: relative;
             overflow: hidden;
             z-index: 1;
+            margin-bottom: 2rem;
         }
 
         .welcome-banner::after {
@@ -64,10 +65,10 @@
         }
 
         .welcome-title {
-            font-size: 3.5rem;
-            font-weight: 900;
+            font-size: 2.5rem;
+            font-weight: 800;
             margin-bottom: 1rem;
-            background: linear-gradient(90deg, #58CC02, #1CB0F6, #a560ff);
+            background: linear-gradient(90deg, #58CC02, #1CB0F6);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -80,51 +81,110 @@
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 1.5rem;
-            margin-top: 2.5rem;
         }
 
         .stat-card {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 20px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
-            border: 3px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .wide-card {
             grid-column: span 6;
         }
 
-        @media (max-width: 1024px) {
+        .small-card {
+            grid-column: span 4;
+        }
+
+        .full-card {
+            grid-column: span 12;
+        }
+
+        @media (max-width: 1280px) {
+            .small-card {
+                grid-column: span 6;
+            }
             .wide-card {
                 grid-column: span 12;
             }
         }
 
-        .small-card {
-            grid-column: span 3;
-        }
-
-        @media (max-width: 1024px) {
-            .small-card {
-                grid-column: span 6;
-            }
-        }
-
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .small-card {
                 grid-column: span 12;
             }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 70px 1rem 2rem;
+            }
+            .welcome-title {
+                font-size: 2rem;
+            }
+        }
+
+        .adventure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            width: 100%;
+        }
+
+        .adventure-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .adventure-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+            border: 2px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-icon {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            font-size: 2rem;
+            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .stat-value {
@@ -142,12 +202,6 @@
             font-weight: 600;
             font-family: 'Comic Neue', cursive;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .progress-card {
-            background: rgba(30, 41, 59, 0.95);
-            border: 3px solid rgba(56, 189, 248, 0.3);
-            border-radius: 20px;
         }
 
         .progress-bar-container {
@@ -293,23 +347,6 @@
         @keyframes pulse-badge {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding-top: 120px;
-            }
-        }
-
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
 
         @keyframes floatUpDown {
@@ -1370,15 +1407,6 @@
             border: 3px solid #fbbf24;
         }
 
-        .card-icon {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            font-size: 2.5rem;
-            opacity: 0.8;
-            filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));
-        }
-
         .content-title {
             font-size: 3.5rem;
             font-weight: 900;
@@ -1456,17 +1484,14 @@
             </div>
 
             <div class="dashboard-grid">
-                <!-- Mobile Achievement Summary - Only visible on mobile -->
-                <!-- Achievement section removed -->
-
-                <!-- Rank Card -->
-                <div class="stat-card small-card rank-card">
+                <!-- Stats Row -->
+                <div class="stat-card small-card">
                     <div class="card-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div class="stat-label">Peringkatmu</div>
                     <div class="stat-value">#{{ $stats['rank'] }}</div>
-                    <p class="text-base text-white mt-2">
+                    <p class="text-sm text-gray-300 mt-2">
                         @if($stats['rank'] <= 3)
                             Wow! Kamu juara kelas! 🎉
                         @elseif($stats['rank'] <= 10)
@@ -1477,108 +1502,65 @@
                     </p>
                 </div>
 
-                <!-- Points Card -->
-                <div class="stat-card small-card achievements-card">
+                <div class="stat-card small-card">
                     <div class="card-icon">
                         <i class="fas fa-award"></i>
                     </div>
                     <div class="stat-label">Penghargaan</div>
-                    <div class="stat-value">{{ $stats['total_points'] > 0 ? $stats['total_points'] : 'Baru' }}</div>
-                    <p class="text-base text-white mt-2">
+                    <div class="stat-value">{{ $stats['total_points'] > 0 ? $stats['total_points'] : '0' }}</div>
+                    <p class="text-sm text-gray-300 mt-2">
                         {{ $stats['total_points'] < 50 ? 'Terus belajar untuk mendapatkan penghargaan!' : 'Hebat! Pertahankan semangatmu!' }}
                     </p>
                 </div>
 
-                <!-- Streak Card -->
-                {{-- <div class="stat-card small-card streak-card">
+                <div class="stat-card small-card">
                     <div class="card-icon">
-                        <i class="fas fa-fire"></i>
+                        <i class="fas fa-book"></i>
                     </div>
-                    <div class="stat-label">Hari Beruntun</div>
-                    <div class="stat-value">{{ $stats['learning_streak'] }}</div>
-                    <p class="text-base text-white mt-2">
-                        {{ $stats['learning_streak'] < 3 ? 'Belajar tiap hari biar makin pintar!' : 'Keren! Pertahankan semangat belajarmu!' }}
+                    <div class="stat-label">Materi Selesai</div>
+                    <div class="stat-value">{{ $stats['completed_materials'] ?? 0 }}/{{ $stats['total_materials'] ?? 0 }}</div>
+                    <p class="text-sm text-gray-300 mt-2">
+                        {{ $stats['materi_percentage'] ?? 0 }}% materi telah diselesaikan
                     </p>
-                </div> --}}
+                </div>
 
-                <!-- Modify Learning Progress Card to only show materials -->
+                <!-- Progress Section -->
                 <div class="stat-card wide-card progress-card">
-                    <h3 class="text-2xl font-bold text-white mb-4">Progres Petualanganmu</h3>
-
+                    <h3 class="text-xl font-bold text-white mb-4">Progres Belajar</h3>
                     <div class="mb-6">
-                        @php
-                        // Get total material count
-                        $totalMaterials = DB::table('materi')->count();
-
-                        // For development/demo, show 3 completed materials with 100% progress
-                        $completedMaterials = 3;
-                        $materiPercentage = 100;
-                        @endphp
-                        <div class="flex justify-between mb-1">
-                            <span class="text-white text-lg">Materi Diselesaikan</span>
-                            <span class="text-blue-400 font-semibold text-lg">{{ $completedMaterials }} materi</span>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300">Materi Diselesaikan</span>
+                            <span class="text-blue-400 font-semibold">{{ $stats['completed_materials'] ?? 0 }} materi</span>
                         </div>
                         <div class="progress-bar-container">
-                            <div class="progress-bar bg-blue-500" style="width: {{ $materiPercentage }}%"></div>
+                            <div class="progress-bar bg-blue-500" style="width: {{ $stats['materi_percentage'] ?? 0 }}%"></div>
                         </div>
-                        <div class="text-xs text-right text-blue-300 mt-1">{{ $materiPercentage }}% dari total {{ $totalMaterials }} materi</div>
+                        <div class="text-xs text-right text-blue-300 mt-1">{{ $stats['materi_percentage'] ?? 0 }}% dari total {{ $stats['total_materials'] ?? 0 }} materi</div>
                     </div>
 
-                    <div class="flex justify-center items-center mt-8">
+                    <div class="flex justify-center mt-6">
                         <a href="{{ route('user.materi.index') }}" class="kid-button">
                             <i class="fas fa-book"></i> LIHAT MATERI
                         </a>
                     </div>
                 </div>
 
-                <!-- Replace Game Completion Card with Materials Card -->
-                <div class="stat-card wide-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7)); border: 3px solid rgba(255, 255, 255, 0.1);">
-                    <h3 class="text-2xl font-bold text-white mb-4">Materi Populer</h3>
-
+                <!-- Popular Materials -->
+                <div class="stat-card wide-card">
+                    <h3 class="text-xl font-bold text-white mb-4">Materi Populer</h3>
                     <div class="space-y-3">
-                        @php
-                        // Get some popular materials
-                        $popularMaterials = DB::table('materi')
-                            ->orderBy('id', 'asc')
-                            ->limit(3)
-                            ->get();
-                        @endphp
-
-                        @if(count($popularMaterials) > 0)
-                            @foreach($popularMaterials as $material)
-                                @php
-                                // Set colors based on material index
-                                $colorClasses = ['blue', 'green', 'purple'];
-                                $iconClasses = ['fa-book', 'fa-globe', 'fa-language'];
-                                $colorClass = $colorClasses[$loop->index % count($colorClasses)];
-                                $iconClass = $iconClasses[$loop->index % count($iconClasses)];
-                                @endphp
-
-                                <div class="flex items-center bg-gradient-to-r from-{{ $colorClass }}-600/30 to-{{ $colorClass }}-800/30 rounded-xl p-3 border-l-4 border-{{ $colorClass }}-500">
-                                    <div class="p-2 bg-{{ $colorClass }}-500/20 rounded-full mr-3 flex-shrink-0">
-                                        <i class="fas {{ $iconClass }} text-{{ $colorClass }}-400"></i>
-                                    </div>
-                                    <div class="flex-grow">
-                                        <h4 class="font-bold text-white">{{ $material->title }}</h4>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-{{ $colorClass }}-300 text-sm">{{ Str::limit($material->description ?? 'Materi belajar bahasa Inggris', 50) }}</span>
-                                    </div>
-                                        </div>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="flex items-center bg-gray-800/50 rounded-xl p-3">
-                                <div class="p-2 bg-gray-700 rounded-full mr-3 flex-shrink-0">
-                                    <i class="fas fa-info-circle text-gray-400"></i>
+                        @foreach($popularMaterials as $material)
+                            <div class="flex items-center bg-opacity-30 bg-blue-900 rounded-xl p-3 hover:bg-opacity-40 transition-all">
+                                <div class="p-2 bg-blue-500 bg-opacity-20 rounded-full mr-3">
+                                    <i class="fas fa-book text-blue-400"></i>
                                 </div>
                                 <div class="flex-grow">
-                                    <h4 class="font-bold text-white">Belum ada materi tersedia</h4>
-                                    <p class="text-gray-300 text-sm">Materi akan segera ditambahkan</p>
-                        </div>
-                        </div>
-                        @endif
+                                    <h4 class="font-semibold text-white">{{ $material->title }}</h4>
+                                    <p class="text-sm text-gray-300">{{ Str::limit($material->description ?? 'Materi belajar bahasa Inggris', 50) }}</p>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-
                     <div class="flex justify-end mt-4">
                         <a href="{{ route('user.materi.index') }}" class="kid-button">
                             <i class="fas fa-book"></i> LIHAT SEMUA
@@ -1586,17 +1568,16 @@
                     </div>
                 </div>
 
-                <!-- Suggested Learning -->
-                <div class="stat-card" style="grid-column: span 12;">
-                    <h3 class="text-2xl font-bold text-white mb-4">Petualangan Selanjutnya</h3>
-
+                <!-- Adventure Section -->
+                <div class="stat-card full-card">
+                    <h3 class="text-xl font-bold text-white mb-4">Petualangan Selanjutnya</h3>
                     <div class="adventure-grid">
                         <div class="adventure-card">
                             <div class="icon">📚</div>
-                            <h4>Materi Baru</h4>
-                            <p>Jelajahi materi-materi baru yang seru untuk kamu pelajari!</p>
-                            <div class="button-container">
-                                <a href="{{ route('user.materi.index') }}" class="kid-button">
+                            <h4 class="text-lg font-semibold text-white mb-2">Materi Baru</h4>
+                            <p class="text-gray-300 mb-4">Jelajahi materi-materi baru yang seru untuk kamu pelajari!</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('user.materi.index') }}" class="kid-button w-full">
                                     <i class="fas fa-book"></i> Lihat Materi
                                 </a>
                             </div>
@@ -1604,10 +1585,10 @@
 
                         <div class="adventure-card">
                             <div class="icon">🎯</div>
-                            <h4>Latihan Seru</h4>
-                            <p>Lanjutkan pelajaran yang sedang kamu pelajari!</p>
-                            <div class="button-container">
-                                <a href="{{ route('belajar') }}" class="kid-button">
+                            <h4 class="text-lg font-semibold text-white mb-2">Latihan Seru</h4>
+                            <p class="text-gray-300 mb-4">Lanjutkan pelajaran yang sedang kamu pelajari!</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('belajar') }}" class="kid-button w-full">
                                     <i class="fas fa-graduation-cap"></i> Belajar
                                 </a>
                             </div>
@@ -1615,10 +1596,10 @@
 
                         <div class="adventure-card">
                             <div class="icon">🏆</div>
-                            <h4>Papan Juara</h4>
-                            <p>Lihat peringkatmu dan teman-teman sekelasmu!</p>
-                            <div class="button-container">
-                                <a href="{{ route('leaderboard') }}" class="kid-button">
+                            <h4 class="text-lg font-semibold text-white mb-2">Papan Juara</h4>
+                            <p class="text-gray-300 mb-4">Lihat peringkatmu dan teman-teman sekelasmu!</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('leaderboard') }}" class="kid-button w-full">
                                     <i class="fas fa-crown"></i> Juara Kelas
                                 </a>
                             </div>
@@ -1626,10 +1607,10 @@
 
                         <div class="adventure-card">
                             <div class="icon">🎮</div>
-                            <h4>Permainan Edukatif</h4>
-                            <p>Belajar sambil bermain permainan seru!</p>
-                            <div class="button-container">
-                                <a href="{{ route('permainan') }}" class="kid-button">
+                            <h4 class="text-lg font-semibold text-white mb-2">Permainan Edukatif</h4>
+                            <p class="text-gray-300 mb-4">Belajar sambil bermain permainan seru!</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('permainan') }}" class="kid-button w-full">
                                     <i class="fas fa-gamepad"></i> Main Game
                                 </a>
                             </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Materi - {{ $materi->title }}</title>
+    <title>Tambah Materi Baru</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -204,14 +204,14 @@
         }
 
         .submit-button {
-            background: linear-gradient(to right, #3B82F6, #60A5FA);
+            background: linear-gradient(to right, #58CC02, #4CAF50);
             color: white;
             padding: 0.875rem 2rem;
             font-size: 1.1rem;
         }
 
         .submit-button:hover {
-            background: linear-gradient(to right, #2563EB, #3B82F6);
+            background: linear-gradient(to right, #4CAF50, #3E8E41);
         }
 
         .button-icon {
@@ -309,15 +309,6 @@
             margin-top: 0.5rem;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
         /* TinyMCE customizations */
         .tox-tinymce {
             border-radius: 10px !important;
@@ -353,6 +344,120 @@
             margin-bottom: 0.5rem;
             color: #2563EB;
         }
+
+        /* Styles untuk tampilan dokumen yang diupload */
+        .document-embed {
+            margin: 15px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            background-color: #f8fafc;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .document-header {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .document-title {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #334155;
+            flex-grow: 1;
+        }
+
+        .document-icon {
+            margin-right: 12px;
+            font-size: 1.6rem;
+        }
+
+        .document-pdf .document-icon {
+            color: #ef4444;
+        }
+
+        .document-word .document-icon {
+            color: #3b82f6;
+        }
+
+        .document-powerpoint .document-icon {
+            color: #f97316;
+        }
+
+        .document-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .document-button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .document-view {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .document-view:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .document-download {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .document-download:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        .document-content {
+            padding: 0;
+            min-height: 400px;
+        }
+
+        .document-content iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 640px) {
+            .document-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .document-actions {
+                width: 100%;
+            }
+
+            .document-button {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .document-content iframe {
+                height: 350px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -361,155 +466,74 @@
     <div class="flex">
         @include('sidebar')
 
-        <div class="main-content px-6">
-            <!-- Decorative elements -->
-            <div class="decoration decoration-1">📝</div>
-            <div class="decoration decoration-2">📚</div>
-            <div class="decoration decoration-3">✏️</div>
-
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-8">
-                    <h1 class="page-title">Edit Materi <i class="fas fa-tools ml-3 text-white"></i></h1>
-                    <p class="subtitle">Ubah dan perbaiki materi pembelajaran "<span class="font-bold text-yellow-300">{{ $materi->title }}</span>"</p>
-                    <div class="gradient-border"></div>
-                </div>
-
-                <div class="form-container">
-                    <form action="{{ route('materi.update', $materi->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="form-section">
-                            <div class="form-section-title">Informasi Dasar</div>
-                            <div class="input-group">
-                                <label class="input-label" data-icon="📚" for="title">Judul Materi</label>
-                                <input type="text" id="title" name="title" value="{{ $materi->title }}" class="form-input" placeholder="Contoh: Belajar Matematika Dasar" required>
-                                <div class="help-text">Buat judul yang singkat dan menarik</div>
-                            </div>
-
-                            <div class="input-group">
-                                <label class="input-label" data-icon="📋" for="description">Deskripsi Singkat</label>
-                                <textarea id="description" name="description" class="form-textarea" placeholder="Jelaskan secara singkat tentang materi ini..." required>{{ $materi->description }}</textarea>
-                                <div class="help-text">Berikan gambaran umum tentang materi yang akan dipelajari</div>
-                            </div>
-                        </div>
-
-                        <div class="form-section">
-                            <div class="form-section-title">Konten Materi</div>
-
-                            <div class="input-group">
-                                <label for="editor" class="input-label" data-icon="📝">Isi Materi</label>
-                                <p class="text-gray-500 text-sm mb-2">Gunakan editor di bawah untuk menambahkan teks, gambar, video, dan dokumen.</p>
-                                <textarea name="content" id="editor" class="content-textarea">{{ $materi->content }}</textarea>
-                            </div>
-
-                            <!-- Tambahkan Dokumen Pendukung -->
-                            <div class="input-group mt-8">
-                                <label class="input-label" data-icon="📄">Dokumen Pendukung</label>
-                                <p class="text-gray-500 text-sm mb-2 flex items-center">
-                                    Upload dokumen pendukung berupa PDF, Word, atau PowerPoint untuk materi ini
-                                    <button type="button" id="showUploadInfoBtn" class="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none">
-                                        <i class="fas fa-info-circle text-lg"></i>
-                                    </button>
-                                </p>
-
-                                <!-- Upload information modal (hidden by default) -->
-                                <div id="uploadInfoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                                    <div class="bg-white rounded-lg p-6 max-w-lg w-full mx-4">
-                                        <div class="flex justify-between items-center mb-4">
-                                            <h3 class="text-lg font-bold text-blue-800">
-                                                <i class="fas fa-info-circle mr-2"></i>Petunjuk Upload Dokumen
-                                            </h3>
-                                            <button type="button" id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
-                                                <i class="fas fa-times text-xl"></i>
-                                            </button>
-                                        </div>
-                                        <ol class="list-decimal pl-5 text-gray-700">
-                                            <li class="mb-2">Klik pada bagian Isi Materi di tempat Anda ingin menambahkan dokumen</li>
-                                            <li class="mb-2">Klik ikon "Link" pada editor</li>
-                                            <li class="mb-2">Klik tombol "browse server" di jendela link</li>
-                                            <li class="mb-2">Upload dokumen PDF (hanya format PDF yang diperbolehkan)</li>
-                                            <li class="mb-2">Setelah upload berhasil, dokumen akan muncul dalam materi</li>
-                                        </ol>
-                                        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-                                            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Konversi Dokumen</h4>
-                                            <p class="text-gray-700 mb-2">Untuk mengkonversi dokumen Word atau PowerPoint ke PDF, Anda dapat menggunakan:</p>
-                                            <ul class="list-disc pl-5 text-gray-700">
-                                                <li class="mb-1">Microsoft Office: File > Save As > PDF</li>
-                                                <li class="mb-1">Google Docs/Slides: File > Download > PDF Document</li>
-                                                <li class="mb-1">Situs konversi online seperti <a href="https://smallpdf.com" target="_blank" class="text-blue-600 hover:underline">SmallPDF</a> atau <a href="https://ilovepdf.com" target="_blank" class="text-blue-600 hover:underline">iLovePDF</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Document uploads -->
-                                <div class="space-y-4 mt-4" id="document-uploads">
-                                    <div class="document-upload-item bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
-                                        <div class="flex items-center mb-2">
-                                            <select class="form-input mr-2 hidden" style="width: 150px;" name="document_types[]">
-                                                <option value="pdf" selected>PDF</option>
-                                            </select>
-                                            <input type="file" name="documents[]" class="form-input flex-1" accept=".pdf">
-                                        </div>
-                                        <input type="text" name="document_titles[]" class="form-input w-full mt-2" placeholder="Judul Dokumen (opsional)">
-                                    </div>
-                            </div>
-
-                                <div class="mt-3">
-                                    <button type="button" id="addMoreDocBtn" class="text-blue-500 hover:text-blue-700 flex items-center">
-                                        <i class="fas fa-plus-circle mr-2"></i> Tambah Dokumen Lain
-                                    </button>
-                                </div>
-
-                                <!-- Existing Documents -->
-                                @if(isset($documents) && $documents->count() > 0)
-                                <div class="mt-6">
-                                    <h3 class="text-lg font-bold text-gray-700 mb-3">Dokumen Yang Ada</h3>
-                                    <div class="space-y-3" id="existing-documents">
-                                        @foreach($documents as $document)
-                                        <div class="existing-document bg-blue-50 p-4 rounded-lg border-2 border-blue-200" data-id="{{ $document->id }}">
-                                            <div class="flex items-center justify-between">
-                                                <div class="flex items-center">
-                                                    @if($document->document_type == 'pdf')
-                                                    <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
-                                                    @elseif($document->document_type == 'word')
-                                                    <i class="fas fa-file-word text-blue-500 text-2xl mr-3"></i>
-                                                    @elseif($document->document_type == 'powerpoint')
-                                                    <i class="fas fa-file-powerpoint text-orange-500 text-2xl mr-3"></i>
-                                                    @else
-                                                    <i class="fas fa-file text-gray-500 text-2xl mr-3"></i>
-                                                    @endif
-                                                    <div>
-                                                        <div class="font-semibold text-gray-800">{{ $document->title }}</div>
-                                                        <div class="text-sm text-gray-600">{{ $document->file_name }}</div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-center space-x-2">
-                                                    <a href="{{ route('document.serve', $document->id) }}" target="_blank" class="text-blue-500 hover:text-blue-700 p-2">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                    <button type="button" class="delete-document-btn text-red-500 hover:text-red-700 p-2" data-id="{{ $document->id }}">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="action-button submit-button">
-                                <i class="fas fa-save button-icon"></i> Simpan Perubahan
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        <div class="main-content p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="content-title">Tambah Materi Baru</h1>
+                <a href="{{ route('admin.materi.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    <i class="fas fa-arrow-left mr-2"></i>Kembali
+                </a>
             </div>
+
+            @include('components.notification')
+
+            <form action="{{ route('admin.materi.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-lg p-6 shadow-lg">
+                @csrf
+                <div class="mb-6">
+                    <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Judul Materi</label>
+                    <input type="text" name="title" id="title" value="{{ old('title') }}"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('title') border-red-500 @enderror">
+                    @error('title')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Deskripsi</label>
+                    <textarea name="description" id="description" rows="4"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                    @error('description')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Konten</label>
+                    <textarea name="content" id="content" rows="10"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('content') border-red-500 @enderror">{{ old('content') }}</textarea>
+                    @error('content')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Dokumen Pendukung</label>
+                    <div id="document-upload-container">
+                        <div class="document-upload-row mb-4">
+                            <div class="flex items-center space-x-4">
+                                <input type="text" name="document_titles[]" placeholder="Judul Dokumen"
+                                    class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-1 @error('document_titles.*') border-red-500 @enderror">
+                                <input type="file" name="documents[]" accept=".pdf"
+                                    class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-1 @error('documents.*') border-red-500 @enderror">
+                            </div>
+                            @error('document_titles.*')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('documents.*')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <button type="button" id="add-document" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <i class="fas fa-plus mr-2"></i>Tambah Dokumen
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-end">
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <i class="fas fa-save mr-2"></i>Simpan Materi
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -541,27 +565,6 @@
                 <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" onclick="closeModal('errorModal')">
                     OK
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
-            <div class="text-center">
-                <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-exclamation-triangle text-yellow-500 text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Konfirmasi</h3>
-                <p class="text-gray-600 mb-6" id="confirmationMessage">Apakah Anda yakin akan melakukan ini?</p>
-                <div class="flex justify-center space-x-4">
-                    <button type="button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors" id="confirmCancel" onclick="closeModal('confirmationModal')">
-                        Batal
-                    </button>
-                    <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" id="confirmAction">
-                        Ya, Lanjutkan
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -598,48 +601,6 @@
             branding: false,
             promotion: false,
             image_advtab: true,
-            automatic_uploads: true,
-            // Template untuk berbagai jenis dokumen
-            templates: [
-                {
-                    title: 'Dokumen PDF',
-                    description: 'Template untuk dokumen PDF',
-                    content: '<div class="document-embed document-pdf">' +
-                            '<div class="document-header">' +
-                                '<div class="document-title"><i class="fas fa-file-pdf document-icon"></i> Dokumen PDF</div>' +
-                                '<div class="document-actions">' +
-                                    '<a href="#" target="_blank" class="document-button document-view"><i class="fas fa-eye"></i> Lihat</a>' +
-                                    '<a href="#" class="document-button document-download"><i class="fas fa-download"></i> Unduh</a>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="document-content">' +
-                                '<iframe src="#" frameborder="0"></iframe>' +
-                            '</div>' +
-                        '</div>'
-                }
-            ],
-            setup: function(editor) {
-                // Initialize flag to track if editor has been manually changed
-                let editorInitialized = false;
-
-                editor.on('init', function() {
-                    // Mark editor as initialized after it's fully loaded
-                    setTimeout(function() {
-                        editorInitialized = true;
-                    }, 500);
-                });
-
-                editor.on('change', function() {
-                    editor.save();
-                    // Only mark as changed if it's a user action after initialization
-                    if (editorInitialized) {
-                        formChanged = true;
-                    }
-                });
-            },
-            content_style: 'body { font-family: Nunito, sans-serif; font-size: 16px; }',
-            extended_valid_elements: 'a[href|target=_blank|rel=noopener|class|style]',
-            convert_urls: false,
             automatic_uploads: true,
             // Template untuk berbagai jenis dokumen
             templates: [
@@ -738,7 +699,7 @@
                             callback(reader.result, {
                                 alt: file.name
                             });
-                        };
+                };
                         reader.readAsDataURL(file);
                     };
 
@@ -753,6 +714,28 @@
                     });
                 }
             },
+            setup: function(editor) {
+                // Initialize flag to track if editor has been manually changed
+                let editorInitialized = false;
+
+                editor.on('init', function() {
+                    // Mark editor as initialized after it's fully loaded
+                    setTimeout(function() {
+                        editorInitialized = true;
+                    }, 500);
+                });
+
+                editor.on('change', function() {
+                    editor.save();
+                    // Only mark as changed if it's a user action after initialization
+                    if (editorInitialized) {
+                        formChanged = true;
+                    }
+                });
+            },
+            content_style: 'body { font-family: Nunito, sans-serif; font-size: 16px; }',
+            extended_valid_elements: 'a[href|target=_blank|rel=noopener|class|style]',
+            convert_urls: false,
         });
 
         // Form change tracking variables
@@ -780,17 +763,6 @@
         function showErrorModal(message) {
             document.getElementById('errorMessage').textContent = message;
             showModal('errorModal');
-        }
-
-        function showConfirmationModal(message, confirmCallback) {
-            document.getElementById('confirmationMessage').textContent = message;
-            document.getElementById('confirmAction').onclick = function() {
-                closeModal('confirmationModal');
-                if (typeof confirmCallback === 'function') {
-                    confirmCallback();
-            }
-            };
-            showModal('confirmationModal');
         }
 
         function showUnsavedChangesModal(callbackStay, callbackLeave) {
@@ -838,8 +810,8 @@
                             formChanged = true;
                         }
                     });
-                }
-            });
+            }
+        });
 
             // Check for unsaved changes when clicking on links
             document.querySelectorAll('a:not([target="_blank"])').forEach(function(link) {
@@ -896,7 +868,7 @@
                         uploadInfoModal.classList.add('hidden');
                     }
                 });
-            }
+                }
 
             // Add more document upload fields
             const addMoreDocBtn = document.getElementById('addMoreDocBtn');
@@ -909,8 +881,8 @@
                     newDocItem.innerHTML = `
                         <div class="flex items-center mb-2 justify-between">
                             <div class="flex-1 flex">
-                                <select class="form-input mr-2 hidden" style="width: 150px;" name="document_types[]">
-                                    <option value="pdf" selected>PDF</option>
+                                <select class="form-input mr-2" style="width: 150px;" name="document_types[]">
+                                    <option value="pdf">PDF</option>
                                 </select>
                                 <input type="file" name="documents[]" class="form-input flex-1" accept=".pdf">
                             </div>
@@ -929,57 +901,12 @@
                         removeBtn.addEventListener('click', function() {
                             newDocItem.remove();
                         });
-                }
+                    }
 
                     // Mark form as changed when adding a new document field
                     formChanged = true;
-                });
-            }
-
-            // Handle document deletion
-            const deleteDocumentBtns = document.querySelectorAll('.delete-document-btn');
-            deleteDocumentBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const documentId = this.dataset.id;
-                    const documentElement = this.closest('.existing-document');
-
-                    showConfirmationModal('Apakah Anda yakin ingin menghapus dokumen ini?', function() {
-                        // Send AJAX request to delete the document
-                        fetch(`/materi/document/${documentId}/delete`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Remove the document from the DOM
-                                documentElement.remove();
-                                showSuccessModal('Berhasil!', 'Dokumen berhasil dihapus');
-
-                                // Check if there are no more documents
-                                const remainingDocuments = document.querySelectorAll('.existing-document');
-                                if (remainingDocuments.length === 0) {
-                                    const existingDocumentsContainer = document.getElementById('existing-documents');
-                                    if (existingDocumentsContainer && existingDocumentsContainer.parentElement) {
-                                        existingDocumentsContainer.parentElement.style.display = 'none';
-                                    }
-                                }
-                            } else {
-                                showErrorModal('Gagal menghapus dokumen.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            showErrorModal('Terjadi kesalahan saat menghapus dokumen.');
-                        });
-                    });
-                });
             });
+            }
         });
     </script>
 </body>

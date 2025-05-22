@@ -96,7 +96,7 @@
             <span class="sidebar-text">KELOLA USER</span>
         </a>
 
-        <a href="{{ route('materi.index') }}" class="sidebar-item {{ request()->is('materi*') ? 'active' : '' }}" data-title="Materi Admin">
+        <a href="{{ route('admin.materi.index') }}" class="sidebar-item {{ request()->is('admin/materi*') ? 'active' : '' }}" data-title="Materi Admin">
             <div class="sidebar-icon bg-gradient-to-br from-red-400 to-red-500">
                 <i class="fas fa-graduation-cap"></i>
             </div>

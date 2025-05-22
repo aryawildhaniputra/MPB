@@ -410,7 +410,7 @@
                                     break;
                                 case 'points':
                                     $typeLabel = 'Poin';
-                                    $typeIcon = '<i class="fas fa-coins"></i>';
+                                    $typeIcon = '<i class="fas fa-star"></i>';
                                     $bgColor = $achievement->is_unlocked ? 'bg-yellow-100' : 'bg-gray-100';
                                     $textColor = $achievement->is_unlocked ? 'text-yellow-600' : 'text-gray-400';
                                     $badgeBg = 'bg-yellow-500 text-white';
@@ -434,7 +434,7 @@
                         <div class="achievement-card {{ $achievement->is_unlocked ? 'unlocked type-' . $achievement->type : 'locked' }} rounded-lg">
                             <div class="p-6">
                                 <div class="achievement-reward {{ $achievement->is_unlocked ? 'bg-yellow-100/90 text-yellow-700' : 'bg-gray-100/90 text-gray-500' }}">
-                                    <i class="fas fa-coins"></i>
+                                    <i class="fas fa-star"></i>
                                     <span>{{ $achievement->points_reward }}</span>
                                 </div>
 

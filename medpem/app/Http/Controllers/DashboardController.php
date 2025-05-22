@@ -55,7 +55,22 @@ class DashboardController extends Controller
         } else {
             // Get user achievements for display
             $achievements = $this->getUserAchievements($user);
-            return view('user.dashboard', compact('user', 'stats', 'achievements'));
+
+            // Get user statistics
+            $stats = $this->getUserStats($user);
+
+            // Get popular materials
+            $popularMaterials = DB::table('materi')
+                ->orderBy('id', 'asc')
+                ->limit(3)
+                ->get();
+
+            return view('user.dashboard', compact(
+                'user',
+                'stats',
+                'achievements',
+                'popularMaterials'
+            ));
         }
     }
 
@@ -65,6 +80,12 @@ class DashboardController extends Controller
         $completedMaterials = $user->materi()
             ->wherePivot('completed', true)
             ->count();
+
+        // Get total materials count
+        $totalMaterials = DB::table('materi')->count();
+
+        // Calculate completion percentage
+        $materiPercentage = $totalMaterials > 0 ? round(($completedMaterials / $totalMaterials) * 100) : 0;
 
         // Get count of lessons completed using the lessons relationship
         $completedLessons = $user->lessons()
@@ -86,6 +107,8 @@ class DashboardController extends Controller
 
         return [
             'completed_materials' => $completedMaterials,
+            'total_materials' => $totalMaterials,
+            'materi_percentage' => $materiPercentage,
             'completed_lessons' => $completedLessons,
             'total_points' => $totalPoints,
             'rank' => $userRank,
@@ -562,5 +585,15 @@ class DashboardController extends Controller
         // This would ideally calculate continuous days of activity
         // For now, we'll return a placeholder value between 1-7
         return rand(1, 7);
+    }
+
+    private function calculateUserRank($user)
+    {
+        $higherRanked = \DB::table('users')
+            ->where('role', 'user')
+            ->where('total_points', '>', $user->total_points)
+            ->count();
+
+        return $higherRanked + 1;
     }
 }

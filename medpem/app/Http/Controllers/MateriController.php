@@ -35,67 +35,90 @@ class MateriController extends Controller
             });
         })->get();
 
-        return view('materi.index', compact('materis', 'search'));
+        return view('admin.materi.index', compact('materis', 'search'));
     }
 
     public function create()
     {
-        return view('materi.add');
+        return view('admin.materi.add');
     }
 
     public function store(Request $request)
     {
-        // Create the materi
-        $materi = Materi::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'content' => $request->content
+        // Validate the request
+        $request->validate([
+            'title' => 'required|min:3|max:255',
+            'description' => 'required|min:5',
+            'content' => 'required|min:5',
+            'documents.*' => 'nullable|mimes:pdf|max:10240', // 10MB max
+            'document_titles.*' => 'nullable|string|max:255'
+        ], [
+            'title.required' => 'Judul materi harus diisi! 📝',
+            'title.min' => 'Judul materi minimal 3 karakter! 📏',
+            'description.required' => 'Deskripsi materi harus diisi! 📋',
+            'description.min' => 'Deskripsi materi minimal 5 karakter! 📏',
+            'content.required' => 'Konten materi harus diisi! 📚',
+            'content.min' => 'Konten materi minimal 5 karakter! 📏',
+            'documents.*.mimes' => 'Dokumen harus berformat PDF! 📄',
+            'documents.*.max' => 'Ukuran dokumen maksimal 10MB! 📦',
+            'document_titles.*.max' => 'Judul dokumen terlalu panjang! 📏'
         ]);
 
-        // Handle document uploads
-        if ($request->hasFile('documents')) {
-            $documents = $request->file('documents');
-            $titles = $request->document_titles;
+        try {
+            // Create the materi
+            $materi = Materi::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'content' => $request->content
+            ]);
 
-            foreach ($documents as $index => $document) {
-                if ($document->isValid()) {
-                    $documentTitle = isset($titles[$index]) && !empty($titles[$index]) ? $titles[$index] : null;
+            // Handle document uploads
+            if ($request->hasFile('documents')) {
+                $documents = $request->file('documents');
+                $titles = $request->document_titles;
 
-                    // Get file details
-                    $originalName = $document->getClientOriginalName();
-                    $extension = $document->getClientOriginalExtension();
-                    $mimeType = $document->getMimeType();
-                    $size = $document->getSize();
+                foreach ($documents as $index => $document) {
+                    if ($document->isValid()) {
+                        $documentTitle = isset($titles[$index]) && !empty($titles[$index]) ? $titles[$index] : null;
 
-                    // Validate that this is a PDF
-                    if (strtolower($extension) !== 'pdf' || $mimeType !== 'application/pdf') {
-                        continue; // Skip non-PDF files
+                        // Get file details
+                        $originalName = $document->getClientOriginalName();
+                        $extension = $document->getClientOriginalExtension();
+                        $mimeType = $document->getMimeType();
+                        $size = $document->getSize();
+
+                        // Validate that this is a PDF
+                        if (strtolower($extension) !== 'pdf' || $mimeType !== 'application/pdf') {
+                            continue; // Skip non-PDF files
+                        }
+
+                        // Create slug from materi title
+                        $materiSlug = Str::slug($materi->title);
+
+                        // Create a unique filename using materi title
+                        $fileName = $materiSlug . '-' . time() . '-' . $index . '.pdf';
+
+                        // Store the file
+                        $path = $document->storeAs('uploads/documents', $fileName, 'public');
+
+                        // Create document record
+                        MateriDocument::create([
+                            'materi_id' => $materi->id,
+                            'title' => $documentTitle ?? $originalName,
+                            'file_path' => $path,
+                            'file_name' => $fileName,
+                            'mime_type' => 'application/pdf',
+                            'document_type' => 'pdf',
+                            'size' => $size
+                        ]);
                     }
-
-                    // Create slug from materi title
-                    $materiSlug = Str::slug($materi->title);
-
-                    // Create a unique filename using materi title
-                    $fileName = $materiSlug . '-' . time() . '-' . $index . '.pdf';
-
-                    // Store the file
-                    $path = $document->storeAs('uploads/documents', $fileName, 'public');
-
-                    // Create document record
-                    MateriDocument::create([
-                        'materi_id' => $materi->id,
-                        'title' => $documentTitle ?? $originalName,
-                        'file_path' => $path,
-                        'file_name' => $fileName,
-                        'mime_type' => 'application/pdf',
-                        'document_type' => 'pdf',
-                        'size' => $size
-                    ]);
                 }
             }
-        }
 
-        return redirect()->route('materi.index')->with('success', 'Materi berhasil ditambahkan!');
+            return redirect()->route('admin.materi.index')->with('success', '✨ Materi baru berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Gagal menambahkan materi')->withInput();
+        }
     }
 
     public function show(Materi $materi)
@@ -119,18 +142,37 @@ class MateriController extends Controller
         // Load documents
         $documents = $materi->documents;
 
-        return view('materi.show', compact('materi', 'userProgress', 'documents'));
+        return view('admin.materi.show', compact('materi', 'userProgress', 'documents'));
     }
 
     public function edit(Materi $materi)
     {
         // Load documents for the edit view
         $documents = $materi->documents;
-        return view('materi.edit', compact('materi', 'documents'));
+        return view('admin.materi.edit', compact('materi', 'documents'));
     }
 
     public function update(Request $request, Materi $materi)
     {
+        // Validate the request
+        $request->validate([
+            'title' => 'required|min:3|max:255',
+            'description' => 'required|min:5',
+            'content' => 'required|min:5',
+            'documents.*' => 'nullable|mimes:pdf|max:10240', // 10MB max
+            'document_titles.*' => 'nullable|string|max:255'
+        ], [
+            'title.required' => 'Judul materi harus diisi! 📝',
+            'title.min' => 'Judul materi minimal 3 karakter! 📏',
+            'description.required' => 'Deskripsi materi harus diisi! 📋',
+            'description.min' => 'Deskripsi materi minimal 5 karakter! 📏',
+            'content.required' => 'Konten materi harus diisi! 📚',
+            'content.min' => 'Konten materi minimal 5 karakter! 📏',
+            'documents.*.mimes' => 'Dokumen harus berformat PDF! 📄',
+            'documents.*.max' => 'Ukuran dokumen maksimal 10MB! 📦',
+            'document_titles.*.max' => 'Judul dokumen terlalu panjang! 📏'
+        ]);
+
         // Update basic materi information
         $materi->update([
             'title' => $request->title,
@@ -182,27 +224,27 @@ class MateriController extends Controller
         }
 
         // Add flash message for success
-        return redirect()->route('materi.index')->with('success', 'Materi berhasil diperbarui!');
+        return redirect()->route('admin.materi.index')->with('success', '✨ Materi berhasil diperbarui');
     }
 
     public function destroy(Materi $materi)
     {
-        // Delete associated documents
-        foreach ($materi->documents as $document) {
-            // Delete the file from storage
-            if (Storage::exists($document->file_path)) {
-                Storage::delete($document->file_path);
+        try {
+            // Delete associated documents
+            foreach ($materi->documents as $document) {
+                if (Storage::exists($document->file_path)) {
+                    Storage::delete($document->file_path);
+                }
+                $document->delete();
             }
 
-            // Delete the record
-            $document->delete();
+            // Delete the materi
+            $materi->delete();
+
+            return redirect()->route('admin.materi.index')->with('success', '✨ Materi berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Gagal menghapus materi');
         }
-
-        // Delete the materi
-        $materi->delete();
-
-        // Add flash message for success
-        return redirect()->route('materi.index')->with('success', 'Materi berhasil dihapus!');
     }
 
     /**
@@ -285,16 +327,26 @@ class MateriController extends Controller
      */
     public function deleteDocument($id)
     {
-        $document = MateriDocument::findOrFail($id);
+        try {
+            $document = MateriDocument::findOrFail($id);
 
-        // Check if the file exists and delete it
-        if (Storage::exists($document->file_path)) {
-            Storage::delete($document->file_path);
+            // Check if the file exists and delete it
+            if (Storage::exists($document->file_path)) {
+                Storage::delete($document->file_path);
+            }
+
+            // Delete the record
+            $document->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => '✨ Dokumen berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '❌ Gagal menghapus dokumen'
+            ], 500);
         }
-
-        // Delete the record
-        $document->delete();
-
-        return response()->json(['success' => true]);
     }
 }

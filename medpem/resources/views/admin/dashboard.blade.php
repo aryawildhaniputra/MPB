@@ -478,7 +478,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <a href="{{ route('materi.index') }}" class="text-blue-400 hover:text-blue-300 text-sm font-semibold flex items-center">
+                        <a href="{{ route('admin.materi.index') }}" class="text-blue-400 hover:text-blue-300 text-sm font-semibold flex items-center">
                             <i class="fas fa-book mr-1"></i> Kelola Semua Materi <i class="fas fa-arrow-right ml-2"></i>
                         </a>
                     </div>
@@ -488,10 +488,10 @@
                 <div class="stat-card full-card">
                     <h3 class="text-lg font-bold text-white mb-3">Aksi Cepat</h3>
                     <div class="flex flex-wrap mt-2">
-                        <a href="{{ route('materi.create') }}" class="admin-action-button">
+                        <a href="{{ route('admin.materi.create') }}" class="admin-action-button">
                             <i class="fas fa-plus"></i> Tambah Materi Baru
                         </a>
-                        <a href="{{ route('materi.index') }}" class="admin-action-button">
+                        <a href="{{ route('admin.materi.index') }}" class="admin-action-button">
                             <i class="fas fa-edit"></i> Kelola Materi
                         </a>
                         <a href="{{ route('leaderboard') }}" class="admin-action-button">

@@ -600,163 +600,63 @@
     <div class="flex">
         @include('sidebar')
 
-        <div class="main-content px-6">
-            <!-- Decorative elements -->
-            <div class="decoration decoration-1"></div>
-            <div class="decoration decoration-2">📊</div>
-
-            <div class="max-w-5xl mx-auto">
-                <h1 class="page-title">{{ $materi->title }} <i class="fas fa-book ml-3 text-white"></i></h1>
-                {{-- <p class="subtitle">Detail materi pembelajaran</p> --}}
-                <div class="gradient-border"></div>
-
-                <div class="teacher-info-panel">
-                    <h3><i class="fas fa-chalkboard-teacher mr-2"></i> Catatan untuk Pengajar</h3>
-                    <p>Materi ini dirancang untuk siswa kelas 5 SD dengan pendekatan yang menyenangkan. Poin-poin penting telah disederhanakan agar mudah dipahami anak usia 10-11 tahun. Perhatikan kemampuan membaca siswa saat menggunakan materi ini.</p>
-                </div>
-
-                @auth
-                @if($userProgress >= 100)
-                <div class="completion-badge">
-                    <i class="fas fa-check-circle"></i> Materi ini telah ditinjau
-                </div>
-                @endif
-                @endauth
-
-                <div class="content-container">
-                    <span class="content-icon"><i class="fas fa-book"></i></span>
-                    <div class="mt-4">
-                        <h2 class="text-2xl font-bold text-indigo-800 mb-4 section-header">Deskripsi Materi</h2>
-                    <p class="text-gray-700 mb-6 text-lg">{{ $materi->description }}</p>
-
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-2xl font-bold text-indigo-800 section-header">Konten Materi</h2>
-                            <div class="text-gray-500 text-sm">
-                                <i class="fas fa-eye mr-1"></i> Ditampilkan kepada siswa sesuai format berikut
-                            </div>
-                        </div>
-                        <div id="materi-content" class="materi-content">
-                            {!! $materi->content !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-container">
-                    <span class="content-icon"><i class="fas fa-file-alt"></i></span>
-                    <div class="mt-4">
-                        <h2 class="text-2xl font-bold text-indigo-800 mb-4 section-header">Dokumen Pendukung</h2>
-                        <p class="text-gray-700 mb-4">Dokumen dan file yang diupload untuk mendukung materi ini.</p>
-
-                        <div id="documents-container" class="documents-container">
-                            <!-- Documents will be moved here by JavaScript -->
-                            @if(isset($documents) && $documents->count() > 0)
-                                @foreach($documents as $document)
-                                <div class="document-card mb-4 bg-white rounded-lg border-2 border-blue-200 overflow-hidden shadow-md">
-                                    <div class="p-4 flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            @if($document->document_type == 'pdf')
-                                            <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
-                                            @elseif($document->document_type == 'word')
-                                            <i class="fas fa-file-word text-blue-500 text-2xl mr-3"></i>
-                                            @elseif($document->document_type == 'powerpoint')
-                                            <i class="fas fa-file-powerpoint text-orange-500 text-2xl mr-3"></i>
-                                            @else
-                                            <i class="fas fa-file text-gray-500 text-2xl mr-3"></i>
-                                            @endif
-                                            <div>
-                                                <div class="font-semibold text-gray-800 text-lg">{{ $document->title }}</div>
-                                                <div class="text-sm text-gray-600">{{ Str::limit($document->file_name, 40) }}</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex space-x-2">
-                                            <a href="{{ route('document.serve', $document->id) }}" target="_blank" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center">
-                                                <i class="fas fa-eye mr-2"></i> Lihat
-                                            </a>
-                                            <a href="{{ route('document.serve', $document->id) }}?download=1" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded flex items-center">
-                                                <i class="fas fa-download mr-2"></i> Unduh
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    @if($document->document_type == 'pdf')
-                                    <div class="document-preview mt-2 border-t border-gray-200">
-                                        <object data="{{ route('document.serve', $document->id) }}" type="application/pdf" width="100%" height="500px">
-                                            <div class="p-4 text-center">
-                                                <p class="text-gray-700 mb-3">Tidak dapat menampilkan PDF secara langsung.</p>
-                                                <a href="{{ route('document.serve', $document->id) }}" target="_blank" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded inline-flex items-center">
-                                                    <i class="fas fa-external-link-alt mr-2"></i> Buka PDF di Tab Baru
-                                                </a>
-                                            </div>
-                                        </object>
-                                    </div>
-                                    @elseif($document->document_type == 'word')
-                                    <div class="document-preview mt-2 border-t border-gray-200">
-                                        <div class="p-4 text-center">
-                                            <p class="text-gray-700 mb-3">Gunakan Google Docs Viewer untuk melihat dokumen:</p>
-                                            <div class="mt-4">
-                                                <iframe src="https://docs.google.com/viewer?url={{ urlencode(route('document.serve', $document->id)) }}&embedded=true" width="100%" height="500" frameborder="0"></iframe>
-                                            </div>
-                                            <div class="mt-3">
-                                                <a href="{{ route('document.serve', $document->id) }}?download=1" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded inline-flex items-center">
-                                                    <i class="fas fa-download mr-2"></i> Unduh Dokumen
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @elseif($document->document_type == 'powerpoint')
-                                    <div class="document-preview mt-2 border-t border-gray-200">
-                                        <div class="p-4 text-center">
-                                            <p class="text-gray-700 mb-3">Gunakan Google Docs Viewer untuk melihat presentasi:</p>
-                                            <div class="mt-4">
-                                                <iframe src="https://docs.google.com/viewer?url={{ urlencode(route('document.serve', $document->id)) }}&embedded=true" width="100%" height="500" frameborder="0"></iframe>
-                                            </div>
-                                            <div class="mt-3">
-                                                <a href="{{ route('document.serve', $document->id) }}?download=1" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded inline-flex items-center">
-                                                    <i class="fas fa-download mr-2"></i> Unduh Presentasi
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @else
-                                    <div class="document-preview mt-2 border-t border-gray-200">
-                                        <div class="p-4 text-center">
-                                            <p class="text-gray-700 mb-3">Mencoba preview dokumen dengan Google Docs Viewer:</p>
-                                            <div class="mt-4">
-                                                <iframe src="https://docs.google.com/viewer?url={{ urlencode(route('document.serve', $document->id)) }}&embedded=true" width="100%" height="500" frameborder="0"></iframe>
-                                            </div>
-                                            <div class="mt-3">
-                                                <a href="{{ route('document.serve', $document->id) }}?download=1" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded inline-flex items-center">
-                                                    <i class="fas fa-download mr-2"></i> Unduh Dokumen
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endif
-                                </div>
-                                @endforeach
-                            @else
-                                <div class="text-gray-500 italic">Tidak ada dokumen pendukung untuk materi ini.</div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center">
-                    <a href="{{ route('materi.index') }}" class="button back-button">
-                        <i class="fas fa-arrow-left mr-2"></i> Kembali ke Daftar
+        <div class="main-content p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="content-title">{{ $materi->title }}</h1>
+                <div class="flex space-x-4">
+                    <a href="{{ route('admin.materi.edit', $materi->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                        <i class="fas fa-edit mr-2"></i>Edit
                     </a>
-                    @auth
-                    <a href="{{ route('materi.edit', $materi->id) }}" class="button completed-button">
-                        <i class="fas fa-edit mr-2"></i> Edit Materi
+                    <a href="{{ route('admin.materi.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
                     </a>
-                    @endauth
                 </div>
             </div>
 
-            <!-- Add success notification element -->
-            <div id="successNotification" class="success-notification">
-                <span class="icon"><i class="fas fa-check-circle"></i></span>
-                <span class="message">Materi ini telah ditandai sebagai selesai.</span>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Deskripsi</h2>
+                    <p class="text-gray-600">{{ $materi->description }}</p>
+                </div>
+
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Konten</h2>
+                    <div class="prose max-w-none">
+                        {!! $materi->content !!}
+                    </div>
+                </div>
+
+                @if($documents->count() > 0)
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Dokumen Pendukung</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach($documents as $document)
+                        <div class="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">{{ $document->title }}</h3>
+                                    <p class="text-sm text-gray-600">{{ $document->file_name }}</p>
+                                </div>
+                            </div>
+                            <a href="{{ route('document.serve', $document->id) }}" target="_blank" class="text-blue-500 hover:text-blue-700">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                <div class="mt-8 flex justify-end">
+                    <form action="{{ route('admin.materi.destroy', $materi->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus materi ini?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            <i class="fas fa-trash mr-2"></i>Hapus Materi
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -172,22 +172,40 @@
             transform: translateY(-2px);
         }
 
-        .form-input.error {
-            border-color: #FF5252;
-            animation: shake 0.5s linear;
-        }
-
         .error-message {
             color: #FF5252;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
             display: none;
             font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            background-color: rgba(255, 82, 82, 0.1);
+            border: 1px solid rgba(255, 82, 82, 0.2);
+            animation: fadeIn 0.3s ease-in;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-message::before {
+            content: '😅';
+            font-size: 1.1rem;
         }
 
         .error-message.active {
-            display: block;
-            animation: fadeIn 0.3s ease-in;
+            display: flex;
+        }
+
+        .form-input.error {
+            border-color: #FF5252;
+            animation: shake 0.5s linear;
+            background-color: rgba(255, 82, 82, 0.05);
+        }
+
+        .form-input.error:focus {
+            border-color: #FF5252;
+            box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.2);
         }
 
         .login-button {
@@ -580,8 +598,10 @@
                 <label for="username" class="form-label">
                     <i class="fas fa-user text-yellow-500 mr-2"></i>Nama Pengguna
                 </label>
-                <input type="text" name="username" id="username" class="form-input" placeholder="Ketik nama pengguna kamu di sini" required>
-                <div class="error-message" id="username-error">Oops! Kamu belum menulis nama penggunamu</div>
+                <input type="text" name="username" id="username" class="form-input @error('username') error @enderror" placeholder="Ketik nama pengguna kamu di sini" value="{{ old('username') }}" required>
+                @error('username')
+                    <div class="error-message active">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-control">
@@ -589,12 +609,17 @@
                     <i class="fas fa-key text-yellow-500 mr-2"></i>Kata Sandi
                 </label>
                 <div class="relative">
-                    <input type="password" name="password" id="password" class="form-input" placeholder="Ketik kata sandi rahasiamu di sini" required>
+                    <input type="password" name="password" id="password" class="form-input @error('password') error @enderror" placeholder="Ketik kata sandi rahasiamu di sini" required>
                     <span class="password-toggle" id="password-toggle">
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
-                <div class="error-message" id="password-error">Oops! Kamu belum menulis kata sandi rahasiamu</div>
+                @error('password')
+                    <div class="error-message active">{{ $message }}</div>
+                @enderror
+                @if(session('error'))
+                    <div class="error-message active">{{ session('error') }}</div>
+                @endif
             </div>
 
             <button type="submit" class="login-button" id="login-button">
@@ -618,12 +643,8 @@
             const form = document.getElementById('login-form');
             const username = document.getElementById('username');
             const password = document.getElementById('password');
-            const usernameError = document.getElementById('username-error');
-            const passwordError = document.getElementById('password-error');
             const passwordToggle = document.getElementById('password-toggle');
             const loginButton = document.getElementById('login-button');
-            const alertDanger = document.getElementById('alert-danger');
-            const alertMessage = document.getElementById('alert-message');
             const flyingItemsContainer = document.getElementById('flying-items');
 
             // Create flying items
@@ -666,68 +687,6 @@
                 password.setAttribute('type', type);
                 passwordToggle.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
             });
-
-            // Form validation before submission
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-
-                // Reset errors
-                resetErrors();
-
-                // Validate username
-                if (username.value.trim() === '') {
-                    showError(username, usernameError, 'Oops! Kamu belum menulis nama penggunamu');
-                    isValid = false;
-                }
-
-                // Simple empty password validation
-                if (password.value === '') {
-                    showError(password, passwordError, 'Oops! Kamu belum menulis kata sandi rahasiamu');
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    e.preventDefault();
-                }
-            });
-
-            // Show error for a specific field
-            function showError(input, errorElement, message) {
-                input.classList.add('error');
-                errorElement.textContent = message;
-                errorElement.classList.add('active');
-            }
-
-            // Reset all errors
-            function resetErrors() {
-                username.classList.remove('error');
-                password.classList.remove('error');
-                usernameError.classList.remove('active');
-                passwordError.classList.remove('active');
-            }
-
-            // Show error message if login fails (simulating server response)
-            form.addEventListener('submit', function(e) {
-                // Just continue form submission to server
-                // We remove the client-side credential validation
-                // Let Laravel handle the authentication
-            });
-
-            // Check for URL parameters to show error messages (simulating server response)
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('error')) {
-                const error = urlParams.get('error');
-                if (error === 'credentials') {
-                    alertMessage.textContent = 'Hmm, sepertinya nama atau kata sandi tidak cocok. Coba lagi ya!';
-                    alertDanger.classList.add('active');
-                } else if (error === 'inactive') {
-                    alertMessage.textContent = 'Akun kamu belum aktif. Tanya guru atau ibu/bapak ya!';
-                    alertDanger.classList.add('active');
-                } else if (error === 'locked') {
-                    alertMessage.textContent = 'Akun kamu terkunci karena terlalu banyak percobaan. Coba lagi nanti ya!';
-                    alertDanger.classList.add('active');
-                }
-            }
         });
     </script>
 </body>
