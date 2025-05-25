@@ -46,17 +46,60 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // Add 5 random users with "user" role
-        $randomNames = [
-            'Budi Santoso',
-            'Siti Rahayu',
-            'Ahmad Wijaya',
-            'Dewi Lestari',
-            'Rudi Hermawan'
+        // Add admin user Arnela
+        Users::updateOrCreate(
+            ['username' => 'ahl'],
+            [
+            'name' => 'Arnela Happy Laksanawati',
+            'password' => Hash::make('12345'),
+            'role' => 'admin',
+                'total_points' => 0,
+            ]
+        );
+
+        // Add users from the list
+        $userNames = [
+            'ADITYA PANDA PRATAMA',
+            'AHMAD DEFAN ANDRIAN',
+            'AIRLANGGA DIO SAPUTRA',
+            'ARGA AL FALAH',
+            'AZKA ABROR',
+            'DANI SETYAWAN',
+            'ERLANGGA ADI SYAHPUTRA',
+            'HERA PUTRA DANIF PRATAMA',
+            'JIHAN MARGARETHA PUTRI',
+            'MUHAMMAD AZRIL ADITYA',
+            'MUHAMMAD RISAL PRASTIYO',
+            'NIKI ILHAM MAULANA',
+            'RASMA ALIFIAN ABDILLAH',
+            'SABRINA INDAH SARI',
+            'SAMUDRA RAHARDIAN ADITYA',
+            'SHADAM RAMADHANI',
+            'SOFIA DWI ASTUTI SAKAN',
+            'VALENTINO DIRGANTARA SAPUTRO',
+            'ZAFAR IHSAN FAKHRI',
+            'ZAZKIA NOVITA PUTRI'
         ];
 
-        foreach ($randomNames as $index => $name) {
+        foreach ($userNames as $name) {
             // Create username from name (lowercase, no spaces)
+            $username = strtolower(str_replace(' ', '', $name));
+
+            Users::updateOrCreate(
+                ['username' => $username],
+                [
+                'name' => $name,
+                'password' => Hash::make('12345'),
+                'role' => 'user',
+                    'total_points' => 0,
+                ]
+            );
+        }
+
+        // Add group users
+        $groupNames = ['Group A', 'Group B', 'Group C', 'Group D'];
+
+        foreach ($groupNames as $name) {
             $username = strtolower(str_replace(' ', '', $name));
 
             Users::updateOrCreate(
