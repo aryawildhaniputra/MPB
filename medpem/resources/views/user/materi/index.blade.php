@@ -27,14 +27,12 @@
         }
 
         /* Fix untuk header dropdown pada halaman materi */
-        .header-dropdown-container, .duolingo-header, .user-avatar, #userAvatarControl, #avatarClickOverlay {
-            z-index: 1000 !important;
-            position: relative !important;
+        .header-dropdown-container {
+            z-index: 1000;
         }
 
-        /* Pastikan user dropdown muncul di atas konten */
         #userDropdownDiv {
-            z-index: 1001 !important;
+            z-index: 1001;
         }
 
         /* Fix untuk main content yang mungkin menutupi header */
@@ -45,7 +43,8 @@
             min-height: calc(100vh - 70px);
             width: calc(100% - 250px);
             transition: all 0.3s ease;
-            z-index: 1; /* Pastikan main content ada di bawah header */
+            z-index: 1;
+            position: relative;
         }
 
         .card {
@@ -308,7 +307,7 @@
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 120px;
+                padding-top: 90px;
             }
 
             .content-title {

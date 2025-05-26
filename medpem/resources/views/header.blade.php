@@ -31,21 +31,18 @@
                 </div>
             </div>
 
-            <!-- Dropdown paling sederhana dengan inline style-->
+            <!-- Dropdown dengan posisi yang diperbaiki -->
             <div style="position: relative; height: 70px; display: flex; align-items: center;" class="header-dropdown-container">
-                <div id="userAvatarControl" class="user-avatar" style="cursor: pointer; position: relative; display: flex; align-items: center; height: 36px;" onclick="document.getElementById('userDropdownDiv').style.display = document.getElementById('userDropdownDiv').style.display === 'block' ? 'none' : 'block'">
+                <div id="userAvatarControl" class="user-avatar" style="cursor: pointer; position: relative; display: flex; align-items: center; height: 36px;" onclick="toggleDropdown(event)">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&color=fff&size=128" alt="{{ Auth::user()->name }}" style="border-radius: 50%; width: 36px; height: 36px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <span style="font-weight: 600; color: #333333; font-size: 16px; line-height: 36px;">{{ Auth::user()->name }}</span>
                         <i class="fas fa-chevron-down text-gray-400" style="font-size: 14px;"></i>
                     </div>
-
-                    <!-- Tambahkan overlay transparan untuk menangkap klik -->
-                    <div id="avatarClickOverlay" style="position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px; cursor: pointer;" onclick="var e=event; e.stopPropagation(); document.getElementById('userDropdownDiv').style.display = document.getElementById('userDropdownDiv').style.display === 'block' ? 'none' : 'block';"></div>
                 </div>
 
-                <div id="userDropdownDiv" style="display: none; position: absolute; top: 60px; right: 0; width: 280px; background: white; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,.15); z-index: 1000;">
-                    <div style="padding: 16px; display: flex; align-items: center; border-bottom: 1px solid #eee;">
+                <div id="userDropdownDiv" style="display: none; position: absolute; top: 55px; right: 0; width: 280px; background: white; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,.15); z-index: 1000;">
+                    <div style="padding: 16px; display: flex; align-items: center;">
                         <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random&color=fff&size=128" alt="{{ Auth::user()->name }}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 12px;">
                         <div>
                             <h3 style="font-weight: 700; color: #333; font-size: 16px; margin: 0;">{{ Auth::user()->name }}</h3>
@@ -62,7 +59,6 @@
                             <i class="fas fa-user" style="width: 20px; margin-right: 12px;"></i>
                         <span>Profil Saya</span>
                     </a>
-                        <div style="height: 1px; background-color: #eee; margin: 8px 0;"></div>
                         <a href="#" onclick="event.preventDefault(); showLogoutModal();" style="display: flex; align-items: center; padding: 12px; color: #ef4444; text-decoration: none; border-radius: 8px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'">
                             <i class="fas fa-sign-out-alt" style="width: 20px; margin-right: 12px;"></i>
                         <span>Keluar</span>
@@ -71,18 +67,11 @@
                 </div>
             </div>
 
-            <!-- Script untuk menutup dropdown saat klik di luar -->
             <script>
-                // Fungsi toggle dropdown
-                function toggleDropdownDebug(event) {
-                    if (event) {
-                        event.stopPropagation();
-                    }
-
+                function toggleDropdown(event) {
+                    event.stopPropagation();
                     var dropdown = document.getElementById('userDropdownDiv');
-                    if (dropdown) {
-                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-                    }
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
                 }
 
                 document.addEventListener('click', function(event) {
@@ -96,9 +85,7 @@
                     }
                 });
 
-                // Hotkey D untuk menampilkan dropdown
                 document.addEventListener('keydown', function(event) {
-                    // Jangan aktifkan hotkey jika sedang ada input yang difokuskan
                     if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
                         return;
                     }
@@ -110,7 +97,6 @@
                         }
                     }
 
-                    // Tutup dropdown dengan Escape
                     if (event.key === 'Escape') {
                         var dropdown = document.getElementById('userDropdownDiv');
                         if (dropdown && dropdown.style.display === 'block') {
@@ -162,6 +148,7 @@
         top: 0;
         right: 0;
         transition: all 0.3s ease;
+        border-bottom: none;
     }
 
     /* Header adjustments for collapsed sidebar */

@@ -1,18 +1,23 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\MateriController;
-use App\Http\Controllers\User\MateriController as UserMateriController;
-use App\Http\Controllers\LessonController;
-use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Artisan;
-use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\PermainanController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AchievementController;
+use App\Http\Controllers\User\MateriController as UserMateriController;
+use App\Http\Controllers\LeaderboardController;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\CheckDeviceToken;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('landing');
@@ -23,27 +28,42 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+// Protected routes that require authentication and device token check
+Route::middleware(['auth', CheckDeviceToken::class])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect('/');
-})->name('logout');
-
-// Learning routes
-Route::middleware('auth')->group(function () {
-    // Profile page
+    // Profile routes
     Route::get('/profile', function () {
         return view('profile');
     })->name('profile');
 
+    // Materi routes
+    Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
+    Route::get('/materi/{id}', [MateriController::class, 'show'])->name('materi.show');
+    Route::post('/materi/{id}/progress', [MateriController::class, 'updateProgress'])->name('materi.progress');
+
+    // Lesson routes
+    Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
+    Route::get('/lessons/{id}', [LessonController::class, 'show'])->name('lessons.show');
+    Route::post('/lessons/{id}/start', [LessonController::class, 'start'])->name('lessons.start');
+    Route::post('/lessons/{id}/complete', [LessonController::class, 'complete'])->name('lessons.complete');
+
+    // Document routes
+    Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
+    Route::get('/documents/{id}', [DocumentController::class, 'show'])->name('documents.show');
+
+    // Game routes
+    Route::get('/permainan', [PermainanController::class, 'index'])->name('permainan.index');
+    Route::get('/permainan/{id}', [PermainanController::class, 'show'])->name('permainan.show');
+
     // Achievement routes
-    Route::get('/achievements', [App\Http\Controllers\AchievementController::class, 'index'])->name('achievements.index');
-    Route::get('/achievements/check', [App\Http\Controllers\AchievementController::class, 'checkAchievements'])->name('achievements.check');
-    Route::get('/achievements/{id}', [App\Http\Controllers\AchievementController::class, 'show'])->name('achievements.show');
+    Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
+    Route::get('/achievements/check', [AchievementController::class, 'checkAchievements'])->name('achievements.check');
+    Route::get('/achievements/{id}', [AchievementController::class, 'show'])->name('achievements.show');
 
     // Test route to directly check achievements and show the page
     Route::get('/test-achievements', function () {
@@ -62,17 +82,8 @@ Route::middleware('auth')->group(function () {
     // Submit answer
     Route::post('/belajar/question/answer', [LessonController::class, 'answerQuestion'])->name('belajar.answer');
 
-    // Lesson completion page
-    Route::get('/belajar/{id}/complete', [LessonController::class, 'complete'])->name('belajar.complete');
-
     // Review completed lesson (view only)
     Route::get('/belajar/{id}/review/{part?}', [LessonController::class, 'reviewLesson'])->name('belajar.review');
-
-    // Start a lesson
-    Route::post('/belajar/{id}/start', [LessonController::class, 'start'])->name('belajar.start');
-
-    // Lesson detail
-    Route::get('/belajar/{id}', [LessonController::class, 'show'])->name('belajar.show');
 
     // Main learning index
     Route::get('/belajar', [LessonController::class, 'index'])->name('belajar');
@@ -143,17 +154,17 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::delete('/admin/materi/document/{id}/delete', [MateriController::class, 'deleteDocument'])->name('admin.materi.document.delete');
 
     // User management routes - available to both admin and superadmin
-    Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/admin/users/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
 
     // Export users data route - must be before {user} routes to avoid conflicts
-    Route::get('/admin/users/export/csv', [App\Http\Controllers\Admin\UserController::class, 'exportUsers'])->name('admin.users.export');
+    Route::get('/admin/users/export/csv', [UserController::class, 'exportUsers'])->name('admin.users.export');
 
-    Route::get('/admin/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'show'])->name('admin.users.show');
-    Route::get('/admin/users/{user}/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/admin/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/admin/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
+    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 // Leaderboard route

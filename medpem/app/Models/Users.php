@@ -19,8 +19,11 @@ class Users extends Authenticatable
     protected $fillable = [
         'name',
         'username',
+        'email',
         'password',
         'role',
+        'device_token',
+        'last_activity',
         'total_points',
     ];
 
@@ -32,6 +35,10 @@ class Users extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'last_activity' => 'datetime'
     ];
 
     /**

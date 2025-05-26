@@ -22,8 +22,19 @@
             background-repeat: no-repeat;
             background-blend-mode: soft-light;
             background-opacity: 0.3;
+            overflow-x: hidden;
         }
 
+        /* Fix untuk header dropdown */
+        .header-dropdown-container {
+            z-index: 1000;
+        }
+
+        #userDropdownDiv {
+            z-index: 1001;
+        }
+
+        /* Fix untuk main content */
         .main-content {
             margin-left: 250px;
             padding-top: 90px;
@@ -31,13 +42,22 @@
             min-height: calc(100vh - 70px);
             width: calc(100% - 250px);
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Pastikan header tidak memiliki garis */
+        .duolingo-header {
+            border-bottom: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 120px;
+                padding-top: 90px;
             }
         }
 
