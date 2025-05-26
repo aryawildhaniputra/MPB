@@ -479,10 +479,73 @@
             z-index: 10000 !important;
             position: relative !important;
         }
+
+        /* Fix untuk header dropdown */
+        .header-dropdown-container {
+            z-index: 40;
+        }
+
+        #userDropdownDiv {
+            z-index: 41;
+        }
+
+        /* Fix untuk main content */
+        .main-content {
+            z-index: 1;
+        }
+
+        /* Delete Modal Styles - Updated */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .modal-backdrop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            max-width: 90%;
+            width: 500px;
+        }
+
+        .modal-content.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Ensure header stays below modal */
+        .duolingo-header {
+            z-index: 40 !important;
+        }
+
+        /* Ensure sidebar stays below modal */
+        .sidebar {
+            z-index: 30 !important;
+        }
     </style>
 </head>
 <body>
-
     @include('header')
 
     <div class="flex">
@@ -702,15 +765,16 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-auto shadow-xl">
+    <!-- Delete Confirmation Modal - Updated Structure -->
+    <div id="deleteModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-content">
             <div class="text-center">
                 <div class="flex justify-end mb-2">
-                    <button onclick="closeDeleteModal()" class="text-gray-400 hover:text-gray-600">
+                    <button onclick="closeDeleteModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
+                <div class="text-6xl mb-4">🗑️</div>
                 <h3 class="text-2xl font-bold text-gray-800 mb-4">Konfirmasi Hapus</h3>
                 <p class="text-gray-600 mb-8">Apakah Anda yakin ingin menghapus materi ini?</p>
 
@@ -727,36 +791,39 @@
     </div>
 
     <script>
-        // Confirmation for delete action
+        // Updated modal functions
         function confirmDelete(id) {
             const modal = document.getElementById('deleteModal');
+            const modalContent = modal.querySelector('.modal-content');
             const confirmButton = document.getElementById('confirmDelete');
             const cancelButton = document.getElementById('cancelDelete');
 
-            // Show the modal
-            modal.classList.remove('hidden');
+            // Show the modal and backdrop
+            modal.classList.add('show');
+            modalContent.classList.add('show');
 
             // Set up event listeners
             confirmButton.onclick = function() {
                 document.getElementById('delete-form-' + id).submit();
-                modal.classList.add('hidden');
+                closeDeleteModal();
             };
 
-            cancelButton.onclick = function() {
-                modal.classList.add('hidden');
-            };
+            cancelButton.onclick = closeDeleteModal;
 
             // Close modal if clicked outside
             modal.onclick = function(event) {
                 if (event.target === modal) {
-                    modal.classList.add('hidden');
+                    closeDeleteModal();
                 }
             };
         }
 
-        // Close delete modal
         function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.add('hidden');
+            const modal = document.getElementById('deleteModal');
+            const modalContent = modal.querySelector('.modal-content');
+
+            modalContent.classList.remove('show');
+            modal.classList.remove('show');
         }
 
         // Add fade-in animation when page loads

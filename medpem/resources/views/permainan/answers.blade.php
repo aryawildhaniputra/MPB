@@ -334,7 +334,7 @@
 
                 <!-- Tombol Kembali ke Daftar Permainan -->
                 <div class="flex justify-center mt-8">
-                    <a href="{{ route('permainan') }}" class="back-button">
+                    <a href="{{ route('permainan.index') }}" class="back-button">
                         <i class="fas fa-arrow-left mr-2"></i> Kembali ke Daftar Permainan
                     </a>
                 </div>

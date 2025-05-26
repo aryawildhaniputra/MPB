@@ -485,11 +485,11 @@
 
                     @if(!in_array($currentUser->role, ['admin', 'superadmin']))
                             <div class="action-buttons">
-                                <a href="{{ route('belajar') }}" class="action-button learn-button">
+                                <a href="{{ route('belajar.index') }}" class="action-button learn-button">
                                     <i class="fas fa-book-open"></i>
                                     Mulai Belajar
                                 </a>
-                                <a href="{{ route('permainan') }}" class="action-button play-button">
+                                <a href="{{ route('permainan.index') }}" class="action-button play-button">
                                     <i class="fas fa-gamepad"></i>
                                     Main Games
                                 </a>

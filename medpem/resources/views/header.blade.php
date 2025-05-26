@@ -1,26 +1,6 @@
 <div class="duolingo-header" id="Header">
     <div class="header-content">
-        <div class="page-title">
-            <button id="mobileMenuButton" class="mobile-menu-button">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h1></h1>
-        </div>
-
         <div class="user-profile">
-            {{-- <div class="streak-counter">
-                <div class="streak-icon">
-                    <i class="fas fa-fire"></i>
-                </div>
-                <span>3 hari</span>
-            </div>
-
-            <div class="gems-counter">
-                <div class="gems-icon">
-                    <i class="fas fa-gem"></i>
-                </div>
-                <span>120</span>
-            --}}
 
                                                 <div class="user-menu-items" style="display: flex; align-items: center; gap: 16px; margin-right: 10px; height: 70px;">
                 <div class="points-counter" style="display: flex; align-items: center; gap: 6px; height: 36px;">
@@ -138,7 +118,7 @@
 <style>
     .duolingo-header {
         height: 70px;
-        padding: 0 2rem;
+        padding: 0 1rem;
         background-color: #ffffff;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         position: fixed;
@@ -149,6 +129,14 @@
         right: 0;
         transition: all 0.3s ease;
         border-bottom: none;
+    }
+
+    .header-content {
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 1rem;
     }
 
     /* Header adjustments for collapsed sidebar */
@@ -169,32 +157,12 @@
         padding: 0.5rem;
     }
 
-    /* Main content wrapper adjustment */
-    .main-content-wrapper {
-        padding-top: 15px; /* Keep some padding for main content */
-    }
-
-    .header-content {
-        height: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .page-title h1 {
-        font-size: 1.75rem;
-        font-weight: 800;
-        margin: 0;
-        letter-spacing: -0.5px;
-        display: flex;
-        align-items: center;
-    }
-
     .user-profile {
         display: flex;
         align-items: center;
         gap: 1rem;
         height: 70px;
+        margin-left: auto;
     }
 
     .streak-counter, .gems-counter, .points-counter {
@@ -359,18 +327,26 @@
         .duolingo-header {
             width: 100% !important;
             position: fixed;
-            padding: 0 1rem;
-            height: 60px; /* Smaller on mobile */
+            padding: 0;
+            height: 60px;
             margin-left: 0 !important;
             z-index: 30;
         }
 
+        .header-content {
+            padding-right: 0.5rem;
+        }
+
+        .user-profile {
+            padding-right: 0.5rem;
+        }
+
         .mobile-menu-button {
-            display: none; /* Hide the mobile menu button as we have bottom navigation now */
+            display: none;
         }
 
         .streak-counter, .gems-counter {
-            display: none; /* Hide on smaller screens */
+            display: none;
         }
 
         .points-counter {
@@ -383,7 +359,7 @@
 
         /* Adjust content to account for bottom navigation bar */
         .main-content-wrapper {
-            padding-bottom: 65px; /* Space for bottom navigation */
+            padding-bottom: 65px;
         }
 
         /* Ensure dropdown appears in correct position on mobile */

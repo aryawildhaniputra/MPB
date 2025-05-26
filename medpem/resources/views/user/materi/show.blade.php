@@ -52,12 +52,58 @@
             box-shadow: none !important;
         }
 
-        /* Responsive adjustments */
+        /* Mobile adjustments */
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 90px;
+                padding: 70px 15px 2rem 15px;
+            }
+
+            .page-title {
+                font-size: 2rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+
+            .subtitle {
+                font-size: 1rem !important;
+            }
+
+            .content-container {
+                padding: 1.5rem !important;
+            }
+
+            .materi-content {
+                font-size: 1rem !important;
+                padding: 1rem !important;
+            }
+
+            .button {
+                padding: 10px 20px !important;
+                font-size: 1rem !important;
+            }
+
+            .document-header {
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+
+            .document-actions {
+                width: 100% !important;
+                justify-content: space-between !important;
+            }
+
+            .document-button {
+                flex: 1 !important;
+                justify-content: center !important;
+            }
+
+            .document-content iframe {
+                height: 300px !important;
+            }
+
+            .decoration {
+                display: none !important;
             }
         }
 
@@ -470,52 +516,45 @@
             50% { transform: translateY(-10px); }
         }
 
-        /* Success notification */
+        /* Success notification - Moved below header */
         .success-notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            transform: translateX(100px);
+            top: 70px; /* Adjusted to be below header */
+            left: 50%;
+            transform: translateX(-50%) translateY(-100%);
             background: linear-gradient(135deg, #10B981, #059669);
             color: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
-            z-index: 1000;
+            z-index: 999;
             opacity: 0;
             transition: all 0.5s ease;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            max-width: 90%;
-            animation: pulse 2s infinite;
+            width: 90%;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .success-notification.show {
+            transform: translateX(-50%) translateY(10px);
             opacity: 1;
-            transform: translateX(0);
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
         @media (max-width: 640px) {
             .success-notification {
-                padding: 15px 20px;
-                top: 10px;
-                right: 10px;
-                max-width: calc(100% - 20px);
+                width: 95%;
+                padding: 12px 15px;
             }
 
             .success-notification .icon {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
             }
 
             .success-notification .message {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
         }
 
@@ -778,6 +817,12 @@
 <body>
     @include('header')
 
+    <!-- Success notification moved here, right after header -->
+    <div id="successNotification" class="success-notification">
+        <span class="icon">🎉</span>
+        <span class="message">HEBAT! Kamu telah menyelesaikan materi ini!<br><span class="text-sm font-normal">Lanjutkan ke materi berikutnya untuk terus belajar.</span></span>
+    </div>
+
     <div class="flex">
         @include('sidebar')
 
@@ -802,7 +847,7 @@
                 @endauth
 
                 <div class="content-container">
-                    <span class="content-icon">📝</span>
+                    {{-- <span class="content-icon">📝</span> --}}
                     <div class="mt-6">
                         <h2 class="text-3xl font-bold text-indigo-800 mb-4 section-header">Penjelasan Singkat</h2>
                         <p class="text-gray-700 mb-8 text-xl">{{ $materi->description }}</p>
@@ -819,7 +864,7 @@
                 </div>
 
                 <div class="content-container">
-                    <span class="content-icon">📄</span>
+                    {{-- <span class="content-icon">📄</span> --}}
                     <div class="mt-6">
                         <h2 class="text-3xl font-bold text-indigo-800 mb-4 section-header">Dokumen Pendukung</h2>
                         <p class="text-gray-700 mb-4 text-xl">Dokumen dan file pendukung untuk membantu pembelajaran kamu.</p>
@@ -884,19 +929,13 @@
                     @endauth
                 </div>
             </div>
-
-            <!-- Success notification -->
-            <div id="successNotification" class="success-notification">
-                <span class="icon">🎉</span>
-                <span class="message">HEBAT! Kamu telah menyelesaikan materi ini!<br><span class="text-sm font-normal">Lanjutkan ke materi berikutnya untuk terus belajar.</span></span>
-            </div>
-
-            <!-- Loading overlay -->
-            <div id="loaderOverlay" class="loader-overlay">
-                <div class="loader"></div>
-                <div class="loader-text">Sedang menyimpan...</div>
-            </div>
         </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="loader"></div>
+        <div class="loader-text">Sedang menyimpan...</div>
     </div>
 
     @auth

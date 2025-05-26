@@ -245,7 +245,7 @@
                                 </button>
                             </form>
 
-                            <a href="{{ route('belajar') }}" class="back-button">
+                            <a href="{{ route('belajar.index') }}" class="back-button">
                                 <i class="fas fa-arrow-left mr-2"></i> KEMBALI
                             </a>
                         </div>

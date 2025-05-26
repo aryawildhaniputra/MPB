@@ -402,7 +402,7 @@
 <body>
     <!-- Top Navigation Bar -->
     <div class="top-bar">
-        <a href="{{ route('belajar') }}" class="exit-button">
+        <a href="{{ route('belajar.index') }}" class="exit-button">
             <i class="fas fa-times"></i>
         </a>
         <div class="progress-bar">

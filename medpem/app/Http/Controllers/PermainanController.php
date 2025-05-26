@@ -783,7 +783,7 @@ class PermainanController extends Controller
         // Find the game
         $game = Game::where('slug', $slug)->first();
         if (!$game) {
-            return redirect()->route('permainan')->with('error', 'Permainan tidak ditemukan');
+            return redirect()->route('permainan.index')->with('error', 'Permainan tidak ditemukan');
         }
 
         // Check if user has completed this game
@@ -792,7 +792,7 @@ class PermainanController extends Controller
             ->first();
 
         if (!$userGame || !$userGame->completed) {
-            return redirect()->route('permainan')->with('error', 'Kamu belum menyelesaikan permainan ini');
+            return redirect()->route('permainan.index')->with('error', 'Kamu belum menyelesaikan permainan ini');
         }
 
         // Get answers data based on game type

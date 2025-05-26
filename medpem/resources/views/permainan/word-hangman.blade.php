@@ -1568,7 +1568,7 @@
                             <button id="play-again-btn" class="game-over-btn game-over-btn-secondary">
                                 <i class="fas fa-redo"></i> Main Lagi
                             </button>
-                            <a href="{{ route('permainan') }}" class="game-over-btn game-over-btn-primary">
+                            <a href="{{ route('permainan.index') }}" class="game-over-btn game-over-btn-primary">
                                 <i class="fas fa-home"></i> Kembali ke Menu
                             </a>
                         </div>

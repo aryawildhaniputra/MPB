@@ -110,7 +110,7 @@ class LessonController extends Controller
 
         // Check if there's an active lesson
         if (!session('current_lesson') || !session('current_questions')) {
-            return redirect()->route('belajar')->with('error', 'Tidak ada pelajaran aktif');
+            return redirect()->route('belajar.index')->with('error', 'Tidak ada pelajaran aktif');
         }
 
         $lessonId = session('current_lesson');
@@ -268,7 +268,7 @@ class LessonController extends Controller
                 // Flash the message for display on both pages
                 session()->flash('learning_completed', $partCompletionMsg);
 
-                return redirect()->route('belajar')
+                return redirect()->route('belajar.index')
                     ->with('success', $partCompletionMsg);
             }
         }
@@ -325,7 +325,7 @@ class LessonController extends Controller
                     'mistakes_count'
                 ]);
 
-                return redirect()->route('belajar')
+                return redirect()->route('belajar.index')
                                 ->with('error', 'Kamu gagal menyelesaikan pelajaran! Silakan coba lagi nanti.');
             }
 
@@ -382,7 +382,7 @@ class LessonController extends Controller
 
         // Check if the lesson is actually completed by the user
         if (!$lesson->isCompletedByUser($user->id)) {
-            return redirect()->route('belajar')->with('error', 'Pelajaran belum selesai');
+            return redirect()->route('belajar.index')->with('error', 'Pelajaran belum selesai');
         }
 
         // Get lesson status for the user
@@ -469,7 +469,7 @@ class LessonController extends Controller
         $partCompleted = $status[$partFieldName] ?? false;
 
         if (!$partCompleted) {
-            return redirect()->route('belajar')
+            return redirect()->route('belajar.index')
                              ->with('error', 'Kamu belum menyelesaikan bagian ini!');
         }
 

@@ -646,7 +646,7 @@
 
                     <!-- Back to Games List button -->
                     <div class="flex justify-center mt-6">
-                        <a href="{{ route('permainan') }}" class="btn btn-secondary" style="max-width: 300px; width: 100%;">
+                        <a href="{{ route('permainan.index') }}" class="btn btn-secondary" style="max-width: 300px; width: 100%;">
                             <i class="fas fa-arrow-left mr-2"></i> Back to Games List
                         </a>
                     </div>
@@ -946,7 +946,7 @@
 
                     // Redirect ke halaman permainan setelah delay singkat
                     setTimeout(() => {
-                        window.location.href = "{{ route('permainan') }}";
+                        window.location.href = "{{ route('permainan.index') }}";
                     }, 1000);
                 })
                 .catch(error => {

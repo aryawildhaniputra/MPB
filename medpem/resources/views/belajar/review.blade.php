@@ -363,7 +363,7 @@
                 </div>
 
                 <div class="nav-buttons">
-                    <a href="{{ route('belajar') }}" class="btn btn-back">
+                    <a href="{{ route('belajar.index') }}" class="btn btn-back">
                         <i class="fas fa-arrow-left mr-2"></i> Kembali ke Pelajaran
                     </a>
                 </div>

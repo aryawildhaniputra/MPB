@@ -252,10 +252,10 @@
             <p class="text-gray-400 mb-6">Teruslah belajar untuk mendapatkan lebih banyak lencana!</p>
 
             <div class="action-buttons">
-                <a href="{{ route('belajar') }}" class="btn btn-secondary">
+                <a href="{{ route('belajar.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali
                 </a>
-                <a href="{{ route('belajar') }}" class="btn btn-primary">
+                <a href="{{ route('belajar.index') }}" class="btn btn-primary">
                     Lanjutkan <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>

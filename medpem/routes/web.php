@@ -46,19 +46,39 @@ Route::middleware(['auth', CheckDeviceToken::class])->group(function () {
     Route::get('/materi/{id}', [MateriController::class, 'show'])->name('materi.show');
     Route::post('/materi/{id}/progress', [MateriController::class, 'updateProgress'])->name('materi.progress');
 
-    // Lesson routes
-    Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
-    Route::get('/lessons/{id}', [LessonController::class, 'show'])->name('lessons.show');
-    Route::post('/lessons/{id}/start', [LessonController::class, 'start'])->name('lessons.start');
-    Route::post('/lessons/{id}/complete', [LessonController::class, 'complete'])->name('lessons.complete');
+    // Lesson/Belajar routes
+    Route::prefix('belajar')->name('belajar.')->group(function () {
+        Route::get('/', [LessonController::class, 'index'])->name('index');
+        Route::get('/{id}', [LessonController::class, 'show'])->name('show');
+        Route::post('/{id}/start', [LessonController::class, 'start'])->name('start');
+        Route::get('/{id}/complete', [LessonController::class, 'complete'])->name('complete');
+        Route::get('/question/current', [LessonController::class, 'showQuestion'])->name('question');
+        Route::post('/question/answer', [LessonController::class, 'answerQuestion'])->name('answer');
+        Route::get('/{id}/review/{part?}', [LessonController::class, 'reviewLesson'])->name('review');
+    });
 
     // Document routes
     Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
     Route::get('/documents/{id}', [DocumentController::class, 'show'])->name('documents.show');
 
     // Game routes
-    Route::get('/permainan', [PermainanController::class, 'index'])->name('permainan.index');
-    Route::get('/permainan/{id}', [PermainanController::class, 'show'])->name('permainan.show');
+    Route::prefix('permainan')->name('permainan.')->group(function () {
+        Route::get('/', [PermainanController::class, 'index'])->name('index');
+        Route::get('/word-scramble', [PermainanController::class, 'wordScramble'])->name('word-scramble');
+        Route::get('/word-scramble-house', [PermainanController::class, 'wordScrambleHouse'])->name('word-scramble-house');
+        Route::get('/word-matching', [PermainanController::class, 'wordMatching'])->name('word-matching');
+        Route::get('/word-matching-house', [PermainanController::class, 'wordMatchingHouse'])->name('word-matching-house');
+        Route::get('/word-search', [PermainanController::class, 'wordSearch'])->name('word-search');
+        Route::get('/word-search-house', [PermainanController::class, 'wordSearchHouse'])->name('word-search-house');
+        Route::get('/word-search-illness', [PermainanController::class, 'wordSearchIllness'])->name('word-search-illness');
+        Route::get('/word-scramble-illness', [PermainanController::class, 'wordScrambleIllness'])->name('word-scramble-illness');
+        Route::get('/sentence-scramble', [PermainanController::class, 'sentenceScramble'])->name('sentence-scramble');
+        Route::get('/word-matching-illness', [PermainanController::class, 'wordMatchingIllness'])->name('word-matching-illness');
+        Route::get('/image-matching-house', [PermainanController::class, 'imageMatchingHouse'])->name('image-matching-house');
+        Route::get('/word-hangman-body', [PermainanController::class, 'wordHangmanBody'])->name('word-hangman-body');
+        Route::post('/complete', [PermainanController::class, 'completeGame'])->name('complete');
+        Route::get('/answers/{slug}', [PermainanController::class, 'showAnswers'])->name('answers');
+    });
 
     // Achievement routes
     Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
@@ -76,95 +96,32 @@ Route::middleware(['auth', CheckDeviceToken::class])->group(function () {
     // Test route to verify speed achievements
     Route::get('/test-speed-achievement', [\App\Http\Controllers\AchievementController::class, 'testSpeedAchievement'])->name('test.speed.achievement');
 
-    // Show current question
-    Route::get('/belajar/question/current', [LessonController::class, 'showQuestion'])->name('belajar.question');
-
-    // Submit answer
-    Route::post('/belajar/question/answer', [LessonController::class, 'answerQuestion'])->name('belajar.answer');
-
-    // Review completed lesson (view only)
-    Route::get('/belajar/{id}/review/{part?}', [LessonController::class, 'reviewLesson'])->name('belajar.review');
-
-    // Main learning index
-    Route::get('/belajar', [LessonController::class, 'index'])->name('belajar');
-
     // User Materi routes (read-only)
     Route::get('/user/materi', [UserMateriController::class, 'index'])->name('user.materi.index');
     Route::get('/user/materi/{materi}', [UserMateriController::class, 'show'])->name('user.materi.show');
     Route::post('/user/materi/{materi}/progress', [UserMateriController::class, 'updateProgress'])->name('user.materi.progress');
 
-    // Dokumen upload/download routes
+    // Document upload/download routes
     Route::post('/upload-document', [DocumentController::class, 'upload'])->name('document.upload');
     Route::get('/document/{fileName}', [DocumentController::class, 'download'])->name('document.download');
     Route::get('/document/serve/{id}', [DocumentController::class, 'serve'])->name('document.serve');
-
-    // Permainan Routes
-    Route::get('/permainan', [PermainanController::class, 'index'])->name('permainan');
-
-    // Word Scramble games
-    Route::get('/permainan/word-scramble', [PermainanController::class, 'wordScramble'])->name('permainan.word-scramble');
-    Route::get('/permainan/word-scramble-house', [PermainanController::class, 'wordScrambleHouse'])->name('permainan.word-scramble-house');
-
-    // Word Matching games
-    Route::get('/permainan/word-matching', [PermainanController::class, 'wordMatching'])->name('permainan.word-matching');
-    Route::get('/permainan/word-matching-house', [PermainanController::class, 'wordMatchingHouse'])->name('permainan.word-matching-house');
-
-    // Word Search games
-    Route::get('/permainan/word-search', [PermainanController::class, 'wordSearch'])->name('permainan.word-search');
-    Route::get('/permainan/word-search-house', [PermainanController::class, 'wordSearchHouse'])->name('permainan.word-search-house');
-    Route::get('/permainan/word-search-illness', [PermainanController::class, 'wordSearchIllness'])->name('permainan.word-search-illness');
-
-    // Word Scramble Illness game
-    Route::get('/permainan/word-scramble-illness', [PermainanController::class, 'wordScrambleIllness'])->name('permainan.word-scramble-illness');
-
-    // Sentence Scramble game
-    Route::get('/permainan/sentence-scramble', [PermainanController::class, 'sentenceScramble'])->name('permainan.sentence-scramble');
-
-    // Word Matching Illness game
-    Route::get('/permainan/word-matching-illness', [PermainanController::class, 'wordMatchingIllness'])->name('permainan.word-matching-illness');
-
-    // Image Guessing and Image Matching games
-    Route::get('/permainan/image-matching-house', [PermainanController::class, 'imageMatchingHouse'])->name('permainan.image-matching-house');
-
-    // Word Hangman game
-    Route::get('/permainan/word-hangman-body', [PermainanController::class, 'wordHangmanBody'])->name('permainan.word-hangman-body');
-
-    // Game completion
-    Route::post('/permainan/complete', [PermainanController::class, 'completeGame'])->name('permainan.complete');
-
-    // Game answers & explanations
-    Route::get('/permainan/answers/{slug}', [PermainanController::class, 'showAnswers'])->name('permainan.answers');
 });
 
 Route::get('/mengerjakan-tugas', function () {
     return view('mengerjakan_tugas.index');
 })->name('mengerjakan_tugas');
 
-// Admin-only materi routes
+// Admin-only routes
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    Route::get('/admin/materi', [MateriController::class, 'index'])->name('admin.materi.index');
-    Route::get('/admin/materi/create', [MateriController::class, 'create'])->name('admin.materi.create');
-    Route::post('/admin/materi', [MateriController::class, 'store'])->name('admin.materi.store');
-    Route::get('/admin/materi/{materi}', [MateriController::class, 'show'])->name('admin.materi.show');
-    Route::get('/admin/materi/{materi}/edit', [MateriController::class, 'edit'])->name('admin.materi.edit');
-    Route::put('/admin/materi/{materi}', [MateriController::class, 'update'])->name('admin.materi.update');
-    Route::delete('/admin/materi/{materi}', [MateriController::class, 'destroy'])->name('admin.materi.destroy');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // Materi management
+        Route::resource('materi', MateriController::class);
+        Route::delete('materi/document/{id}/delete', [MateriController::class, 'deleteDocument'])->name('materi.document.delete');
 
-    // Document deletion route
-    Route::delete('/admin/materi/document/{id}/delete', [MateriController::class, 'deleteDocument'])->name('admin.materi.document.delete');
-
-    // User management routes - available to both admin and superadmin
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
-
-    // Export users data route - must be before {user} routes to avoid conflicts
-    Route::get('/admin/users/export/csv', [UserController::class, 'exportUsers'])->name('admin.users.export');
-
-    Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
-    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        // User management
+        Route::resource('users', UserController::class);
+        Route::get('users/export/csv', [UserController::class, 'exportUsers'])->name('users.export');
+    });
 });
 
 // Leaderboard route
@@ -188,10 +145,10 @@ Route::get('/seed-games', function() {
     // Check if the user is an admin
     if (Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin'])) {
         Artisan::call('db:seed', ['--class' => 'GameSeeder', '--force' => true]);
-        return redirect()->route('permainan')->with('success', 'All games have been seeded into the database.');
+        return redirect()->route('permainan.index')->with('success', 'All games have been seeded into the database.');
     }
 
-    return redirect()->route('permainan')->with('error', 'Access denied.');
+    return redirect()->route('permainan.index')->with('error', 'Access denied.');
 })->middleware('auth')->name('seed.games');
 
 // Admin route to specifically seed house-themed games
@@ -199,10 +156,10 @@ Route::get('/seed-house-games', function() {
     // Check if the user is an admin
     if (Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin'])) {
         Artisan::call('db:seed', ['--class' => 'HouseGamesSeeder', '--force' => true]);
-        return redirect()->route('permainan')->with('success', 'House-themed games have been seeded into the database.');
+        return redirect()->route('permainan.index')->with('success', 'House-themed games have been seeded into the database.');
     }
 
-    return redirect()->route('permainan')->with('error', 'Access denied.');
+    return redirect()->route('permainan.index')->with('error', 'Access denied.');
 })->middleware('auth')->name('seed.house.games');
 
 // Admin route to specifically seed hangman games
@@ -210,9 +167,9 @@ Route::get('/seed-hangman-games', function() {
     // Check if the user is an admin
     if (Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin'])) {
         Artisan::call('db:seed', ['--class' => 'HangmanGamesSeeder', '--force' => true]);
-        return redirect()->route('permainan')->with('success', 'Hangman games have been seeded into the database.');
+        return redirect()->route('permainan.index')->with('success', 'Hangman games have been seeded into the database.');
     }
 
-    return redirect()->route('permainan')->with('error', 'Access denied.');
+    return redirect()->route('permainan.index')->with('error', 'Access denied.');
 })->middleware('auth')->name('seed.hangman.games');
 

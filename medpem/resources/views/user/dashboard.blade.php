@@ -1590,7 +1590,7 @@
                             <h4 class="text-lg font-semibold text-white mb-2">Latihan Seru</h4>
                             <p class="text-gray-300 mb-4">Lanjutkan pelajaran yang sedang kamu pelajari!</p>
                             <div class="mt-auto">
-                                <a href="{{ route('belajar') }}" class="kid-button w-full">
+                                <a href="{{ route('belajar.index') }}" class="kid-button w-full">
                                     <i class="fas fa-graduation-cap"></i> Belajar
                                 </a>
                             </div>
@@ -1612,7 +1612,7 @@
                             <h4 class="text-lg font-semibold text-white mb-2">Permainan Edukatif</h4>
                             <p class="text-gray-300 mb-4">Belajar sambil bermain permainan seru!</p>
                             <div class="mt-auto">
-                                <a href="{{ route('permainan') }}" class="kid-button w-full">
+                                <a href="{{ route('permainan.index') }}" class="kid-button w-full">
                                     <i class="fas fa-gamepad"></i> Main Game
                                 </a>
                             </div>

@@ -682,7 +682,7 @@
 
                     <!-- Tombol Kembali ke Daftar Permainan -->
                     <div class="flex justify-center mt-6">
-                        <a href="{{ route('permainan') }}" class="btn btn-secondary" style="max-width: 300px; width: 100%;">
+                        <a href="{{ route('permainan.index') }}" class="btn btn-secondary" style="max-width: 300px; width: 100%;">
                             <i class="fas fa-arrow-left mr-2"></i> Kembali ke Daftar Permainan
                         </a>
                     </div>
@@ -723,7 +723,7 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <a href="{{ route('permainan') }}" class="back-button">
+                        <a href="{{ route('permainan.index') }}" class="back-button">
                             <i class="fas fa-arrow-left mr-2"></i> Kembali ke Daftar Permainan
                         </a>
                     </div>
@@ -1249,7 +1249,7 @@
 
                     // Redirect to game list after short delay
                     setTimeout(() => {
-                        window.location.href = "{{ route('permainan') }}";
+                        window.location.href = "{{ route('permainan.index') }}";
                     }, 1500);
                 });
             }

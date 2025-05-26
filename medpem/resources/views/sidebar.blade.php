@@ -111,14 +111,14 @@
         </a>
         @endif
 
-        <a href="{{ route('belajar') }}" class="sidebar-item {{ request()->is('belajar') ? 'active' : '' }}" data-title="Belajar">
+        <a href="{{ route('belajar.index') }}" class="sidebar-item {{ request()->is('belajar') ? 'active' : '' }}" data-title="Belajar">
             <div class="sidebar-icon bg-gradient-to-br from-blue-400 to-blue-500">
                 <i class="fas fa-book-open"></i>
             </div>
             <span class="sidebar-text">BELAJAR SINGKAT</span>
         </a>
 
-        <a href="{{ route('permainan') }}" class="sidebar-item {{ request()->is('permainan') ? 'active' : '' }}" data-title="Permainan">
+        <a href="{{ route('permainan.index') }}" class="sidebar-item {{ request()->is('permainan') ? 'active' : '' }}" data-title="Permainan">
             <div class="sidebar-icon bg-gradient-to-br from-yellow-400 to-yellow-500">
                 <i class="fas fa-gamepad"></i>
             </div>
