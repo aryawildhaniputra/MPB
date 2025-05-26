@@ -643,7 +643,7 @@
                 @if(count($materis) > 0)
                     @foreach($materis as $index => $materi)
                         @php
-                            // Define theme for card
+                            // Define theme for cards
                             switch($loop->iteration % 5) {
                                 case 1:
                                     $theme = [
