@@ -173,3 +173,12 @@ Route::get('/seed-hangman-games', function() {
     return redirect()->route('permainan.index')->with('error', 'Access denied.');
 })->middleware('auth')->name('seed.hangman.games');
 
+// Route untuk gambar materi
+Route::get('/images/materi/{filename}', function ($filename) {
+    $path = public_path('images/materi/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+})->name('materi.image');
+

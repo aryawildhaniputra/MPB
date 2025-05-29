@@ -272,9 +272,9 @@
             font-size: 1.2rem;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
             border: 2px dashed #38B2AC;
-            max-height: 600px;
-            overflow-y: auto;
             position: relative;
+            overflow: visible;
+            height: auto;
         }
 
         .materi-content::-webkit-scrollbar {

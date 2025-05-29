@@ -129,7 +129,7 @@ class QuestionSeeder extends Seeder
             ],
             [
                 'lesson_id' => 1,
-                'type' => 'image_choice',
+                'type' => 'select_image',
                 'prompt' => '[Part 2] Select the image that shows "Mouth"',
                 'prompt_type' => 'text',
                 'options' => json_encode(['body_parts/part2/eye.jpg', 'body_parts/part2/ear.jpg', 'body_parts/part2/nose.jpg', 'body_parts/part2/mouth.jpg']),

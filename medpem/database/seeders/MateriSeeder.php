@@ -14,104 +14,159 @@ class MateriSeeder extends Seeder
     {
         Materi::create([
             'title' => 'Parts of My Body',
-            'description' => 'Learn the names of body parts in English.',
+            'description' => 'Learn the names of body parts in English with pictures.',
             'content' => '<div class="materi-content">
     <h1>Parts of My Body (Bagian-Bagian Tubuh)</h1>
-    <p>In this material, you will learn the names of body parts in English:</p>
+    <p>In this material, you will learn the names of body parts in English.</p>
 
     <div class="section">
-        <h2>Head Parts (Bagian Kepala)</h2>
-        <ol>
-            <li><strong>Head</strong> - Kepala</li>
-            <li><strong>Hair</strong> - Rambut</li>
-            <li><strong>Eye</strong> - Mata</li>
-            <li><strong>Ear</strong> - Telinga</li>
-            <li><strong>Nose</strong> - Hidung</li>
-            <li><strong>Mouth</strong> - Mulut</li>
-            <li><strong>Lip</strong> - Bibir</li>
-            <li><strong>Tooth/Teeth</strong> - Gigi</li>
-            <li><strong>Tongue</strong> - Lidah</li>
-            <li><strong>Chin</strong> - Dagu</li>
-            <li><strong>Cheek</strong> - Pipi</li>
-            <li><strong>Forehead</strong> - Dahi</li>
-            <li><strong>Eyebrow</strong> - Alis</li>
-            <li><strong>Eyelash</strong> - Bulu mata</li>
-            <li><strong>Jaw</strong> - Rahang</li>
-        </ol>
+        <h2>External Body Parts (Bagian Luar Tubuh)</h2>
+        <div class="infographic-container">
+            <img src="/images/materi/infograph.png" alt="External Body Parts" class="infographic-image">
+        </div>
+
+        <div class="vocabulary-list">
+            <h3>External Body Parts Vocabulary:</h3>
+            <div class="word-grid">
+                <div class="word-item">
+                    <p><strong>Head</strong> - Kepala</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Eye</strong> - Mata</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Eyebrow</strong> - Alis</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Ear</strong> - Telinga</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Nose</strong> - Hidung</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Lip</strong> - Bibir</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Mouth</strong> - Mulut</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Tongue</strong> - Lidah</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Arm</strong> - Lengan</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Hand</strong> - Tangan</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Leg</strong> - Kaki</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Foot</strong> - Telapak kaki</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="section">
-        <h2>Body Parts (Bagian Tubuh)</h2>
-        <ol>
-            <li><strong>Neck</strong> - Leher</li>
-            <li><strong>Shoulder</strong> - Bahu</li>
-            <li><strong>Chest</strong> - Dada</li>
-            <li><strong>Arm</strong> - Lengan</li>
-            <li><strong>Elbow</strong> - Siku</li>
-            <li><strong>Hand</strong> - Tangan</li>
-            <li><strong>Finger</strong> - Jari tangan</li>
-            <li><strong>Stomach</strong> - Perut</li>
-            <li><strong>Back</strong> - Punggung</li>
-            <li><strong>Waist</strong> - Pinggang</li>
-            <li><strong>Hip</strong> - Pinggul</li>
-            <li><strong>Wrist</strong> - Pergelangan tangan</li>
-            <li><strong>Palm</strong> - Telapak tangan</li>
-            <li><strong>Thumb</strong> - Ibu jari</li>
-            <li><strong>Index finger</strong> - Jari telunjuk</li>
-            <li><strong>Middle finger</strong> - Jari tengah</li>
-            <li><strong>Ring finger</strong> - Jari manis</li>
-            <li><strong>Little finger</strong> - Jari kelingking</li>
-        </ol>
+        <h2>Internal Body Parts (Bagian Dalam Tubuh)</h2>
+        <div class="infographic-container">
+            <img src="/images/materi/infograph2.png" alt="Internal Body Parts" class="infographic-image">
+        </div>
+
+        <div class="vocabulary-list">
+            <h3>Internal Body Parts Vocabulary:</h3>
+            <div class="word-grid">
+                <div class="word-item">
+                    <p><strong>Brain</strong> - Otak</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Heart</strong> - Jantung</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Lungs</strong> - Paru-paru</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Liver</strong> - Hati</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Stomach</strong> - Lambung</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Intestine</strong> - Usus</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Kidneys</strong> - Ginjal</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Pancreas</strong> - Pankreas</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Spleen</strong> - Limpa</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Bladder</strong> - Kandung kemih</p>
+                </div>
+                <div class="word-item">
+                    <p><strong>Thyroid</strong> - Kelenjar tiroid</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="section">
-        <h2>Leg Parts (Bagian Kaki)</h2>
-        <ol>
-            <li><strong>Leg</strong> - Kaki</li>
-            <li><strong>Knee</strong> - Lutut</li>
-            <li><strong>Foot/Feet</strong> - Kaki (bagian bawah)</li>
-            <li><strong>Toe</strong> - Jari kaki</li>
-            <li><strong>Ankle</strong> - Pergelangan kaki</li>
-            <li><strong>Heel</strong> - Tumit</li>
-            <li><strong>Thigh</strong> - Paha</li>
-            <li><strong>Calf</strong> - Betis</li>
-            <li><strong>Shin</strong> - Tulang kering</li>
-            <li><strong>Sole</strong> - Telapak kaki</li>
-        </ol>
-    </div>
-
-    <div class="section">
-        <h2>Internal Body Parts (Bagian Tubuh Internal)</h2>
-        <ol>
-            <li><strong>Heart</strong> - Jantung</li>
-            <li><strong>Lung</strong> - Paru-paru</li>
-            <li><strong>Brain</strong> - Otak</li>
-            <li><strong>Liver</strong> - Hati</li>
-            <li><strong>Kidney</strong> - Ginjal</li>
-            <li><strong>Intestine</strong> - Usus</li>
-            <li><strong>Bone</strong> - Tulang</li>
-            <li><strong>Muscle</strong> - Otot</li>
-            <li><strong>Blood vessel</strong> - Pembuluh darah</li>
-            <li><strong>Nerve</strong> - Saraf</li>
-        </ol>
-    </div>
-
-    <div class="section">
-        <h2>Simple Sentence Examples</h2>
+        <h2>Simple Sentences</h2>
         <ul>
             <li>I have two eyes. <em>(Saya punya dua mata.)</em></li>
             <li>This is my hand. <em>(Ini tangan saya.)</em></li>
             <li>I can touch my nose. <em>(Saya bisa menyentuh hidung saya.)</em></li>
             <li>My head hurts. <em>(Kepala saya sakit.)</em></li>
             <li>I wash my hands. <em>(Saya mencuci tangan saya.)</em></li>
-            <li>She has long hair. <em>(Dia memiliki rambut panjang.)</em></li>
-            <li>He broke his leg. <em>(Dia mematahkan kakinya.)</em></li>
-            <li>My heart beats fast. <em>(Jantung saya berdetak cepat.)</em></li>
-            <li>I hurt my ankle. <em>(Saya melukai pergelangan kaki saya.)</em></li>
-            <li>She has beautiful eyes. <em>(Dia memiliki mata yang indah.)</em></li>
         </ul>
-        <p>It\'s important to know the body parts in English so you can communicate well about your body condition.</p>
     </div>
+
+    <style>
+    .infographic-container {
+        text-align: center;
+        margin: 20px auto;
+        max-width: 800px;
+        width: 100%;
+    }
+    .infographic-image {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        object-fit: contain;
+    }
+    .vocabulary-list {
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px auto;
+        max-width: 800px;
+    }
+    .word-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        padding: 10px 0;
+    }
+    .word-item {
+        background: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .word-item p {
+        margin: 0;
+    }
+    .section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+    </style>
 </div>'
         ]);
 
