@@ -28,7 +28,17 @@
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 180px;
+                padding-top: 100px !important;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding-top: 90px !important;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
         }
 
@@ -43,6 +53,27 @@
             border-radius: 8px;
         }
 
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-title {
+                font-size: 1.6rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .game-title {
+                font-size: 1.5rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
         .game-description {
             text-align: center;
             color: #ffffff;
@@ -53,6 +84,28 @@
             border-radius: 8px;
         }
 
+        @media (max-width: 768px) {
+            .game-description {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                padding: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-description {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+                padding: 0.3rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .game-description {
+                font-size: 0.85rem;
+            }
+        }
+
         .gradient-border {
             height: 4px;
             width: 100%;
@@ -60,6 +113,21 @@
             background: linear-gradient(90deg, #9D50BB, #6E48AA);
             margin: 0 auto 2rem auto;
             border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .gradient-border {
+                max-width: 250px;
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gradient-border {
+                max-width: 200px;
+                margin-bottom: 1rem;
+            }
         }
 
         .game-container {
@@ -73,6 +141,29 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 1.5rem;
+                border-radius: 16px;
+                margin: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 1rem;
+                border-radius: 12px;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .game-container {
+                padding: 0.75rem;
+                border-radius: 10px;
+            }
+        }
+
         .game-stats {
             background: #2d3748;
             border-radius: 10px;
@@ -83,33 +174,90 @@
             margin-bottom: 2rem;
         }
 
+        @media (max-width: 768px) {
+            .game-stats {
+                padding: 0.8rem;
+                margin-bottom: 1.5rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-stats {
+                padding: 0.6rem;
+                margin-bottom: 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
         .stat-item {
             text-align: center;
             padding: 0 1rem;
         }
 
+        @media (max-width: 768px) {
+            .stat-item {
+                padding: 0 0.5rem;
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-item {
+                padding: 0.2rem 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+            }
+        }
+
         .stat-title {
-            color: #ffffff;
+            color: #003a10;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .stat-title {
+                font-size: 0.8rem;
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+                flex: 1;
+            }
         }
 
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.2);
+            color: #151b2e;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
         }
 
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-value {
+                font-size: 1.1rem;
+                flex-shrink: 0;
+            }
+        }
+
         .stat-value.score {
-            color: #ffffff;
-            background-color: rgba(157, 80, 187, 0.5);
+            color: #9D50BB;
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
         .progress-container {
@@ -607,7 +755,36 @@
 
         @media (max-width: 640px) {
             .game-title {
-                font-size: 2rem;
+                font-size: 1.5rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .game-description {
+                font-size: 0.85rem;
+            }
+
+            .game-stats {
+                padding: 0.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .stat-item {
+                padding: 0.1rem 0;
+            }
+
+            .stat-title {
+                font-size: 0.75rem;
+                padding: 0.1rem 0.3rem;
+            }
+
+            .stat-value {
+                font-size: 1rem;
+                padding: 0.1rem 0.3rem;
+            }
+
+            .game-container {
+                padding: 0.75rem;
+                border-radius: 10px;
             }
 
             .completion-stats {

@@ -129,10 +129,427 @@
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding: 70px 1rem 2rem;
+                padding: 80px 1rem 2rem;
             }
             .welcome-title {
                 font-size: 2rem;
+            }
+
+            /* Mobile specific adjustments */
+            .dashboard-grid {
+                gap: 1rem;
+                margin: 0;
+            }
+
+            .welcome-banner {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .adventure-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .adventure-card {
+                padding: 1.25rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            /* Table responsiveness */
+            .leaderboard-table {
+                font-size: 0.8rem;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 0.5rem 0.25rem;
+            }
+
+            /* Achievement section mobile */
+            .pencapaian-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .pencapaian-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .pencapaian-name {
+                font-size: 0.7rem;
+                min-height: 24px;
+                padding: 4px 6px;
+            }
+
+            /* Progress bars mobile */
+            .progress-bar-container {
+                height: 12px;
+                margin: 0.5rem 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 80px 0.75rem 1.5rem;
+            }
+
+            .welcome-banner {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .dashboard-grid {
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem;
+                border-radius: 10px;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .stat-label {
+                font-size: 0.9rem;
+            }
+
+            .adventure-card {
+                padding: 1rem;
+            }
+
+            .adventure-card .icon {
+                font-size: 2rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .adventure-card h4 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .adventure-card p {
+                font-size: 0.85rem;
+                margin-bottom: 1rem;
+            }
+
+            .kid-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            /* Responsive table - stack on mobile */
+            .leaderboard-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                font-size: 0.75rem;
+            }
+
+            /* Achievement section - smaller on mobile */
+            .pencapaian-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+                margin-bottom: 6px;
+            }
+
+            .pencapaian-name {
+                font-size: 0.65rem;
+                min-height: 20px;
+                padding: 3px 5px;
+                line-height: 1.1;
+            }
+
+            .pencapaian-count {
+                font-size: 0.65rem;
+                padding: 1px 6px;
+                margin-top: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 75px 0.5rem 1rem;
+            }
+
+            .welcome-banner {
+                padding: 0.75rem;
+                border-radius: 12px;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.2;
+            }
+
+            .welcome-banner p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            .dashboard-grid {
+                gap: 0.5rem;
+            }
+
+            .stat-card {
+                padding: 0.6rem;
+                border-radius: 8px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .card-icon {
+                font-size: 1.25rem;
+                top: 0.75rem;
+                right: 0.75rem;
+            }
+
+            .adventure-card {
+                padding: 0.75rem;
+            }
+
+            .adventure-card .icon {
+                font-size: 1.75rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .adventure-card h4 {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .adventure-card p {
+                font-size: 0.8rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.3;
+            }
+
+            .kid-button {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                border-radius: 25px;
+            }
+
+            .content-title {
+                font-size: 1.75rem;
+                padding: 0.25rem 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem;
+                margin-bottom: 1.5rem;
+            }
+
+            /* Progress section mobile optimization */
+            .progress-bar-container {
+                height: 10px;
+                margin: 0.4rem 0;
+                border-radius: 8px;
+            }
+
+            .progress-label {
+                font-size: 0.75rem;
+            }
+
+            /* Achievement section - very compact for small screens */
+            .pencapaian-grid {
+                gap: 8px;
+            }
+
+            .pencapaian-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+
+            .pencapaian-name {
+                font-size: 0.6rem;
+                min-height: 18px;
+                padding: 2px 4px;
+                margin: 4px 0;
+            }
+
+            .pencapaian-count {
+                font-size: 0.6rem;
+                padding: 1px 4px;
+                margin-top: 2px;
+            }
+
+            .pencapaian-title {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+
+            .pencapaian-footer {
+                margin-top: 10px;
+                padding: 8px;
+                font-size: 0.75rem;
+            }
+
+            /* Notification adjustments */
+            .success-notification {
+                width: calc(100% - 20px);
+                max-width: calc(100% - 20px);
+                right: 10px;
+                left: 10px;
+                padding: 10px 15px;
+                top: 85px;
+            }
+
+            .success-notification .icon {
+                font-size: 1.1rem;
+                margin-right: 8px;
+            }
+
+            .success-notification .message {
+                font-size: 0.85rem;
+            }
+
+            /* Table mobile - horizontal scroll */
+            .leaderboard-table {
+                min-width: 400px;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 0.4rem 0.2rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .main-content {
+                padding: 70px 0.25rem 0.75rem;
+            }
+
+            .welcome-title {
+                font-size: 1.25rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .welcome-banner {
+                padding: 0.5rem;
+            }
+
+            .welcome-banner p {
+                font-size: 0.8rem;
+                line-height: 1.3;
+            }
+
+            .stat-card {
+                padding: 0.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+
+            .adventure-card {
+                padding: 0.6rem;
+            }
+
+            .adventure-card .icon {
+                font-size: 1.5rem;
+            }
+
+            .adventure-card h4 {
+                font-size: 0.85rem;
+            }
+
+            .adventure-card p {
+                font-size: 0.75rem;
+                line-height: 1.2;
+            }
+
+            .kid-button {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            .content-title {
+                font-size: 1.5rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+                padding: 0.2rem;
+            }
+
+            .pencapaian-icon {
+                width: 25px;
+                height: 25px;
+                font-size: 12px;
+            }
+
+            .pencapaian-name {
+                font-size: 0.55rem;
+                min-height: 16px;
+                padding: 1px 3px;
+                line-height: 1;
+            }
+
+            .pencapaian-title {
+                font-size: 0.9rem;
+            }
+
+            .card-icon {
+                font-size: 1rem;
+                top: 0.5rem;
+                right: 0.5rem;
             }
         }
 

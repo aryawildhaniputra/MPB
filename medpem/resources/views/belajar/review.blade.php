@@ -262,8 +262,7 @@
                 <div class="part-navigation">
                     @for ($i = 1; $i <= 6; $i++)
                         @php
-                            $partFieldName = 'part' . $i . '_completed';
-                            $partCompleted = $status[$partFieldName] ?? false;
+                            $partCompleted = $status['parts']['part' . $i . '_completed'] ?? false;
                         @endphp
 
                         @if($partCompleted)

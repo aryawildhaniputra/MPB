@@ -9,6 +9,7 @@ use App\Models\Materi;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\UserLessonPart;
 
 class AchievementService
 {
@@ -36,7 +37,7 @@ class AchievementService
     }
 
     /**
-     * Check and award achievements based on number of bagian (sections) completed
+     * Check and award achievements based on number of lesson parts completed
      *
      * @param Users $user
      * @return array Newly unlocked achievements
@@ -45,37 +46,12 @@ class AchievementService
     {
         $newlyUnlocked = [];
 
-        // Count completed bagian (parts/sections) using direct SQL query to debug
-        $completedBagianCount = 0;
+        // Count completed parts using the new user_lesson_parts table
+        $completedBagianCount = UserLessonPart::where('user_id', $user->id)
+                                             ->where('completed', true)
+                                             ->count();
 
-        // Log raw SQL to debug part completion status
-        $userLessons = DB::table('user_lessons')
-            ->where('user_id', $user->id)
-            ->get();
-
-        Log::info("Found " . count($userLessons) . " lesson records for user {$user->id}");
-
-        // Check direct database state for debugging
-        foreach ($userLessons as $lesson) {
-            Log::info("Lesson {$lesson->lesson_id} parts status: " .
-                "part1: " . ($lesson->part1_completed ? 'true' : 'false') . ", " .
-                "part2: " . ($lesson->part2_completed ? 'true' : 'false') . ", " .
-                "part3: " . ($lesson->part3_completed ? 'true' : 'false') . ", " .
-                "part4: " . ($lesson->part4_completed ? 'true' : 'false') . ", " .
-                "part5: " . ($lesson->part5_completed ? 'true' : 'false') . ", " .
-                "part6: " . ($lesson->part6_completed ? 'true' : 'false')
-            );
-
-            // Count all completed parts
-            if ($lesson->part1_completed) $completedBagianCount++;
-            if ($lesson->part2_completed) $completedBagianCount++;
-            if ($lesson->part3_completed) $completedBagianCount++;
-            if ($lesson->part4_completed) $completedBagianCount++;
-            if ($lesson->part5_completed) $completedBagianCount++;
-            if ($lesson->part6_completed) $completedBagianCount++;
-        }
-
-        Log::info("Direct SQL count shows user {$user->id} has completed {$completedBagianCount} parts");
+        Log::info("User {$user->id} has completed {$completedBagianCount} parts (using new structure)");
 
         // Get relevant achievements
         $achievements = Achievement::where('type', 'bagian_completion')
@@ -226,108 +202,65 @@ class AchievementService
         $fastestLesson = null;
         $fastestPart = null;
 
-        Log::info("========== SPEED ACHIEVEMENT CHECK ==========");
-        Log::info("Checking part completion times for user {$user->id}");
-
-        // Query the database directly to get the most accurate data
+        // Get all user lessons with start times
         $userLessons = DB::table('user_lessons')
             ->where('user_id', $user->id)
+            ->whereNotNull('started_at')
             ->get();
 
-        Log::info("Found " . count($userLessons) . " lesson records using direct DB query");
-
-        // Check all parts for each lesson
+        // Check all completed parts for each lesson
         foreach ($userLessons as $lesson) {
             $lessonId = $lesson->lesson_id;
+            $lessonStartedAt = Carbon::parse($lesson->started_at);
 
-            // Get the lesson's started_at time as a baseline
-            $lessonStartedAt = $lesson->started_at ? Carbon::parse($lesson->started_at) : null;
+            // Get completed parts for this lesson using the new structure
+            $completedParts = UserLessonPart::where('user_id', $user->id)
+                                           ->where('lesson_id', $lessonId)
+                                           ->where('completed', true)
+                                           ->whereNotNull('completed_at')
+                                           ->get();
 
-            Log::info("Checking lesson {$lessonId} with start time: " . ($lessonStartedAt ? $lessonStartedAt->toDateTimeString() : 'NULL'));
+            foreach ($completedParts as $part) {
+                $partCompletedTime = Carbon::parse($part->completed_at);
 
-            if ($lessonStartedAt) {
-                // Check each part's completion time
-                for ($part = 1; $part <= 6; $part++) {
-                    $partCompletedField = 'part' . $part . '_completed';
-                    $partCompletedAtField = 'part' . $part . '_completed_at';
+                // Calculate time to complete this part
+                $durationSeconds = abs($partCompletedTime->diffInSeconds($lessonStartedAt));
 
-                    // Get the values from the database record
-                    $partCompleted = $lesson->$partCompletedField ?? false;
-                    $partCompletedAt = $lesson->$partCompletedAtField ?? null;
-
-                    Log::info("  Part {$part}: completed = " . ($partCompleted ? 'true' : 'false') .
-                             ", completed_at = " . ($partCompletedAt ? $partCompletedAt : 'NULL'));
-
-                    // Check if this part is completed and has a completion timestamp
-                    if ($partCompleted && $partCompletedAt) {
-                        $partCompletedTime = Carbon::parse($partCompletedAt);
-
-                        // Calculate time to complete this part - use absolute value to handle negative times
-                        $durationSeconds = abs($partCompletedTime->diffInSeconds($lessonStartedAt));
-
-                        Log::info("  Lesson {$lessonId} part {$part} completion time: {$durationSeconds} seconds");
-                        Log::info("    Started at: {$lessonStartedAt->toDateTimeString()}");
-                        Log::info("    Completed at: {$partCompletedTime->toDateTimeString()}");
-
-                        // Update fastest time if this part was completed faster
-                        if ($durationSeconds < $fastestPartCompletionSeconds) {
-                            $fastestPartCompletionSeconds = $durationSeconds;
-                            $fastestLesson = $lessonId;
-                            $fastestPart = $part;
-                            Log::info("  New fastest part completion time: {$fastestPartCompletionSeconds} seconds (Lesson {$lessonId}, Part {$part})");
-                        }
-                    }
+                // Update fastest time if this part was completed faster
+                if ($durationSeconds < $fastestPartCompletionSeconds) {
+                    $fastestPartCompletionSeconds = $durationSeconds;
+                    $fastestLesson = $lessonId;
+                    $fastestPart = $part->part_number;
                 }
-            } else {
-                Log::info("  No start time recorded for lesson {$lessonId}, skipping");
             }
         }
 
         // If we found a valid completion time
         if ($fastestPartCompletionSeconds < PHP_INT_MAX) {
-            Log::info("User {$user->id} fastest part completion time: {$fastestPartCompletionSeconds} seconds (Lesson {$fastestLesson}, Part {$fastestPart})");
-
             // Get speed achievements where requirement is in seconds
-            // In the achievements table, 'requirement' for speed achievements should store the maximum time in seconds
-            // For example, "Complete a part in under 60 seconds" would have requirement = 60
             $achievements = Achievement::where('type', 'speed')
                 ->where('active', true)
                 ->orderBy('requirement', 'desc')
                 ->get();
-
-            Log::info("Found " . $achievements->count() . " speed achievements:");
-            foreach ($achievements as $achievement) {
-                Log::info("  '{$achievement->name}': requirement = {$achievement->requirement}s, user time = {$fastestPartCompletionSeconds}s, eligible = " .
-                         ($fastestPartCompletionSeconds <= $achievement->requirement ? 'YES' : 'NO'));
-            }
 
             // Award achievements not already unlocked
             foreach ($achievements as $achievement) {
                 // For speed achievements, user's time must be LESS than or EQUAL TO the requirement
                 if ($fastestPartCompletionSeconds <= $achievement->requirement) {
                     $hasAchievement = $user->hasAchievement($achievement->id);
-                    Log::info("  Achievement {$achievement->name} (id: {$achievement->id}): user already has it? " . ($hasAchievement ? 'YES' : 'NO'));
 
                     if (!$hasAchievement) {
-                        Log::info("  Unlocking speed achievement {$achievement->name} (req: {$achievement->requirement}s) for user {$user->id} with time {$fastestPartCompletionSeconds}s");
                         $pivot = $achievement->unlockForUser($user->id);
                         if ($pivot) {
-                            Log::info("  Successfully unlocked achievement {$achievement->name}!");
                             $newlyUnlocked[] = [
                                 'achievement' => $achievement,
                                 'pivot' => $pivot
                             ];
-                        } else {
-                            Log::error("  Failed to unlock achievement {$achievement->name}");
                         }
                     }
                 }
             }
-        } else {
-            Log::info("No valid part completion times found for user {$user->id}");
         }
-
-        Log::info("========== END SPEED ACHIEVEMENT CHECK ==========");
 
         return $newlyUnlocked;
     }

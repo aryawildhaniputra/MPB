@@ -33,6 +33,11 @@ class DatabaseSeeder extends Seeder
         // Now seed user-related data
         $this->call(UserHeartSeeder::class);
         $this->call(UserLessonSeeder::class);
+
+        // Lesson-related seeders dihapus agar user mulai dari awal
+        // UserLessonPartSeeder dan UserLessonStatsSeeder tidak dipanggil
+        // karena user akan membuat progress sendiri
+
         $this->call(UserMateriSeeder::class);
 
         // Seed games

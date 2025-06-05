@@ -81,6 +81,9 @@
             .wide-card {
                 grid-column: span 12;
             }
+            .small-card {
+                grid-column: span 6;
+            }
         }
 
         .full-card {
@@ -91,15 +94,421 @@
             grid-column: span 3;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding-top: 80px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
             .small-card {
-                grid-column: span 6;
+                grid-column: span 12;
+            }
+
+            /* Mobile specific adjustments */
+            .dashboard-grid {
+                gap: 1rem;
+            }
+
+            .welcome-banner {
+                padding: 1.25rem;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+
+            .admin-action-button {
+                width: 100%;
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+                justify-content: center;
+            }
+
+            /* Table responsiveness */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .admin-table {
+                min-width: 600px;
+                font-size: 0.8rem;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 0.5rem 0.25rem;
+                white-space: nowrap;
+            }
+
+            .data-section-heading {
+                font-size: 1rem;
+            }
+
+            .info-tooltip .tooltip-text {
+                width: 150px;
+                font-size: 0.7rem;
             }
         }
 
         @media (max-width: 640px) {
-            .small-card {
-                grid-column: span 12;
+            .main-content {
+                padding-top: 80px;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
+            .welcome-banner {
+                padding: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 1.75rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .welcome-banner p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            .dashboard-grid {
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem;
+                border-radius: 10px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .stat-label {
+                font-size: 0.9rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+            }
+
+            .card-icon {
+                font-size: 1.5rem;
+                top: 0.75rem;
+                right: 0.75rem;
+            }
+
+            .admin-action-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .data-section-heading {
+                font-size: 0.95rem;
+                margin-bottom: 0.5rem;
+            }
+
+            /* Compact table for mobile */
+            .admin-table {
+                min-width: 500px;
+                font-size: 0.75rem;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 0.4rem 0.2rem;
+            }
+
+            .status-pill {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .info-tooltip .tooltip-text {
+                width: 120px;
+                font-size: 0.65rem;
+                padding: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding-top: 75px;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            .welcome-banner {
+                padding: 0.75rem;
+                border-radius: 12px;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.3rem;
+                line-height: 1.2;
+            }
+
+            .welcome-banner p {
+                font-size: 0.8rem;
+                line-height: 1.3;
+            }
+
+            .dashboard-grid {
+                gap: 0.5rem;
+            }
+
+            .stat-card {
+                padding: 0.6rem;
+                border-radius: 8px;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+                margin-bottom: 0.15rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.75rem;
+                margin-top: 0.15rem;
+            }
+
+            .card-icon {
+                font-size: 1.25rem;
+                top: 0.6rem;
+                right: 0.6rem;
+            }
+
+            .admin-action-button {
+                padding: 0.45rem 0.8rem;
+                font-size: 0.8rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .admin-action-button i {
+                margin-right: 0.3rem;
+            }
+
+            .data-section-heading {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .data-section-heading i {
+                margin-right: 0.3rem;
+            }
+
+            /* Very compact table for small screens */
+            .admin-table {
+                min-width: 450px;
+                font-size: 0.7rem;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 0.3rem 0.15rem;
+            }
+
+            .status-pill {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.4rem;
+            }
+
+            .info-tooltip {
+                display: none; /* Hide tooltips on very small screens */
+            }
+
+            /* Activity section adjustments */
+            .space-y-3 > * + * {
+                margin-top: 0.5rem;
+            }
+
+            .space-y-3 .flex.items-start {
+                padding: 0.5rem;
+                border-radius: 6px;
+            }
+
+            .space-y-3 .text-sm {
+                font-size: 0.75rem;
+            }
+
+            .space-y-3 .text-xs {
+                font-size: 0.65rem;
+            }
+
+            /* System status section */
+            .space-y-2 > * + * {
+                margin-top: 0.4rem;
+            }
+
+            .flex.justify-between .text-gray-300 {
+                font-size: 0.8rem;
+            }
+
+            .flex.justify-between span:last-child {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .main-content {
+                padding-top: 70px;
+                padding-left: 0.25rem;
+                padding-right: 0.25rem;
+            }
+
+            .welcome-title {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .welcome-banner {
+                padding: 0.5rem;
+            }
+
+            .welcome-banner p {
+                font-size: 0.75rem;
+                line-height: 1.2;
+            }
+
+            .stat-card {
+                padding: 0.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.1rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.7rem;
+            }
+
+            .card-icon {
+                font-size: 1rem;
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+
+            .admin-action-button {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            .data-section-heading {
+                font-size: 0.85rem;
+            }
+
+            /* Ultra compact table */
+            .admin-table {
+                min-width: 380px;
+                font-size: 0.65rem;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 0.25rem 0.1rem;
+            }
+
+            .status-pill {
+                font-size: 0.55rem;
+                padding: 0.1rem 0.3rem;
+            }
+
+            /* Activity items very compact */
+            .space-y-3 .flex.items-start {
+                padding: 0.4rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .space-y-3 .text-sm {
+                font-size: 0.7rem;
+                line-height: 1.2;
+            }
+
+            .space-y-3 .text-xs {
+                font-size: 0.6rem;
+                margin-top: 0.2rem;
+            }
+
+            /* System status very compact */
+            .flex.justify-between {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.1rem;
+            }
+
+            .flex.justify-between .text-gray-300 {
+                font-size: 0.75rem;
+            }
+
+            .flex.justify-between span:last-child {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Landscape orientation adjustments for mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .main-content {
+                padding-top: 70px;
+            }
+
+            .welcome-title {
+                font-size: 1.75rem;
+            }
+
+            .dashboard-grid {
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Touch-friendly adjustments */
+        @media (max-width: 768px) {
+            .admin-action-button {
+                min-height: 44px; /* iOS recommended touch target */
+                touch-action: manipulation;
+            }
+
+            .status-pill {
+                min-height: 24px;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            .table-container {
+                border-radius: 6px;
+            }
+
+            .admin-table th {
+                position: sticky;
+                top: 0;
+                background: rgba(30, 41, 59, 0.95);
+                z-index: 1;
             }
         }
 
@@ -272,14 +681,6 @@
         .info-tooltip:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding-top: 100px;
-            }
         }
     </style>
 </head>

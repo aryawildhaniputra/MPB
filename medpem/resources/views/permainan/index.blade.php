@@ -27,7 +27,9 @@
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 180px;
+                padding-top: 100px !important;
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
         }
 
@@ -47,6 +49,21 @@
             border-radius: 8px;
         }
 
+        @media (max-width: 768px) {
+            .content-title {
+                font-size: 2.2rem;
+                padding: 0.4rem 1.5rem;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.3rem 1rem;
+            }
+        }
+
         .subtitle {
             text-align: center;
             font-size: 1.3rem;
@@ -60,6 +77,22 @@
             margin-right: auto;
         }
 
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 1.5rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 1rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+
         .gradient-border {
             height: 4px;
             width: 100%;
@@ -69,6 +102,13 @@
             border-radius: 2px;
             margin-left: 0;
             margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
         }
 
         .game-card {
@@ -83,6 +123,25 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .game-card {
+                padding: 1.2rem;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+            }
+
+            .game-card:hover {
+                transform: translateY(-5px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-card {
+                padding: 1rem;
+                border-radius: 10px;
+            }
         }
 
         .game-card:hover {
@@ -115,6 +174,24 @@
             margin: 0 auto 1.5rem auto;
             font-size: 2.5rem;
             color: white;
+        }
+
+        @media (max-width: 768px) {
+            .game-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2.2rem;
+                margin-bottom: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
         }
 
         .blue-theme {
@@ -150,6 +227,20 @@
             color: #151b2e;
         }
 
+        @media (max-width: 768px) {
+            .game-card h3 {
+                font-size: 1.3rem;
+                margin-bottom: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-card h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
         .game-card p {
             color: #4b5563;
             margin-bottom: 1.5rem;
@@ -157,6 +248,22 @@
             line-height: 1.5;
             text-align: center;
             font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .game-card p {
+                font-size: 0.9rem;
+                margin-bottom: 1.2rem;
+                line-height: 1.4;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-card p {
+                font-size: 0.85rem;
+                margin-bottom: 1rem;
+                line-height: 1.3;
+            }
         }
 
         .play-button {
@@ -231,6 +338,23 @@
             border-radius: 8px;
         }
 
+        @media (max-width: 768px) {
+            .game-stats {
+                font-size: 0.8rem;
+                margin-bottom: 1.2rem;
+                padding: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-stats {
+                font-size: 0.75rem;
+                margin-bottom: 1rem;
+                padding: 0.3rem;
+                justify-content: center;
+            }
+        }
+
         .coming-soon-badge {
             position: absolute;
             top: -8px;
@@ -245,6 +369,15 @@
             transform: rotate(15deg);
         }
 
+        @media (max-width: 768px) {
+            .coming-soon-badge {
+                top: -6px;
+                right: -6px;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+            }
+        }
+
         .badge {
             display: inline-block;
             padding: 0.35rem 0.75rem;
@@ -252,6 +385,22 @@
             font-size: 0.75rem;
             font-weight: 600;
             margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .badge {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
+                margin-right: 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .badge {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.65rem;
+                margin-right: 0.2rem;
+            }
         }
 
         /* Removing these badge classes for difficulty levels */
@@ -308,6 +457,12 @@
             font-size: 3rem;
         }
 
+        @media (max-width: 768px) {
+            .decoration {
+                display: none; /* Hide decorative elements on mobile for cleaner look */
+            }
+        }
+
         .decoration-1 {
             top: 15%;
             left: 10%;
@@ -344,6 +499,27 @@
             border-radius: 8px;
         }
 
+        @media (max-width: 768px) {
+            .category-title {
+                font-size: 1.3rem;
+                margin-bottom: 1.2rem;
+                padding: 0.4rem 0.8rem;
+                text-align: center;
+                display: block;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-title {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+
         .category-title::before {
             content: none;
         }
@@ -356,6 +532,51 @@
 
             .category-title {
                 font-size: 1.25rem;
+            }
+        }
+
+        /* Additional mobile optimizations */
+        @media (max-width: 640px) {
+            .main-content {
+                padding-top: 90px !important;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
+            .content-title {
+                font-size: 1.6rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .game-card {
+                padding: 0.8rem;
+                min-height: 280px; /* Ensure consistent card heights on mobile */
+            }
+
+            .game-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .game-card p {
+                font-size: 0.8rem;
+                line-height: 1.25;
+            }
+
+            .game-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .category-title {
+                font-size: 1rem;
+                padding: 0.25rem 0.5rem;
             }
         }
 
@@ -377,10 +598,34 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
+        @media (max-width: 768px) {
+            .answers-button {
+                margin-top: 10px;
+                padding: 8px 14px;
+                font-size: 0.9rem;
+                border-radius: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .answers-button {
+                margin-top: 8px;
+                padding: 7px 12px;
+                font-size: 0.85rem;
+                border-radius: 20px;
+            }
+        }
+
         .answers-button:hover {
             background: #3A7BD5;
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(74, 144, 226, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .answers-button:hover {
+                transform: translateY(-2px);
+            }
         }
 
         .answers-button:active {
@@ -418,7 +663,27 @@
             z-index: 5;
         }
 
-        /* Style untuk tab container */
+        @media (max-width: 768px) {
+            .completed-badge {
+                top: -6px;
+                right: -6px;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+                border-radius: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .completed-badge {
+                top: -4px;
+                right: -4px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.65rem;
+                border-radius: 12px;
+            }
+        }
+
+        /* Style untuk tab container - simplified for single tab */
         .tab-container {
             display: flex;
             justify-content: center;
@@ -429,52 +694,34 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border: 2px solid #d0d0d0;
-            max-width: 800px;
+            max-width: 400px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* Style untuk tombol tab */
+        /* Style untuk tombol tab - single tab */
         .tab-button {
             padding: 14px 28px;
             border: none;
-            background: transparent;
-            color: #222222;
+            background: #4a5af0;
+            color: white;
             font-weight: 700;
             font-size: 17px;
-            cursor: pointer;
+            cursor: default;
             transition: all 0.3s ease;
-            border-right: 1px solid #d0d0d0;
             position: relative;
             flex: 1;
             text-align: center;
-        }
-
-        .tab-button:last-child {
-            border-right: none;
+            box-shadow: 0 0 15px rgba(74, 90, 240, 0.4);
         }
 
         .tab-button:hover {
-            background: rgba(74, 90, 240, 0.1);
-            color: #4a5af0;
-        }
-
-        /* Style untuk tombol tab yang aktif */
-        .tab-button.active {
-            background: #4a5af0;
-            color: white;
-            box-shadow: 0 0 15px rgba(74, 90, 240, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .tab-button.active:hover {
             background: #3949cc;
-            color: white;
         }
 
         /* Style untuk konten tab */
         .tab-content {
-            display: none;
+            display: block; /* Always show since there's only one tab */
         }
 
         /* Style untuk konten tab yang aktif */
@@ -524,22 +771,23 @@
             <div class="decoration decoration-3">🧩</div>
             <div class="decoration decoration-4">🎯</div>
 
-            <div class="container mx-auto">
-                <div class="text-center mb-8 px-6">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-6 md:mb-8 px-2 md:px-6">
                     <h1 class="content-title">
-                        PERMAINAN <i class="fas fa-gamepad ml-3 text-white"></i>
+                        PERMAINAN <i class="fas fa-gamepad ml-2 md:ml-3 text-white"></i>
                     </h1>
                     <p class="subtitle">Asah kemampuanmu dengan permainan yang menyenangkan!</p>
                 </div>
                 <div class="gradient-border"></div>
 
                 <!-- Game categories tabs -->
-                <div class="w-full max-w-4xl mb-12">
-                    <div class="tab-container">
-                        <button class="tab-button active" data-tab="partsbody">Parts of Body</button>
-                        <button class="tab-button" data-tab="partshouse">Parts of House</button>
-                        <button class="tab-button" data-tab="illness">Illness</button>
-                    </div>
+                <div class="w-full max-w-4xl mb-8 md:mb-12">
+                    {{-- <div class="tab-container"> --}}
+                        {{-- <button class="tab-button active" data-tab="partsbody">Parts of Body</button> --}}
+                        <!-- Hide Parts of House and Illness tabs -->
+                        <!-- <button class="tab-button" data-tab="partshouse">Parts of House</button> -->
+                        <!-- <button class="tab-button" data-tab="illness">Illness</button> -->
+                    {{-- </div> --}}
 
                     @php
                     // Function to check if game is completed with perfect score
@@ -559,9 +807,9 @@
 
                     <!-- Parts of Body Games -->
                     <div class="tab-content active" id="partsbody">
-                        <h2 class="category-title mt-12 mb-8 text-white">Tema: Bagian Tubuh (Parts of Body)</h2>
+                        <h2 class="category-title mt-8 md:mt-12 mb-6 md:mb-8 text-white">Tema: Bagian Tubuh (Parts of Body)</h2>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 px-2 md:px-0">
                             <!-- Word Scramble -->
                             <div class="animate-fadeInUp" style="animation-delay: 0.1s">
                                 <div class="game-card" onclick="window.location.href='{{ route('permainan.word-scramble') }}'">
@@ -743,281 +991,15 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Parts of House Games -->
-                    <div class="tab-content" id="partshouse">
-                        <h2 class="category-title mt-16 mb-8 text-white">Tema: Bagian Rumah (Parts of House)</h2>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <!-- Word Matching House -->
-                            <div class="animate-fadeInUp" style="animation-delay: 0.4s">
-                                <div class="game-card" onclick="window.location.href='{{ route('permainan.word-matching-house') }}'">
-                                    <div class="game-icon green-theme">
-                                        <i class="fas fa-exchange-alt"></i>
                                     </div>
 
-                                    @php
-                                    // Menggunakan fungsi helper untuk cek status penyelesaian
-                                    $perfectScore = isGameCompleted('word-matching-house');
-                                    @endphp
-
-                                    @if($perfectScore)
-                                        <div class="completed-badge">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </div>
-                                    @endif
-
-                                    <h3 class="text-white">Word Matching</h3>
-                                    <div class="flex justify-center gap-2 mb-4">
-                                        <span class="badge badge-theme">Parts of House</span>
-                                    </div>
-                                    <p>Cocokkan bagian rumah dengan fungsinya. Permainan seru untuk menguji pengetahuanmu tentang bagian-bagian rumah! Cocok untuk anak SD kelas 5.</p>
-                                    <div class="game-stats">
-                                        {{-- <div><i class="fas fa-star text-yellow-400 mr-1"></i> +10 poin</div> --}}
-                                        <div><i class="fas fa-clock text-blue-400 mr-1"></i> 5 menit</div>
-                                    </div>
-
-                                    @if($perfectScore)
-                                        <a href="{{ route('permainan.answers', 'word-matching-house') }}" class="answers-button" onclick="event.stopPropagation();">
-                                            <i class="fas fa-book-open mr-2"></i> Review Jawaban
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Word Search House -->
-                            <div class="animate-fadeInUp" style="animation-delay: 0.5s">
-                                <div class="game-card" onclick="window.location.href='{{ route('permainan.word-search-house') }}'">
-                                    <div class="game-icon teal-theme">
-                                        <i class="fas fa-search"></i>
-                                    </div>
-
-                                    @php
-                                    // Menggunakan fungsi helper untuk cek status penyelesaian
-                                    $perfectScore = isGameCompleted('word-search-house');
-                                    @endphp
-
-                                    @if($perfectScore)
-                                        <div class="completed-badge">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </div>
-                                    @endif
-
-                                    <h3 class="text-white">Word Search</h3>
-                                    <div class="flex justify-center gap-2 mb-4">
-                                        <span class="badge badge-theme">Parts of House</span>
-                                    </div>
-                                    <p>Temukan kata-kata tersembunyi tentang bagian rumah dalam kotak huruf. Latih ketelitianmu dalam mencari nama-nama bagian rumah! Cocok untuk anak SD kelas 5.</p>
-                                    <div class="game-stats">
-                                        {{-- <div><i class="fas fa-star text-yellow-400 mr-1"></i> +15 poin</div> --}}
-                                        <div><i class="fas fa-clock text-blue-400 mr-1"></i> 8 menit</div>
-                                    </div>
-
-                                    @if($perfectScore)
-                                        <a href="{{ route('permainan.answers', 'word-search-house') }}" class="answers-button" onclick="event.stopPropagation();">
-                                            <i class="fas fa-book-open mr-2"></i> Review Jawaban
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Word Scramble House -->
-                            <div class="animate-fadeInUp" style="animation-delay: 0.6s">
-                                <div class="game-card" onclick="window.location.href='{{ route('permainan.word-scramble-house') }}'">
-                                    <div class="game-icon blue-theme">
-                                        <i class="fas fa-random"></i>
-                                    </div>
-
-                                    @php
-                                    // Menggunakan fungsi helper untuk cek status penyelesaian
-                                    $perfectScore = isGameCompleted('word-scramble-house');
-                                    @endphp
-
-                                    @if($perfectScore)
-                                        <div class="completed-badge">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </div>
-                                    @endif
-
-                                    <h3 class="text-white">Word Scramble</h3>
-                                    <div class="flex justify-center gap-2 mb-4">
-                                        <span class="badge badge-theme">Parts of House</span>
-                                    </div>
-                                    <p>Susun huruf-huruf acak menjadi kata yang benar tentang bagian rumah. Permainan seru untuk menguji pengetahuanmu tentang bagian-bagian rumah! Cocok untuk anak SD kelas 5.</p>
-                                    <div class="game-stats">
-                                        {{-- <div><i class="fas fa-star text-yellow-400 mr-1"></i> +15 poin</div> --}}
-                                        <div><i class="fas fa-clock text-blue-400 mr-1"></i> 8 menit</div>
-                                    </div>
-
-                                    @if($perfectScore)
-                                        <a href="{{ route('permainan.answers', 'word-scramble-house') }}" class="answers-button" onclick="event.stopPropagation();">
-                                            <i class="fas fa-book-open mr-2"></i> Review Jawaban
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Image Matching House - NEW -->
-                            <div class="animate-fadeInUp" style="animation-delay: 0.65s">
-                                <div class="game-card" onclick="window.location.href='{{ route('permainan.image-matching-house') }}'">
-                                    <div class="game-icon orange-theme">
-                                        <i class="fas fa-th-large"></i>
-                                    </div>
-
-                                    @php
-                                    // Menggunakan fungsi helper untuk cek status penyelesaian
-                                    $perfectScore = isGameCompleted('image-matching-house');
-                                    @endphp
-
-                                    @if($perfectScore)
-                                        <div class="completed-badge">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </div>
-                                    @endif
-
-                                    <h3 class="text-white">Image Matching</h3>
-                                    <div class="flex justify-center gap-2 mb-4">
-                                        <span class="badge badge-theme">Parts of House</span>
-                                    </div>
-                                    <p>Pasangkan gambar bagian rumah dengan kata yang tepat. Permainan seru untuk menguji pengetahuanmu tentang vocabulary bagian rumah! Cocok untuk anak SD kelas 5.</p>
-                                    <div class="game-stats">
-                                        {{-- <div><i class="fas fa-star text-yellow-400 mr-1"></i> +15 poin</div> --}}
-                                        <div><i class="fas fa-clock text-blue-400 mr-1"></i> 7 menit</div>
-                                    </div>
-
-                                    @if($perfectScore)
-                                        <a href="{{ route('permainan.answers', 'image-matching-house') }}" class="answers-button" onclick="event.stopPropagation();">
-                                            <i class="fas fa-book-open mr-2"></i> Review Jawaban
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Kinds of Illness Games -->
-                    <div class="tab-content" id="illness">
-                        <h2 class="category-title mt-16 mb-8 text-white">Tema: Jenis Penyakit (Kind of Illness)</h2>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <!-- Word Scramble Illness -->
-                            <div class="animate-fadeInUp" style="animation-delay: 0.7s">
-                                <div class="game-card" onclick="window.location.href='{{ route('permainan.word-scramble-illness') }}'">
-                                    <div class="game-icon orange-theme">
-                                        <i class="fas fa-sort-alpha-down"></i>
-                                    </div>
-
-                                    @php
-                                    // Menggunakan fungsi helper untuk cek status penyelesaian
-                                    $perfectScore = isGameCompleted('word-scramble-illness');
-                                    @endphp
-
-                                    @if($perfectScore)
-                                        <div class="completed-badge">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </div>
-                                    @endif
-
-                                    <h3 class="text-white">Word Scramble</h3>
-                                    <div class="flex justify-center gap-2 mb-4">
-                                        <span class="badge badge-theme">Kind of Illness</span>
-                                    </div>
-                                    <p>Susun huruf-huruf acak menjadi kata yang benar tentang penyakit dan keluhan kesehatan. Tantang kemampuan spelling dan vocabulary kesehatan! Cocok untuk anak SD kelas 5.</p>
-                                    <div class="game-stats">
-                                        {{-- <div><i class="fas fa-star text-yellow-400 mr-1"></i> +10 poin</div> --}}
-                                        <div><i class="fas fa-clock text-blue-400 mr-1"></i> 5 menit</div>
-                                    </div>
-
-                                    @if($perfectScore)
-                                        <a href="{{ route('permainan.answers', 'word-scramble-illness') }}" class="answers-button" onclick="event.stopPropagation();">
-                                            <i class="fas fa-book-open mr-2"></i> Review Jawaban
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Word Matching Illness -->
-                            <div class="animate-fadeInUp" style="animation-delay: 0.8s">
-                                <div class="game-card" onclick="window.location.href='{{ route('permainan.word-matching-illness') }}'">
-                                    <div class="game-icon blue-theme">
-                                        <i class="fas fa-exchange-alt"></i>
-                                    </div>
-
-                                    @php
-                                    // Menggunakan fungsi helper untuk cek status penyelesaian
-                                    $perfectScore = isGameCompleted('word-matching-illness');
-                                    @endphp
-
-                                    @if($perfectScore)
-                                        <div class="completed-badge">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </div>
-                                    @endif
-
-                                    <h3 class="text-white">Word Matching</h3>
-                                    <div class="flex justify-center gap-2 mb-4">
-                                        <span class="badge badge-theme">Kind of Illness</span>
-                                    </div>
-                                    <p>Cocokkan jenis penyakit dengan gejalanya. Permainan seru untuk menguji pengetahuanmu tentang gejala penyakit! Cocok untuk anak SD kelas 5.</p>
-                                    <div class="game-stats">
-                                        {{-- <div><i class="fas fa-star text-yellow-400 mr-1"></i> +15 poin</div> --}}
-                                        <div><i class="fas fa-clock text-blue-400 mr-1"></i> 7 menit</div>
-                                    </div>
-
-                                    @if($perfectScore)
-                                        <a href="{{ route('permainan.answers', 'word-matching-illness') }}" class="answers-button" onclick="event.stopPropagation();">
-                                            <i class="fas fa-book-open mr-2"></i> Review Jawaban
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Word Search Illness -->
-                            <div class="animate-fadeInUp" style="animation-delay: 0.9s">
-                                <div class="game-card" onclick="window.location.href='{{ route('permainan.word-search-illness') }}'">
-                                    <div class="game-icon purple-theme">
-                                        <i class="fas fa-search"></i>
-                                    </div>
-
-                                    @php
-                                    // Menggunakan fungsi helper untuk cek status penyelesaian
-                                    $perfectScore = isGameCompleted('word-search-illness');
-                                    @endphp
-
-                                    @if($perfectScore)
-                                        <div class="completed-badge">
-                                            <i class="fas fa-check-circle mr-1"></i> Selesai
-                                        </div>
-                                    @endif
-
-                                    <h3 class="text-white">Word Search</h3>
-                                    <div class="flex justify-center gap-2 mb-4">
-                                        <span class="badge badge-theme">Kind of Illness</span>
-                                    </div>
-                                    <p>Temukan kata-kata tersembunyi tentang penyakit dan kesehatan dalam kotak huruf. Latih ketelitianmu dalam mencari istilah kesehatan! Cocok untuk anak SD kelas 5.</p>
-                                    <div class="game-stats">
-                                        {{-- <div><i class="fas fa-star text-yellow-400 mr-1"></i> +15 poin</div> --}}
-                                        <div><i class="fas fa-clock text-blue-400 mr-1"></i> 8 menit</div>
-                                    </div>
-
-                                    @if($perfectScore)
-                                        <a href="{{ route('permainan.answers', 'word-search-illness') }}" class="answers-button" onclick="event.stopPropagation();">
-                                            <i class="fas fa-book-open mr-2"></i> Review Jawaban
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-16 bg-white bg-opacity-5 rounded-2xl p-8 animate-fadeInUp" style="animation-delay: 1.0s">
-                    <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mt-12 md:mt-16 bg-white bg-opacity-5 rounded-2xl p-6 md:p-8 animate-fadeInUp mx-2 md:mx-0" style="animation-delay: 1.0s">
+                    <div class="flex flex-col md:flex-row items-center justify-between text-center md:text-left">
                         <div class="mb-6 md:mb-0">
-                            <h2 class="text-2xl font-bold text-white mb-2">Dapatkan Poin & Naik Peringkat</h2>
-                            <p class="text-gray-400 max-w-xl">Mainkan game edukatif untuk mendapatkan poin dan naik peringkat di papan skor. Tantang teman-temanmu dan jadilah yang terbaik!</p>
+                            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Dapatkan Poin & Naik Peringkat</h2>
+                            <p class="text-gray-400 max-w-xl text-sm md:text-base">Mainkan game edukatif untuk mendapatkan poin dan naik peringkat di papan skor. Tantang teman-temanmu dan jadilah yang terbaik!</p>
                         </div>
-                        <a href="{{ route('leaderboard') }}" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-3 px-6 rounded-full inline-flex items-center transition-all transform hover:scale-105">
+                        <a href="{{ route('leaderboard') }}" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-2 md:py-3 px-4 md:px-6 rounded-full inline-flex items-center transition-all transform hover:scale-105 text-sm md:text-base w-full md:w-auto justify-center md:justify-start">
                             <i class="fas fa-trophy mr-2"></i> Lihat Papan Peringkat
                         </a>
                     </div>
@@ -1027,27 +1009,10 @@
     </div>
 
     <script>
+        // JavaScript for tab functionality is no longer needed since there's only one tab
+        // The Parts of Body tab is always active and visible
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab functionality
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-
-                    // Add active class to clicked button
-                    this.classList.add('active');
-
-                    // Hide all tab contents
-                    tabContents.forEach(content => content.classList.remove('active'));
-
-                    // Show the selected tab content
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
+            console.log('Permainan page loaded - Parts of Body games only');
         });
     </script>
 </body>

@@ -32,12 +32,20 @@
             transition: all 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding-top: 120px;
-            }
+        .content-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: #4f46e5;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+            padding: 0.5rem 2rem;
+            border-radius: 8px;
         }
 
         .subtitle {
@@ -54,53 +62,146 @@
             font-weight: 600;
         }
 
-        .page-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 1rem;
-            background: #7028E4;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-left: auto;
-            margin-right: auto;
-            width: fit-content;
-            padding: 0.5rem 2rem;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
         .gradient-border {
             height: 4px;
             width: 100%;
             max-width: none;
-            background: #7028E4;
+            background: #4f46e5;
             margin-bottom: 2rem;
             border-radius: 2px;
             margin-left: 0;
             margin-right: auto;
         }
 
-        .form-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-            color: #1e293b;
-            position: relative;
-            animation: fadeIn 0.8s ease-out;
-            border: 2px solid rgba(103, 232, 249, 0.5);
+        /* Mobile styling */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding-top: 90px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1rem;
+                height: 3px;
+            }
+
+            .form-container {
+                padding: 1rem;
+            }
+
+            .input-group {
+                margin-bottom: 1.2rem;
+            }
+
+            .form-input, .form-textarea {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+
+            .action-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
         }
 
-        .input-group {
-            margin-bottom: 1.5rem;
-            position: relative;
+        @media (max-width: 640px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
+        /* Button responsiveness */
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .btn-responsive {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-responsive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column-reverse;
+                gap: 0.75rem;
+                align-items: stretch;
+            }
+
+            .btn-responsive {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .button-container {
+                gap: 0.5rem;
+            }
+
+            .btn-responsive {
+                padding: 0.875rem;
+                font-size: 0.9rem;
+            }
         }
 
         .input-label {
@@ -353,6 +454,27 @@
             margin-bottom: 0.5rem;
             color: #2563EB;
         }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            color: #1e293b;
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+            border: 2px solid rgba(103, 232, 249, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -369,17 +491,16 @@
 
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-8">
-                    <h1 class="page-title">Edit Materi <i class="fas fa-tools ml-3 text-white"></i></h1>
-                    <p class="subtitle">Ubah dan perbaiki materi pembelajaran "<span class="font-bold text-yellow-300">{{ $materi->title }}</span>"</p>
+                    <h1 class="content-title">Edit Materi</h1>
+                    <p class="subtitle">Ubah dan perbaiki materi pembelajaran - {{ $materi->title }}</p>
                     <div class="gradient-border"></div>
                 </div>
 
                 @include('components.notification')
 
                 <div class="form-container">
-                    <div class="flex justify-between items-center mb-6">
-                        <h1 class="content-title">Edit Materi</h1>
-                        <a href="{{ route('admin.materi.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    <div class="button-container mb-6">
+                        <a href="{{ route('admin.materi.index') }}" class="btn-responsive bg-gray-500 hover:bg-gray-600 text-white">
                             <i class="fas fa-arrow-left mr-2"></i>Kembali
                         </a>
                     </div>
@@ -459,8 +580,8 @@
                             </button>
                         </div>
 
-                        <div class="flex items-center justify-end">
-                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <div class="button-container mt-6">
+                            <button type="submit" class="btn-responsive bg-green-500 hover:bg-green-700 text-white">
                                 <i class="fas fa-save mr-2"></i>Simpan Perubahan
                             </button>
                         </div>

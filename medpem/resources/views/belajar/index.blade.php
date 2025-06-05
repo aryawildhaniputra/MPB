@@ -93,6 +93,7 @@
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
             transition: all 0.3s;
             cursor: pointer;
+            pointer-events: auto;
         }
 
         .mascot:hover {
@@ -206,6 +207,7 @@
             z-index: -1;
             opacity: 0.6;
             font-size: 3rem;
+            pointer-events: none;
         }
 
         .decoration-1 {
@@ -284,17 +286,17 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            pointer-events: none; /* Make sure decorations don't interfere with clicking */
-            z-index: 0; /* Place decorations behind interactive elements */
+            pointer-events: none;
+            z-index: -1;
         }
 
         .floating-decoration {
             position: absolute;
-            z-index: 0;
+            z-index: -1;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
             animation: float 8s ease-in-out infinite;
             pointer-events: none;
-            opacity: 0.4; /* Lower opacity to make them less distracting */
+            opacity: 0.4;
         }
 
         .path-section {
@@ -332,6 +334,20 @@
             position: relative;
             margin-bottom: 30px;
             z-index: 1; /* Ensure rows appear above the vertical line */
+        }
+
+        .lesson-row.row-left {
+            justify-content: flex-start;
+            padding-left: 20%;
+        }
+
+        .lesson-row.row-center {
+            justify-content: center;
+        }
+
+        .lesson-row.row-right {
+            justify-content: flex-end;
+            padding-right: 20%;
         }
 
         .lesson-node {
@@ -443,16 +459,17 @@
             top: 0;
             transform: translateY(-105%);
             background-color: #1e2c3a;
-            border-radius: 20px;
-            padding: 1rem;
-            width: 240px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            padding: 0.75rem;
+            width: 220px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             z-index: 10;
             text-align: left;
             visibility: hidden;
             opacity: 0;
             transition: all 0.3s;
-            border: 3px solid #58CC02;
+            border: 2px solid #58CC02;
+            font-size: 0.9rem;
         }
 
         .lesson-node:hover .lesson-tooltip {
@@ -463,68 +480,109 @@
         .lesson-tooltip::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -6px;
             left: 50%;
             transform: translateX(-50%);
-            border-width: 8px 8px 0 8px;
+            border-width: 6px 6px 0 6px;
             border-style: solid;
             border-color: #58CC02 transparent transparent transparent;
         }
 
-        .node-left .lesson-tooltip {
-            left: auto;
-            right: -100px;
+        .row-left .lesson-tooltip {
+            left: 15px;
+            right: auto;
         }
 
-        .node-right .lesson-tooltip {
-            right: auto;
-            left: -100px;
+        .row-right .lesson-tooltip {
+            right: 15px;
+            left: auto;
+        }
+
+        .row-center .lesson-tooltip {
+            left: 50%;
+            transform: translateX(-50%) translateY(-105%);
         }
 
         .tooltip-title {
             font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
             color: #58CC02;
         }
 
         .tooltip-subtitle {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #a0aec0;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .completed-info {
+            background: rgba(31, 41, 55, 0.8) !important;
+            padding: 0.6rem !important;
+            border-radius: 8px !important;
+            margin-bottom: 0.6rem !important;
+            border: 1.5px solid rgba(34, 197, 94, 0.6) !important;
+        }
+
+        .completed-info .fas.fa-check-circle {
+            font-size: 1rem !important;
+            margin-right: 0.4rem !important;
+        }
+
+        .completed-info p {
+            font-size: 0.85rem !important;
+            margin-bottom: 0.4rem !important;
+        }
+
+        .completed-info .bg-gray-900 {
+            background: rgba(17, 24, 39, 0.9) !important;
+            padding: 0.5rem !important;
+            border-radius: 6px !important;
+        }
+
+        .completed-info .font-bold {
+            font-size: 0.75rem !important;
+            margin-bottom: 0.3rem !important;
+            padding-bottom: 0.2rem !important;
+        }
+
+        .completed-info span {
+            font-size: 0.8rem !important;
+            padding: 0.4rem 0.6rem !important;
         }
 
         .tooltip-button {
             display: flex;
             width: 100%;
-            padding: 0.6rem;
+            padding: 0.5rem;
             background-color: #58CC02;
             color: white;
             font-weight: 700;
-            border-radius: 15px;
+            border-radius: 12px;
             align-items: center;
             justify-content: center;
-            margin-top: 0.8rem;
+            margin-top: 0.6rem;
             transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
             border: none;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            font-size: 0.85rem;
         }
 
         .tooltip-button img {
-            width: 24px;
-            height: 24px;
-            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+            margin-right: 6px;
         }
 
         .tooltip-button span {
             display: inline-block;
-            margin-left: 5px;
+            margin-left: 4px;
         }
 
         .tooltip-button:hover {
             background-color: #4CAF50;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .locked-button {
@@ -617,67 +675,320 @@
             font-size: 1rem;
         }
 
-        /* Mobile responsiveness */
+        /* Mobile responsiveness - Improved */
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
                 width: 100%;
                 padding-top: 120px;
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
 
+            /* Adjust mascots for mobile */
             .mascot {
-                width: 60px;
-                height: 60px;
+                width: 50px;
+                height: 50px;
+                z-index: 1;
+            }
+
+            .lesson-mascot {
+                right: 5%;
+                top: 120px;
+            }
+
+            .teacher-mascot {
+                left: 5%;
+                top: 250px;
+            }
+
+            .lily-mascot {
+                right: 8%;
+                bottom: 150px;
+            }
+
+            .raccoon-mascot {
+                left: 8%;
+                bottom: 200px;
+            }
+
+            /* Adjust speech bubbles for mobile */
+            .mascot-speech {
+                width: 140px;
+                padding: 10px;
+                font-size: 0.75rem;
+                z-index: 2;
+            }
+
+            .lesson-speech {
+                right: 2%;
+                top: 80px;
+            }
+
+            .teacher-speech {
+                left: 2%;
+                top: 210px;
+            }
+
+            .lily-speech {
+                right: 5%;
+                bottom: 200px;
+            }
+
+            .raccoon-speech {
+                left: 5%;
+                bottom: 250px;
+            }
+
+            /* Hide decorative elements that might overlap */
+            .floating-decoration {
+                opacity: 0.2;
+                transform: scale(0.7);
+            }
+
+            .decoration {
+                opacity: 0.3;
+                font-size: 2rem;
+            }
+
+            /* Adjust lesson path for mobile */
+            .lesson-path-container {
+                padding: 0 1rem;
+            }
+
+            .lesson-path {
+                padding: 20px 10px;
             }
 
             .lesson-tooltip {
-                width: 200px;
+                width: 180px !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%) translateY(-105%) !important;
+                font-size: 0.8rem;
+                padding: 0.6rem;
+                border-radius: 12px;
             }
 
+            .tooltip-title {
+                font-size: 0.9rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .tooltip-subtitle {
+                font-size: 0.75rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .completed-info {
+                padding: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .completed-info p {
+                font-size: 0.8rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+
+            .completed-info .font-bold {
+                font-size: 0.7rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+
+            .completed-info span {
+                font-size: 0.75rem !important;
+                padding: 0.3rem 0.5rem !important;
+            }
+
+            .tooltip-button {
+                padding: 0.4rem;
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+                border-radius: 10px;
+            }
+
+            /* Adjust notifications for mobile */
             .notification {
-                width: 90%;
+                width: calc(100% - 40px);
                 max-width: 320px;
                 padding: 12px 20px;
                 text-align: center;
                 justify-content: center;
+                right: 20px;
+                left: 20px;
+                margin: 0 auto;
+                top: 100px;
             }
 
             .success-notification {
-                right: 10px;
-                max-width: 280px;
+                right: 20px;
+                left: 20px;
+                max-width: calc(100% - 40px);
                 padding: 12px 20px;
+                top: 100px;
+                margin: 0 auto;
+                transform: translateY(-20px);
+            }
+
+            .success-notification.show {
+                transform: translateY(0);
             }
 
             .notification.show {
-                transform: translateX(50%);
+                transform: translateX(0);
             }
 
             .content-title {
                 font-size: 2.5rem;
-                padding: 0 10px;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
             }
         }
 
         @media (max-width: 480px) {
+            .main-content {
+                padding-top: 110px;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            /* Further reduce mascot size on small mobile */
+            .mascot {
+                width: 40px;
+                height: 40px;
+            }
+
+            /* Move mascots further away from content area */
+            .lesson-mascot {
+                right: 2%;
+                top: 100px;
+            }
+
+            .teacher-mascot {
+                left: 2%;
+                top: 200px;
+            }
+
+            .lily-mascot {
+                right: 3%;
+                bottom: 120px;
+            }
+
+            .raccoon-mascot {
+                left: 3%;
+                bottom: 150px;
+            }
+
+            /* Smaller speech bubbles */
+            .mascot-speech {
+                width: 120px;
+                padding: 8px;
+                font-size: 0.65rem;
+            }
+
+            .lesson-speech {
+                right: 1%;
+                top: 65px;
+            }
+
+            .teacher-speech {
+                left: 1%;
+                top: 165px;
+            }
+
+            .lily-speech {
+                right: 2%;
+                bottom: 170px;
+            }
+
+            .raccoon-speech {
+                left: 2%;
+                bottom: 200px;
+            }
+
+            /* Hide more decorations on very small screens */
+            .floating-decoration {
+                opacity: 0.1;
+                transform: scale(0.5);
+            }
+
+            .decoration {
+                opacity: 0.2;
+                font-size: 1.5rem;
+            }
+
             .content-title {
                 font-size: 2rem;
+                padding: 0.3rem 1rem;
             }
 
             .subtitle {
                 font-size: 0.9rem;
-                padding: 0 15px;
+                padding: 0.3rem;
+            }
+
+            .lesson-tooltip {
+                width: 160px !important;
+                font-size: 0.75rem;
+                padding: 0.5rem;
+                border-radius: 10px;
+            }
+
+            .tooltip-title {
+                font-size: 0.85rem;
+                margin-bottom: 0.15rem;
+            }
+
+            .tooltip-subtitle {
+                font-size: 0.7rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .completed-info {
+                padding: 0.4rem !important;
+                margin-bottom: 0.4rem !important;
+            }
+
+            .completed-info p {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+
+            .completed-info .font-bold {
+                font-size: 0.65rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+
+            .completed-info span {
+                font-size: 0.7rem !important;
+                padding: 0.25rem 0.4rem !important;
+            }
+
+            .tooltip-button {
+                padding: 0.35rem;
+                font-size: 0.75rem;
+                margin-top: 0.4rem;
+                border-radius: 8px;
             }
 
             .notification {
                 font-size: 0.9rem;
                 padding: 10px 15px;
+                top: 90px;
             }
 
             .success-notification {
                 font-size: 0.9rem;
                 padding: 10px 15px;
-                width: 90%;
-                max-width: 90%;
+                width: calc(100% - 20px);
+                max-width: calc(100% - 20px);
+                right: 10px;
+                left: 10px;
+                top: 90px;
             }
 
             .success-notification .icon {
@@ -686,6 +997,84 @@
 
             .success-notification .message {
                 font-size: 0.9rem;
+            }
+
+            /* Ensure lesson nodes are properly sized */
+            .lesson-circle {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            /* Extra small screens */
+            .mascot {
+                width: 35px;
+                height: 35px;
+            }
+
+            .mascot-speech {
+                width: 100px;
+                padding: 6px;
+                font-size: 0.6rem;
+            }
+
+            /* Position mascots even further from content */
+            .lesson-mascot, .lily-mascot {
+                right: 1%;
+            }
+
+            .teacher-mascot, .raccoon-mascot {
+                left: 1%;
+            }
+
+            .lesson-circle {
+                width: 55px;
+                height: 55px;
+            }
+
+            .lesson-tooltip {
+                width: 140px !important;
+                font-size: 0.7rem;
+                padding: 0.4rem;
+                border-radius: 8px;
+            }
+
+            .tooltip-title {
+                font-size: 0.8rem;
+                margin-bottom: 0.1rem;
+            }
+
+            .tooltip-subtitle {
+                font-size: 0.65rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .completed-info {
+                padding: 0.3rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+
+            .completed-info p {
+                font-size: 0.7rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+
+            .completed-info .font-bold {
+                font-size: 0.6rem !important;
+                margin-bottom: 0.15rem !important;
+            }
+
+            .completed-info span {
+                font-size: 0.65rem !important;
+                padding: 0.2rem 0.3rem !important;
+            }
+
+            .tooltip-button {
+                padding: 0.3rem;
+                font-size: 0.7rem;
+                margin-top: 0.3rem;
+                border-radius: 6px;
             }
         }
 
@@ -710,15 +1099,6 @@
         /* Pastikan user dropdown muncul di atas konten */
         #userDropdownDiv {
             z-index: 1001 !important;
-        }
-
-        /* Tambahkan style untuk memastikan modal achievement muncul di atas semua konten */
-        #achievementModalOverlay {
-            z-index: 9999 !important;
-        }
-
-        #achievementModal {
-            z-index: 10000 !important;
         }
 
         /* Tambahkan visual debug area untuk pointer events */
@@ -846,233 +1226,162 @@
 
                 <!-- Lesson Path -->
                 <div class="lesson-path">
+                    <!-- Start Node -->
                     @php
-                        // Group lessons by level/theme for sections
-                        $sectionCount = min(3, ceil(count($lessons) / 2)); // Create 2-3 sections
-                        $currentSection = 0;
+                        // Determine if the initial start node should be inactive
+                        $startNodeInactive = false;
+                        if (count($lessons) > 0) {
+                            $firstLesson = $lessons[0];
+                            $firstPosition = $firstLesson['position'] ?? 1;
+                            $startNodeInactive = ($firstPosition % 3 == 0) ||
+                                               (isset($firstLesson['is_active']) && !$firstLesson['is_active']);
+                        }
                     @endphp
 
-                    @for($section = 0; $section < $sectionCount; $section++)
-                        <div class="path-section">
-                            <!-- Start Node (only in first section) -->
-                            @if($section == 0)
-                                                                @php
-                                    // Determine if the initial start node should be inactive
-                                    // For demo purposes, let's make the start node inactive if first lesson is inactive
-                                    $startNodeInactive = false;
-
-                                    // If there are lessons, check if the first one is inactive
-                                    if (count($lessons) > 0) {
-                                        $firstLesson = $lessons[0];
-                                        // For testing, mark the start node as inactive if first lesson is in position 3, 6, 9...
-                                        // In production, directly check the first lesson's is_active status
-                                        $firstPosition = $firstLesson['position'] ?? 1;
-                                        $startNodeInactive = ($firstPosition % 3 == 0) ||
-                                                           (isset($firstLesson['is_active']) && !$firstLesson['is_active']);
-                                    }
-                                @endphp
-                                <div class="lesson-row justify-content-center">
-                                    <div class="text-center mb-2">
-                                        {{-- <span class="text-green-500 font-bold text-xl" style="text-shadow: 0 0 10px rgba(88, 204, 2, 0.7);">MULAILAH PERJALANANU SEKARANG</span> --}}
-                                    </div>
-                                </div>
-                                <div class="lesson-row">
-                                    <div class="lesson-node">
-                                        <div class="lesson-circle {{ $startNodeInactive ? 'inactive' : 'active' }}">
-                                            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f680.svg" alt="Start" class="start-icon">
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @php
-                                // Calculate which lessons belong to this section
-                                $sectionSize = ceil(count($lessons) / $sectionCount);
-                                $startIndex = $section * $sectionSize;
-                                $endIndex = min(($section + 1) * $sectionSize, count($lessons));
-                                $sectionLessons = array_slice($lessons->toArray(), $startIndex, $endIndex - $startIndex);
-                            @endphp
-
-                            @foreach($sectionLessons as $lessonIndex => $lesson)
-                                                                                                        @php
-                                        $globalIndex = $startIndex + $lessonIndex;
-                                        $isFirstLesson = $globalIndex === 0;
-
-                                        // Check if lesson is active directly from the database attribute
-                                        // For testing, explicitly mark some lessons as inactive
-                                        if (!isset($lesson['is_active'])) {
-                                            // This is for testing only - remove in production
-                                            // Force every 3rd lesson to be inactive for demonstration
-                                            $lesson['is_active'] = !($globalIndex % 3 == 0);
-                                        }
-                                        $isLessonActive = $lesson['is_active'] ?? true;
-
-                                        // Use the unlocked field from user_status
-                                        $isUnlocked = $lesson['user_status']['unlocked'] ?? true;
-
-                                        $isCompleted = $lesson['user_status']['completed'];
-                                        $isEven = $lessonIndex % 2 == 0;
-                                        $rowClass = $isEven ? 'justify-content-center' : 'justify-content-center';
-                                        $nodeClass = $isEven ? 'node-right' : 'node-left';
-                                @endphp
-
-                                <!-- Divide each lesson into 6 parts/exercises in zigzag pattern -->
-                                @for($part = 1; $part <= 6; $part++)
-                                    @php
-                                        // Determine if this specific part is completed
-                                        $lessonStarted = $lesson['user_status']['started'] ?? false;
-
-                                        // Check the specific part completion status
-                                        $partCompleted = false;
-                                        if ($part == 1) {
-                                            $partCompleted = $lesson['user_status']['part1_completed'] ?? false;
-                                        } elseif ($part == 2) {
-                                            $partCompleted = $lesson['user_status']['part2_completed'] ?? false;
-                                        } elseif ($part == 3) {
-                                            $partCompleted = $lesson['user_status']['part3_completed'] ?? false;
-                                        } elseif ($part == 4) {
-                                            $partCompleted = $lesson['user_status']['part4_completed'] ?? false;
-                                        } elseif ($part == 5) {
-                                            $partCompleted = $lesson['user_status']['part5_completed'] ?? false;
-                                        } elseif ($part == 6) {
-                                            $partCompleted = $lesson['user_status']['part6_completed'] ?? false;
-                                        }
-
-                                        // All parts are unlocked by default now
-                                        $partUnlocked = true;
-
-                                        // Part is active (current focus) if:
-                                        // 1. It's unlocked
-                                        // 2. Not yet completed
-                                        // 3. The lesson is active
-                                        $isActive = $partUnlocked && !$partCompleted && $isLessonActive;
-
-                                        // Define the node CSS classes
-                                        $circleClass = 'lesson-circle';
-                                        if ($partCompleted) {
-                                            $circleClass .= ' completed';
-                                        } elseif (!$isLessonActive) {
-                                            $circleClass .= ' inactive'; // Force inactive class for inactive lessons
-                                        } elseif ($isActive) {
-                                            $circleClass .= ' active';
-                                        }
-                                        if (!$partUnlocked) $circleClass .= ' locked';
-
-                                        // Create a structured zigzag pattern like in the image
-                                        // Calculate the position based on the absolute index
-                                        $absoluteIndex = $globalIndex * 6 + $part;
-
-                                        // Determine if this node should be centered, left, or right
-                                        // Use a repeating pattern of: center, left, right, center, left, right, etc.
-                                        $position = $absoluteIndex % 3;
-
-                                        if ($position == 0) {
-                                            // Center
-                                            $rowClass = 'justify-content-center';
-                                            $nodeClass = '';
-                                            $offset = '';
-                                        } elseif ($position == 1) {
-                                            // Left
-                                            $rowClass = 'justify-content-start';
-                                            $nodeClass = 'node-left';
-                                            $offset = 'ml-20';
-                                        } else {
-                                            // Right
-                                            $rowClass = 'justify-content-end';
-                                            $nodeClass = 'node-right';
-                                            $offset = 'mr-20';
-                                        }
-                                    @endphp
-
-                                    <div class="lesson-row {{ $rowClass }}">
-                                        <div class="lesson-node {{ $nodeClass }} {{ $offset }}">
-                                            <div class="{{ $circleClass }}">
-                                                @if($partCompleted)
-                                                    <i class="fas fa-star star-icon"></i>
-                                                @elseif(!$partUnlocked)
-                                                    <i class="fas fa-lock lock-icon"></i>
-                                                @else
-                                                    <i class="far fa-star star-icon"></i>
-                                                @endif
-                                            </div>
-
-                                            <!-- Tooltip for the node -->
-                                            <div class="lesson-tooltip">
-                                                <div class="tooltip-title">{{ $lesson['title'] }}</div>
-                                                <div class="tooltip-subtitle">
-                                                    @if($part < 6)
-                                                        Bagian {{ $part }} dari 6
-                                                    @else
-                                                        Ujian Akhir
-                                                    @endif
-                                                </div>
-
-                                                @if($partCompleted)
-                                                <div class="completed-info bg-gray-800 p-3 rounded-lg mb-3 border-2 border-green-800">
-                                                    <div class="flex items-center mb-2">
-                                                        <i class="fas fa-check-circle text-green-500 mr-2 text-lg"></i>
-                                                        <p class="text-green-400 font-bold">Bagian Selesai!</p>
-                                                    </div>
-                                                    <div class="bg-gray-900 p-3 rounded-lg">
-                                                        <p class="font-bold text-green-400 mb-2 border-b border-gray-700 pb-1">Contoh Jawaban Benar:</p>
-                                                        @php
-                                                            $exampleAnswer = null;
-                                                            $partField = 'part' . $part . '_example';
-                                                            if (isset($lesson['user_status'][$partField])) {
-                                                                $exampleAnswer = $lesson['user_status'][$partField];
-                                                            }
-                                                        @endphp
-
-                                                        @if($exampleAnswer)
-                                                            <div class="flex items-center">
-                                                                <span class="text-white bg-gray-800 px-3 py-2 rounded-lg font-semibold">{{ $exampleAnswer }}</span>
-                                                            </div>
-                                                        @else
-                                                            <p class="text-green-400">Jawaban tidak tersedia</p>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                @endif
-
-                                                @if(!$partUnlocked)
-                                                    <div class="text-sm text-gray-600 mb-2">
-                                                        Selesaikan semua level di atas untuk membuka ini!
-                                                    </div>
-                                                    <a href="#" class="tooltip-button locked-button">
-                                                        <i class="fas fa-lock mr-2"></i>TERKUNCI
-                                                    </a>
-                                                @else
-                                                    @if($partCompleted)
-                                                        <a href="{{ route('belajar.review', ['id' => $lesson['id'], 'part' => $part]) }}" class="tooltip-button bg-blue-600 hover:bg-blue-700">
-                                                            <i class="fas fa-eye mr-2"></i>Lihat Soal
-                                                    </a>
-                                                @else
-                                                    <form action="{{ route('belajar.start', $lesson['id']) }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="part" value="{{ $part }}">
-                                                        <button type="submit" class="tooltip-button">
-                                                                <span>+15 poin</span>
-                                                        </button>
-                                                    </form>
-                                                    @endif
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endfor
-
-                                <!-- Skip button after each unit (except the last) -->
-                                @if(!$loop->last)
-                                    <div class="lesson-row justify-content-center">
-                                        <div class="section-divider"></div>
-                                    </div>
-                                @endif
-                            @endforeach
+                    <div class="lesson-row row-center">
+                        <div class="lesson-node">
+                            <div class="lesson-circle {{ $startNodeInactive ? 'inactive' : 'active' }}">
+                                <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f680.svg" alt="Start" class="start-icon">
+                            </div>
                         </div>
-                    @endfor
+                    </div>
+
+                    @php
+                        // Create a single array of all parts from all lessons
+                        $allParts = [];
+                        $partIndex = 0;
+
+                        foreach($lessons as $lessonIndex => $lesson) {
+                            for($part = 1; $part <= 6; $part++) {
+                                $partCompleted = $lesson['user_status']['parts']['part' . $part . '_completed'] ?? false;
+                                $partUnlocked = true; // All parts unlocked for now
+                                $exampleAnswer = $lesson['user_status']['parts']['part' . $part . '_example'] ?? null;
+
+                                $allParts[] = [
+                                    'lesson' => $lesson,
+                                    'lesson_index' => $lessonIndex,
+                                    'part_number' => $part,
+                                    'completed' => $partCompleted,
+                                    'unlocked' => $partUnlocked,
+                                    'example' => $exampleAnswer,
+                                    'global_index' => $partIndex
+                                ];
+                                $partIndex++;
+                            }
+                        }
+
+                        // Define zigzag pattern positions
+                        $positions = ['center', 'left', 'right', 'left', 'center', 'right', 'center', 'left', 'right'];
+                    @endphp
+
+                    @foreach($allParts as $index => $partData)
+                        @php
+                            $lesson = $partData['lesson'];
+                            $part = $partData['part_number'];
+                            $partCompleted = $partData['completed'];
+                            $partUnlocked = $partData['unlocked'];
+                            $exampleAnswer = $partData['example'];
+
+                            // Determine position using pattern + some randomness
+                            $basePosition = $positions[$index % count($positions)];
+
+                            // Add variety to prevent monotony
+                            if ($index % 8 == 0) $basePosition = 'center';
+                            elseif ($index % 11 == 0) $basePosition = 'right';
+                            elseif ($index % 13 == 0) $basePosition = 'left';
+
+                            $rowClass = 'lesson-row row-' . $basePosition;
+
+                            // Node styling
+                            if ($partCompleted) {
+                                $nodeClass = 'completed';
+                                $circleClass = 'lesson-circle completed';
+                            } elseif (!$partUnlocked) {
+                                $nodeClass = 'locked';
+                                $circleClass = 'lesson-circle locked';
+                            } else {
+                                $nodeClass = 'active';
+                                $circleClass = 'lesson-circle active';
+                            }
+                        @endphp
+
+                        <!-- Individual lesson part node -->
+                        <div class="{{ $rowClass }}">
+                            <div class="lesson-node {{ $nodeClass }}">
+                                <div class="{{ $circleClass }}">
+                                    @if($partCompleted)
+                                        <i class="fas fa-star star-icon"></i>
+                                    @elseif(!$partUnlocked)
+                                        <i class="fas fa-lock lock-icon"></i>
+                                    @else
+                                        <i class="far fa-star star-icon"></i>
+                                    @endif
+                                </div>
+
+                                <!-- Tooltip for the node -->
+                                <div class="lesson-tooltip">
+                                    <div class="tooltip-title">{{ $lesson['title'] }}</div>
+                                    <div class="tooltip-subtitle">
+                                        @if($part < 6)
+                                            Bagian {{ $part }} dari 6
+                                        @else
+                                            Ujian Akhir
+                                        @endif
+                                    </div>
+
+                                    @if($partCompleted)
+                                    <div class="completed-info bg-gray-800 p-3 rounded-lg mb-3 border-2 border-green-800">
+                                        <div class="flex items-center mb-2">
+                                            <i class="fas fa-check-circle text-green-500 mr-2 text-lg"></i>
+                                            <p class="text-green-400 font-bold">Bagian Selesai!</p>
+                                        </div>
+                                        @if($exampleAnswer)
+                                        <div class="bg-gray-900 p-3 rounded-lg">
+                                            <p class="font-bold text-green-400 mb-2 border-b border-gray-700 pb-1">Contoh Jawaban Benar:</p>
+                                            <div class="flex items-center">
+                                                <span class="text-white bg-gray-800 px-3 py-2 rounded-lg font-semibold">{{ $exampleAnswer }}</span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    @endif
+
+                                    @if(!$partUnlocked)
+                                        <div class="text-sm text-gray-600 mb-2">
+                                            Selesaikan semua level di atas untuk membuka ini!
+                                        </div>
+                                        <a href="#" class="tooltip-button locked-button">
+                                            <i class="fas fa-lock mr-2"></i>TERKUNCI
+                                        </a>
+                                    @else
+                                        @if($partCompleted)
+                                            <a href="{{ route('belajar.review', ['id' => $lesson['id'], 'part' => $part]) }}" class="tooltip-button bg-blue-600 hover:bg-blue-700">
+                                                <i class="fas fa-eye mr-2"></i>Lihat Soal
+                                            </a>
+                                        @else
+                                            <form action="{{ route('belajar.start', $lesson['id']) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="part" value="{{ $part }}">
+                                                <button type="submit" class="tooltip-button">
+                                                    <span>+15 poin</span>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add a small divider every 6 parts (end of lesson) -->
+                        @if(($index + 1) % 6 == 0 && !$loop->last)
+                            <div class="lesson-row row-center">
+                                <div class="section-divider"></div>
+                            </div>
+                        @endif
+                    @endforeach
 
                     <!-- Trophy at the end -->
-                    <div class="lesson-row justify-content-center">
+                    <div class="lesson-row row-center">
                         <div class="lesson-node">
                             <div class="lesson-circle" style="width: 70px; height: 70px; background-color: #0f1721; border-color: #1a2535;">
                                 <i class="fas fa-trophy trophy-icon" style="color: #e2e8f0; opacity: 0.3; font-size: 2rem;"></i>

@@ -27,30 +27,113 @@
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 160px;
+                padding-top: 100px !important;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding-top: 90px !important;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
         }
 
         .game-title {
             font-size: 2.5rem;
             font-weight: 800;
-            text-align: center;
-            margin-bottom: 0.5rem;
+            background: #9D50BB;
             color: #ffffff;
-            background: linear-gradient(90deg, #9D50BB, #6E48AA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.5rem;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-title {
+                font-size: 1.6rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .game-title {
+                font-size: 1.5rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .game-description {
+                font-size: 0.85rem;
+            }
+
+            .game-stats {
+                padding: 0.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .stat-item {
+                padding: 0.1rem 0;
+            }
+
+            .stat-title {
+                font-size: 0.75rem;
+            }
+
+            .stat-value {
+                font-size: 1rem;
+            }
+
+            .game-container {
+                padding: 0.75rem;
+                border-radius: 10px;
+            }
+
+            .letter-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 8px;
+            }
+
+            .letter-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
         }
 
         .game-description {
             text-align: center;
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
             color: #ffffff;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .game-description {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                padding: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-description {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+                padding: 0.3rem;
+            }
         }
 
         .gradient-border {
@@ -62,16 +145,53 @@
             border-radius: 2px;
         }
 
+        @media (max-width: 768px) {
+            .gradient-border {
+                max-width: 250px;
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gradient-border {
+                max-width: 200px;
+                margin-bottom: 1rem;
+            }
+        }
+
         .game-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             border-radius: 20px;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(0, 0, 0, 0.1);
             padding: 2rem;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            color: #151b2e;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 1.5rem;
+                border-radius: 16px;
+                margin: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 1rem;
+                border-radius: 12px;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .game-container {
+                padding: 0.75rem;
+                border-radius: 10px;
+            }
         }
 
         .game-stats {
@@ -87,9 +207,44 @@
             margin-right: auto;
         }
 
+        @media (max-width: 768px) {
+            .game-stats {
+                padding: 0.8rem;
+                margin-bottom: 1.5rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-stats {
+                padding: 0.6rem;
+                margin-bottom: 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
         .stat-item {
             text-align: center;
             padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .stat-item {
+                padding: 0 0.5rem;
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-item {
+                padding: 0.2rem 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+            }
         }
 
         .stat-title {
@@ -99,10 +254,32 @@
             font-weight: 600;
         }
 
+        @media (max-width: 480px) {
+            .stat-title {
+                font-size: 0.8rem;
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+                flex: 1;
+            }
+        }
+
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
             color: #151b2e;
+        }
+
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-value {
+                font-size: 1.1rem;
+                flex-shrink: 0;
+            }
         }
 
         .stat-value.score {

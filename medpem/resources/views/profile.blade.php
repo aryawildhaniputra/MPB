@@ -16,21 +16,13 @@
 
         .main-content {
             margin-left: 250px;
-            padding-top: 100px;
+            padding-top: 90px;
             padding-bottom: 2rem;
             min-height: calc(100vh - 70px);
             width: calc(100% - 250px);
             transition: all 0.3s ease;
             z-index: 1;
             pointer-events: auto;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding-top: 160px;
-            }
         }
 
         .content-title {
@@ -47,6 +39,75 @@
             width: fit-content;
             padding: 0.5rem 2rem;
             border-radius: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 8px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 600;
+        }
+
+        /* Mobile styling */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding-top: 90px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
+            }
         }
 
         .gradient-border {
@@ -75,6 +136,18 @@
             text-align: center;
         }
 
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header {
+                padding: 1rem;
+            }
+        }
+
         .profile-avatar {
             width: 150px;
             height: 150px;
@@ -87,6 +160,22 @@
             z-index: 2;
         }
 
+        @media (max-width: 768px) {
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+                border: 4px solid white;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                border: 3px solid white;
+            }
+        }
+
         .profile-name {
             font-size: 2rem;
             font-weight: 800;
@@ -95,11 +184,37 @@
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
+        @media (max-width: 768px) {
+            .profile-name {
+                font-size: 1.8rem;
+                margin-top: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-name {
+                font-size: 1.5rem;
+                margin-top: 0.6rem;
+            }
+        }
+
         .profile-username {
             font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.9);
             margin-top: 0.25rem;
             font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .profile-username {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-username {
+                font-size: 0.9rem;
+            }
         }
 
         .profile-role {
@@ -115,6 +230,20 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
+        @media (max-width: 768px) {
+            .profile-role {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-role {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .profile-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -123,10 +252,29 @@
             margin-bottom: 1.5rem;
         }
 
+        @media (max-width: 480px) {
+            .profile-stats {
+                grid-template-columns: 1fr;
+                margin-bottom: 1rem;
+            }
+        }
+
         .profile-stat {
             background-color: white;
             padding: 1.5rem;
             text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .profile-stat {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-stat {
+                padding: 1rem;
+            }
         }
 
         .stat-value {
@@ -136,14 +284,50 @@
             margin-bottom: 0.25rem;
         }
 
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-value {
+                font-size: 1.3rem;
+            }
+        }
+
         .stat-label {
             font-size: 0.875rem;
             color: #6b7280;
             font-weight: 600;
         }
 
+        @media (max-width: 768px) {
+            .stat-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-label {
+                font-size: 0.75rem;
+            }
+        }
+
         .profile-section {
             padding: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-section {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-section {
+                padding: 1rem;
+            }
         }
 
         .section-title {
@@ -155,6 +339,22 @@
             border-bottom: 2px solid #e5e7eb;
             display: flex;
             align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+                padding-bottom: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1rem;
+                margin-bottom: 0.6rem;
+                padding-bottom: 0.3rem;
+            }
         }
 
         .section-title i {
@@ -169,6 +369,22 @@
             margin-top: 1.25rem;
         }
 
+        @media (max-width: 768px) {
+            .progress-items {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-gap: 0.8rem;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .progress-items {
+                grid-template-columns: 1fr;
+                grid-gap: 0.6rem;
+                margin-top: 0.8rem;
+            }
+        }
+
         .progress-item {
             background-color: #f8fafc;
             border-radius: 0.75rem;
@@ -177,15 +393,36 @@
             transition: all 0.2s;
         }
 
-        .progress-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        @media (max-width: 768px) {
+            .progress-item {
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .progress-item {
+                padding: 0.6rem;
+            }
         }
 
         .progress-item-title {
             font-weight: 700;
             margin-bottom: 0.5rem;
             color: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            .progress-item-title {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .progress-item-title {
+                font-size: 0.85rem;
+                margin-bottom: 0.3rem;
+            }
         }
 
         .progress-bar-bg {
@@ -210,11 +447,41 @@
             margin-top: 0.25rem;
         }
 
+        @media (max-width: 768px) {
+            .progress-info {
+                font-size: 0.7rem;
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .progress-info {
+                font-size: 0.65rem;
+            }
+        }
+
         .achievements-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             grid-gap: 1rem;
             margin-top: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                grid-gap: 0.8rem;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                grid-gap: 0.6rem;
+                margin-top: 0.8rem;
+            }
         }
 
         .achievement-item {
@@ -225,9 +492,27 @@
             transition: all 0.2s;
         }
 
+        @media (max-width: 768px) {
+            .achievement-item {
+                padding: 1rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-item {
+                padding: 0.8rem 0.6rem;
+            }
+        }
+
         .achievement-item:hover {
             transform: translateY(-3px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .achievement-item:hover {
+                transform: translateY(-2px);
+            }
         }
 
         .achievement-icon {
@@ -243,6 +528,24 @@
             font-size: 1.5rem;
         }
 
+        @media (max-width: 768px) {
+            .achievement-icon {
+                width: 3rem;
+                height: 3rem;
+                font-size: 1.3rem;
+                margin-bottom: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
         .achievement-title {
             font-weight: 700;
             font-size: 0.875rem;
@@ -250,9 +553,35 @@
             margin-bottom: 0.25rem;
         }
 
+        @media (max-width: 768px) {
+            .achievement-title {
+                font-size: 0.8rem;
+                margin-bottom: 0.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-title {
+                font-size: 0.75rem;
+                margin-bottom: 0.15rem;
+            }
+        }
+
         .achievement-date {
             font-size: 0.75rem;
             color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .achievement-date {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-date {
+                font-size: 0.65rem;
+            }
         }
 
         .locked-achievement .achievement-icon {
@@ -270,9 +599,10 @@
     <div class="flex">
         @include('sidebar')
 
-        <div class="main-content p-6">
-            <div class="container mx-auto max-w-5xl">
+        <div class="main-content p-4 md:p-6">
+            <div class="container mx-auto max-w-5xl px-2 md:px-0">
                 <h1 class="content-title">Profil Saya</h1>
+                <div class="subtitle">Selamat datang di halaman profil Anda</div>
                 <div class="gradient-border"></div>
 
                 <div class="profile-card">
@@ -303,7 +633,7 @@
 
                     <div class="profile-section">
                         <h3 class="section-title"><i class="fas fa-book-open"></i> Progress Pembelajaran</h3>
-                        <p class="text-gray-600">Berikut adalah progres pembelajaran Anda saat ini:</p>
+                        <p class="text-gray-600 text-sm md:text-base">Berikut adalah progres pembelajaran Anda saat ini:</p>
 
                         <div class="progress-items">
                             @forelse(Auth::user()->lessons as $lesson)
@@ -322,29 +652,27 @@
                                 </div>
                             </div>
                             @empty
-                            <div class="col-span-full text-center py-6 text-gray-500">
+                            <div class="col-span-full text-center py-4 md:py-6 text-gray-500">
                                 <i class="fas fa-info-circle mr-2"></i> Anda belum memulai pelajaran apapun
                             </div>
                             @endforelse
                         </div>
                     </div>
 
-
-
                     <div class="profile-section">
                         <h3 class="section-title"><i class="fas fa-info-circle"></i> Informasi Akun</h3>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4">
                             <div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                                    <div class="bg-gray-50 px-4 py-3 rounded-lg border border-gray-200">
+                                    <div class="bg-gray-50 px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-200 text-sm md:text-base">
                                         {{ Auth::user()->name }}
                                     </div>
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                                    <div class="bg-gray-50 px-4 py-3 rounded-lg border border-gray-200">
+                                    <div class="bg-gray-50 px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-200 text-sm md:text-base">
                                         {{ Auth::user()->username }}
                                     </div>
                                 </div>
@@ -352,13 +680,13 @@
                             <div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Peran Pengguna</label>
-                                    <div class="bg-gray-50 px-4 py-3 rounded-lg border border-gray-200">
+                                    <div class="bg-gray-50 px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-200 text-sm md:text-base">
                                         {{ ucfirst(Auth::user()->role) }}
                                     </div>
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Bergabung</label>
-                                    <div class="bg-gray-50 px-4 py-3 rounded-lg border border-gray-200">
+                                    <div class="bg-gray-50 px-3 md:px-4 py-2 md:py-3 rounded-lg border border-gray-200 text-sm md:text-base">
                                         {{ Auth::user()->created_at->format('d F Y') }}
                                     </div>
                                 </div>

@@ -233,7 +233,7 @@
             font-weight: 900;
             text-align: center;
             margin-bottom: 1rem;
-            background: #F25252;
+            background: #9D50BB;
             color: white;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -262,7 +262,7 @@
             height: 4px;
             width: 100%;
             max-width: none;
-            background: #7028E4;
+            background: #9D50BB;
             margin-bottom: 2rem;
             border-radius: 2px;
             margin-left: 0;
@@ -312,6 +312,24 @@
 
             .content-title {
                 font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
             }
         }
 
@@ -388,15 +406,6 @@
             right: 0;
             height: 20px;
             background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
-        }
-
-        /* Tambahkan style untuk memastikan modal achievement muncul di atas semua konten */
-        #achievementModalOverlay {
-            z-index: 9999 !important;
-        }
-
-        #achievementModal {
-            z-index: 10000 !important;
         }
     </style>
 </head>

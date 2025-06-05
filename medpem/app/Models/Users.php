@@ -105,8 +105,40 @@ class Users extends Authenticatable
     public function lessons()
     {
         return $this->belongsToMany(Lesson::class, 'user_lessons', 'user_id', 'lesson_id')
-                    ->withPivot('completed', 'mistakes_count', 'current_streak', 'xp_earned', 'points_awarded', 'started_at', 'completed_at', 'progress')
+                    ->withPivot('completed', 'current_streak', 'xp_earned', 'started_at', 'completed_at', 'progress')
                     ->withTimestamps();
+    }
+
+    /**
+     * Get the lesson parts for the user.
+     */
+    public function lessonParts()
+    {
+        return $this->hasMany(UserLessonPart::class, 'user_id');
+    }
+
+    /**
+     * Get lesson parts for a specific lesson.
+     */
+    public function getPartsForLesson($lessonId)
+    {
+        return $this->lessonParts()->where('lesson_id', $lessonId)->orderBy('part_number')->get();
+    }
+
+    /**
+     * Get the lesson statistics for the user.
+     */
+    public function lessonStats()
+    {
+        return $this->hasMany(UserLessonStats::class, 'user_id');
+    }
+
+    /**
+     * Get stats for a specific lesson.
+     */
+    public function getStatsForLesson($lessonId)
+    {
+        return $this->lessonStats()->where('lesson_id', $lessonId)->first();
     }
 
     /**
@@ -149,14 +181,13 @@ class Users extends Authenticatable
      */
     public function startLesson($lessonId, $part = null)
     {
-        // If user has already started this lesson, get current progress and completed parts
+        // If user has already started this lesson, get current progress
         $userLesson = $this->lessons()->where('lesson_id', $lessonId)->first();
 
         // Initialize data
         $data = [
             'started_at' => now(),
             'completed' => false,
-            'mistakes_count' => 0,
             'current_streak' => 0,
             'xp_earned' => 0,
         ];
@@ -168,13 +199,66 @@ class Users extends Authenticatable
             $data['progress'] = 0;
         }
 
-        // If user has already started this lesson, update the record
-        // Otherwise, create a new record with default values
+        // Create or update the user lesson record
         $this->lessons()->syncWithoutDetaching([
             $lessonId => $data
         ]);
 
+        // Initialize stats if not exists
+        UserLessonStats::firstOrCreate([
+            'user_id' => $this->id,
+            'lesson_id' => $lessonId,
+        ], [
+            'mistakes_count' => 0,
+            'attempts_count' => 1,
+            'total_time' => 0,
+        ]);
+
         return $this->lessons()->where('lesson_id', $lessonId)->first()->pivot;
+    }
+
+    /**
+     * Complete a lesson part.
+     */
+    public function completePartForLesson($lessonId, $partNumber, $exampleText = null)
+    {
+        // Find or create the part record
+        $part = UserLessonPart::firstOrCreate([
+            'user_id' => $this->id,
+            'lesson_id' => $lessonId,
+            'part_number' => $partNumber,
+        ]);
+
+        // Complete the part and award points
+        $part->complete($exampleText);
+
+        // Update lesson progress
+        $this->updateLessonProgress($lessonId);
+
+        return $part;
+    }
+
+    /**
+     * Update lesson progress based on completed parts.
+     */
+    private function updateLessonProgress($lessonId)
+    {
+        $totalParts = 6; // Assuming max 6 parts per lesson
+        $completedParts = $this->lessonParts()
+                              ->where('lesson_id', $lessonId)
+                              ->where('completed', true)
+                              ->count();
+
+        $progress = round(($completedParts / $totalParts) * 100);
+
+        // Update the user lesson progress
+        $this->lessons()->syncWithoutDetaching([
+            $lessonId => [
+                'progress' => $progress,
+                'completed' => $progress >= 100,
+                'completed_at' => $progress >= 100 ? now() : null,
+            ]
+        ]);
     }
 
     /**
@@ -203,17 +287,28 @@ class Users extends Authenticatable
         $completionTime = null;
 
         if ($startedAt) {
-            $completionTime = $completedAt->diffInSeconds(\Carbon\Carbon::parse($startedAt));
-        }
+            try {
+                $startTime = \Carbon\Carbon::parse($startedAt);
+                $endTime = \Carbon\Carbon::parse($completedAt);
 
-        // We don't need to award points here anymore as they're awarded after each part
-        // But we still mark the lesson as completed for tracking purposes
+                // Ensure we get a positive time difference
+                $completionTime = abs($endTime->diffInSeconds($startTime));
+
+                // Validate the time is reasonable (between 1 second and 1 hour)
+                if ($completionTime < 1 || $completionTime > 3600) {
+                    $completionTime = 60; // Default to 1 minute if unreasonable
+                }
+            } catch (\Exception $e) {
+                // If there's any error in time calculation, default to 60 seconds
+                $completionTime = 60;
+                \Illuminate\Support\Facades\Log::warning("Time calculation error for user {$this->id} lesson {$lessonId}: " . $e->getMessage());
+            }
+        }
 
         // Update the lesson completion record
         $this->lessons()->syncWithoutDetaching([
             $lessonId => [
                 'completed' => true,
-                'mistakes_count' => $mistakesCount,
                 'completed_at' => $completedAt,
                 'current_streak' => $currentStreak + 1,
                 'xp_earned' => $xpEarned,
@@ -221,8 +316,19 @@ class Users extends Authenticatable
             ]
         ]);
 
+        // Update lesson stats only if we have a valid completion time
+        if ($completionTime && $completionTime > 0) {
+            $stats = $this->getStatsForLesson($lessonId);
+            if ($stats) {
+                $stats->updateStats($completionTime, $mistakesCount);
+            }
+        }
+
         // Add logging for debugging purposes
-        Log::info("Lesson {$lessonId} marked as completed for user {$this->id}. Points are awarded separately for each part.");
+        // Lesson completion logged only for errors, not for every success
+        if ($completionTime <= 0) {
+            \Illuminate\Support\Facades\Log::warning("Invalid completion time for user {$this->id} lesson {$lessonId}: {$completionTime} seconds");
+        }
 
         // Check for achievements
         $achievementService = app(\App\Services\AchievementService::class);

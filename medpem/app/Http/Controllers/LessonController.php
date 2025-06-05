@@ -62,8 +62,7 @@ class LessonController extends Controller
 
         // Check if this part has already been completed
         $status = $lesson->getCompletionStatusForUser($user->id);
-        $partFieldName = 'part' . $part . '_completed';
-        $partCompleted = $status[$partFieldName] ?? false;
+        $partCompleted = $status['parts']['part' . $part . '_completed'] ?? false;
 
         // If the part is already completed, redirect to view mode instead
         if ($partCompleted) {
@@ -127,114 +126,46 @@ class LessonController extends Controller
             $userLesson = $user->lessons()->where('lesson_id', $lessonId)->first();
 
             if ($userLesson) {
-                // Set part-specific completion flag based on which part was completed
-                $partField = '';
-                $partPointsField = '';
-                if ($lessonPart == 1) {
-                    $partField = 'part1_completed';
-                    $partPointsField = 'part1_points_awarded';
-                    $progress = 16;
-                } elseif ($lessonPart == 2) {
-                    $partField = 'part2_completed';
-                    $partPointsField = 'part2_points_awarded';
-                    $progress = 33;
-                } elseif ($lessonPart == 3) {
-                    $partField = 'part3_completed';
-                    $partPointsField = 'part3_points_awarded';
-                    $progress = 50;
-                } elseif ($lessonPart == 4) {
-                    $partField = 'part4_completed';
-                    $partPointsField = 'part4_points_awarded';
-                    $progress = 66;
-                } elseif ($lessonPart == 5) {
-                    $partField = 'part5_completed';
-                    $partPointsField = 'part5_points_awarded';
-                    $progress = 83;
-                } elseif ($lessonPart == 6) {
-                    $partField = 'part6_completed';
-                    $partPointsField = 'part6_points_awarded';
-                    $progress = 100;
-                }
+                // Calculate progress based on part number
+                if ($lessonPart) {
+                    $progress = min(round(($lessonPart / 6) * 100), 100);
 
-                // Update the specific part's completion status
-                if (!empty($partField)) {
-                    // Update the specific part completion
-                    $userLesson->pivot->$partField = true;
+                    // Complete the lesson part using the new structure
+                    $exampleText = null;
+                    if (!empty($questionIds)) {
+                        $partAnswers = [];
+                        foreach ($questionIds as $qId) {
+                            $q = Question::find($qId);
+                            if ($q) {
+                                $correctAnswers = is_string($q->correct_answers)
+                                    ? json_decode($q->correct_answers, true)
+                                    : $q->correct_answers;
 
-                    // Record the timestamp when this part was completed
-                    $partCompletedAtField = 'part' . $lessonPart . '_completed_at';
-                    $userLesson->pivot->$partCompletedAtField = now();
-
-                    // Debug logs for part completion timing
-                    $startTime = $userLesson->pivot->started_at;
-                    $completionTime = $userLesson->pivot->$partCompletedAtField;
-                    $durationSeconds = \Carbon\Carbon::parse($completionTime)->diffInSeconds(\Carbon\Carbon::parse($startTime));
-
-                    \Illuminate\Support\Facades\Log::info("Part completion: Lesson {$lessonId}, Part {$lessonPart}");
-                    \Illuminate\Support\Facades\Log::info("  Started at: {$startTime}");
-                    \Illuminate\Support\Facades\Log::info("  Completed at: {$completionTime}");
-                    \Illuminate\Support\Facades\Log::info("  Duration: {$durationSeconds} seconds");
-
-                    // Award 15 points if not already awarded for this part
-                    $pointsAwarded = 0;
-                    if (!empty($partPointsField) && !$userLesson->pivot->$partPointsField) {
-                        $userLesson->pivot->$partPointsField = true;
-                        $pointsAwarded = 15;
-
-                        // Update user's total points
-                        $user->total_points = ($user->total_points ?? 0) + $pointsAwarded;
-                        $user->save();
-                    }
-
-                    // Store example answers for this part
-                    $partAnswers = [];
-                    foreach ($questionIds as $qId) {
-                        $q = Question::find($qId);
-                        if ($q) {
-                            $correctAnswers = is_string($q->correct_answers)
-                                ? json_decode($q->correct_answers, true)
-                                : $q->correct_answers;
-
-                            if (is_array($correctAnswers) && !empty($correctAnswers)) {
-                                $partAnswers[] = $correctAnswers[0];
+                                if (is_array($correctAnswers) && !empty($correctAnswers)) {
+                                    $partAnswers[] = $correctAnswers[0];
+                                }
                             }
+                        }
+                        // Use the first answer as an example
+                        if (!empty($partAnswers)) {
+                            $exampleText = $partAnswers[0];
                         }
                     }
 
-                    // Store the first answer as an example
-                    $answerField = 'part' . $lessonPart . '_example';
-                    if (!empty($partAnswers)) {
-                        $userLesson->pivot->$answerField = $partAnswers[0];
-                    }
-
-                    // Only update progress if it would increase the progress value
-                    if ($progress > $userLesson->pivot->progress) {
-                        $userLesson->pivot->progress = $progress;
-                    }
-
-                    $userLesson->pivot->save();
-
-                    // Log that we successfully saved the part completion
-                    \Illuminate\Support\Facades\Log::info("  Part completion saved: {$partField} = true, {$partCompletedAtField} = {$completionTime}");
+                    // Complete the part using the new method
+                    $part = $user->completePartForLesson($lessonId, $lessonPart, $exampleText);
 
                     // Check for speed achievement specifically after part completion
                     try {
-                        \Illuminate\Support\Facades\Log::info("Checking speed achievements immediately after part completion");
                         $achievementService = app(AchievementService::class);
                         $speedAchievements = $achievementService->checkSpeedAchievements($user);
-                        if (!empty($speedAchievements)) {
-                            \Illuminate\Support\Facades\Log::info("Unlocked " . count($speedAchievements) . " speed achievements");
-                            foreach ($speedAchievements as $achievementData) {
-                                \Illuminate\Support\Facades\Log::info("Speed achievement unlocked: " . $achievementData['achievement']->name);
-                            }
-                        } else {
-                            \Illuminate\Support\Facades\Log::info("No new speed achievements unlocked");
-                        }
+                        // Speed achievements processed silently for better performance
                     } catch (\Exception $e) {
                         \Illuminate\Support\Facades\Log::error("Error checking speed achievements: " . $e->getMessage());
                     }
 
-                    // Store the awarded points in session for display
+                    // Store the awarded points in session for display (15 points per part)
+                    $pointsAwarded = $part->points_awarded ? 15 : 0;
                     session(['last_awarded_points' => $pointsAwarded]);
                 }
             }
@@ -465,8 +396,7 @@ class LessonController extends Controller
         $status = $lesson->getCompletionStatusForUser($user->id);
 
         // Check if this part has been completed
-        $partFieldName = 'part' . $part . '_completed';
-        $partCompleted = $status[$partFieldName] ?? false;
+        $partCompleted = $status['parts']['part' . $part . '_completed'] ?? false;
 
         if (!$partCompleted) {
             return redirect()->route('belajar.index')

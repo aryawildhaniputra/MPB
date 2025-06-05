@@ -16,31 +16,158 @@
 
         .main-content {
             margin-left: 250px;
-            padding-top: 100px;
+            padding-top: 90px;
             padding-bottom: 2rem;
             min-height: calc(100vh - 70px);
             width: calc(100% - 250px);
             transition: all 0.3s ease;
         }
 
+        .content-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: #4f46e5;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+            padding: 0.5rem 2rem;
+            border-radius: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 8px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 600;
+        }
+
+        .gradient-border {
+            height: 4px;
+            width: 100%;
+            max-width: none;
+            background: #4f46e5;
+            margin-bottom: 2rem;
+            border-radius: 2px;
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        /* Mobile styling */
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 160px;
+                padding-top: 90px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+
+            .card {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .property-list {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .property-item {
+                padding: 0.8rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+                margin-bottom: 1.2rem;
+                padding-bottom: 0.4rem;
             }
         }
 
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #ffffff;
-            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1rem;
+                height: 3px;
+            }
+
+            .card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .property-item {
+                padding: 0.6rem;
+            }
+
+            .property-label {
+                font-size: 0.8rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .property-value {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+                padding-bottom: 0.3rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
+            }
         }
 
         .card {
@@ -101,6 +228,24 @@
             margin-bottom: 0.5rem;
         }
 
+        @media (max-width: 768px) {
+            .tag {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+                margin-right: 0.3rem;
+                margin-bottom: 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tag {
+                padding: 0.15rem 0.3rem;
+                font-size: 0.65rem;
+                margin-right: 0.2rem;
+                margin-bottom: 0.2rem;
+            }
+        }
+
         .tag-blue {
             background-color: #ebf5ff;
             color: #2563eb;
@@ -153,34 +298,36 @@
     <div class="flex">
         @include('sidebar')
 
-        <div class="main-content p-6">
-            <div class="container mx-auto max-w-4xl">
-                <h1 class="page-title">Detail Pengguna</h1>
+        <div class="main-content p-4 md:p-6">
+            <div class="container mx-auto max-w-4xl px-2 md:px-0">
+                <h1 class="content-title">Detail Pengguna</h1>
+                <div class="subtitle">Informasi lengkap - {{ $user->name }}</div>
+                <div class="gradient-border"></div>
 
                 <!-- Back button -->
-                <div class="mb-6">
-                    <a href="{{ route('admin.users.index') }}" class="flex items-center text-blue-400 hover:text-blue-600 transition">
+                <div class="mb-4 md:mb-6">
+                    <a href="{{ route('admin.users.index') }}" class="flex items-center text-blue-400 hover:text-blue-600 transition text-sm md:text-base">
                         <i class="fas fa-arrow-left mr-2"></i> Kembali ke daftar pengguna
                     </a>
                 </div>
 
                 <!-- Alert for success/error messages -->
                 @if(session('success'))
-                    <div class="bg-green-500 text-white p-4 rounded-lg mb-6 shadow">
+                    <div class="bg-green-500 text-white p-3 md:p-4 rounded-lg mb-4 md:mb-6 shadow text-sm md:text-base">
                         <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
                     </div>
                 @endif
 
                 @if(session('error'))
-                    <div class="bg-red-500 text-white p-4 rounded-lg mb-6 shadow">
+                    <div class="bg-red-500 text-white p-3 md:p-4 rounded-lg mb-4 md:mb-6 shadow text-sm md:text-base">
                         <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
                     </div>
                 @endif
 
                 <!-- User info card -->
                 <div class="card">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">{{ $user->name }}</h2>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-3 md:gap-0">
+                        <h2 class="text-xl md:text-2xl font-bold text-gray-800">{{ $user->name }}</h2>
                         <div>
                             <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
                                 {{ $user->role === 'superadmin' ? 'bg-purple-100 text-purple-800' :
@@ -191,7 +338,7 @@
                     </div>
 
                     <div class="section-title">Informasi Dasar</div>
-                    <div class="property-list mb-6">
+                    <div class="property-list mb-4 md:mb-6">
                         <div class="property-item">
                             <div class="property-label">Username</div>
                             <div class="property-value">{{ $user->username }}</div>
@@ -214,16 +361,16 @@
                     <div class="section-title">Progress Pembelajaran</div>
 
                     <!-- Lessons -->
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-3">Pelajaran ({{ $user->lessons->count() }})</h3>
+                    <div class="mb-4 md:mb-6">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-3">Pelajaran ({{ $user->lessons->count() }})</h3>
                         @if($user->lessons->isEmpty())
-                            <p class="text-gray-500 italic">Pengguna belum mengakses pelajaran apapun.</p>
+                            <p class="text-gray-500 italic text-sm md:text-base">Pengguna belum mengakses pelajaran apapun.</p>
                         @else
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
                                 @foreach($user->lessons as $lesson)
-                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                        <div class="font-semibold text-gray-800">{{ $lesson->title }}</div>
-                                        <div class="text-sm text-gray-500 mt-1">
+                                    <div class="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
+                                        <div class="font-semibold text-gray-800 text-sm md:text-base">{{ $lesson->title }}</div>
+                                        <div class="text-xs md:text-sm text-gray-500 mt-1">
                                             <span class="mr-2">
                                                 <i class="fas fa-tasks"></i> Progress: {{ $lesson->pivot->progress ?? 0 }}%
                                             </span>
@@ -242,16 +389,16 @@
                     </div>
 
                     <!-- Materi -->
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-3">Materi ({{ $user->materi->count() }})</h3>
+                    <div class="mb-4 md:mb-6">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-3">Materi ({{ $user->materi->count() }})</h3>
                         @if($user->materi->isEmpty())
-                            <p class="text-gray-500 italic">Pengguna belum mengakses materi apapun.</p>
+                            <p class="text-gray-500 italic text-sm md:text-base">Pengguna belum mengakses materi apapun.</p>
                         @else
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
                                 @foreach($user->materi as $materi)
-                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                        <div class="font-semibold text-gray-800">{{ $materi->title }}</div>
-                                        <div class="text-sm text-gray-500 mt-1">
+                                    <div class="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
+                                        <div class="font-semibold text-gray-800 text-sm md:text-base">{{ $materi->title }}</div>
+                                        <div class="text-xs md:text-sm text-gray-500 mt-1">
                                             <span class="mr-2">
                                                 <i class="fas fa-tasks"></i> Progress: {{ $materi->pivot->progress ?? 0 }}%
                                             </span>
@@ -270,10 +417,10 @@
                     </div>
 
                     <!-- Achievements -->
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-3">Pencapaian ({{ $user->achievements->where('pivot.unlocked', true)->count() }})</h3>
+                    <div class="mb-4 md:mb-6">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-700 mb-3">Pencapaian ({{ $user->achievements->where('pivot.unlocked', true)->count() }})</h3>
                         @if($user->achievements->isEmpty())
-                            <p class="text-gray-500 italic">Pengguna belum mendapatkan pencapaian apapun.</p>
+                            <p class="text-gray-500 italic text-sm md:text-base">Pengguna belum mendapatkan pencapaian apapun.</p>
                         @else
                             <div class="flex flex-wrap gap-2">
                                 @foreach($user->achievements as $achievement)
@@ -287,14 +434,14 @@
                     </div>
 
                     <!-- Action buttons -->
-                    <div class="flex justify-between mt-8">
+                    <div class="flex flex-col md:flex-row justify-between mt-6 md:mt-8 gap-3 md:gap-0">
                         @if(Auth::user()->role === 'superadmin' || (Auth::user()->role === 'admin' && $user->role === 'user'))
-                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary">
+                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary order-2 md:order-1">
                                 <i class="fas fa-edit mr-2"></i> Edit Pengguna
                             </a>
 
                             @if(Auth::user()->id !== $user->id)
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline">
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline order-1 md:order-2">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger"

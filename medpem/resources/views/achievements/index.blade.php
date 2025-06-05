@@ -12,16 +12,17 @@
 
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: #151b2e;
+            color: #ffffff;
         }
 
         .main-content {
             min-height: calc(100vh - 70px);
             margin-left: 250px;
-            padding-top: 80px;
-            padding-bottom: 1rem;
-            transition: all 0.3s;
+            padding-top: 90px;
+            padding-bottom: 2rem;
+            width: calc(100% - 250px);
+            transition: all 0.3s ease;
         }
 
         .content-title {
@@ -44,13 +45,14 @@
             text-align: center;
             font-size: 1.3rem;
             margin-bottom: 2rem;
-            color: #333;
-            background-color: rgba(0, 0, 0, 0.05);
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.3);
             padding: 0.5rem;
             border-radius: 8px;
             width: fit-content;
             margin-left: auto;
             margin-right: auto;
+            font-weight: 600;
         }
 
         .gradient-border {
@@ -64,6 +66,61 @@
             margin-right: auto;
         }
 
+        /* Mobile styling */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding-top: 90px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
         .achievement-card {
             transition: all 0.3s ease;
             position: relative;
@@ -72,6 +129,18 @@
             background: #ffffff;
             border: 1px solid #e2e8f0;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .achievement-card {
+                min-height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-card {
+                min-height: 110px;
+            }
         }
 
         .achievement-card:hover {
@@ -105,6 +174,22 @@
             background: #f1f5f9;
         }
 
+        @media (max-width: 768px) {
+            .achievement-icon {
+                width: 40px !important;
+                height: 40px !important;
+                padding: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-icon {
+                width: 36px !important;
+                height: 36px !important;
+                padding: 0.3rem;
+            }
+        }
+
         .achievement-card:hover .achievement-icon {
             transform: scale(1.05);
         }
@@ -125,6 +210,25 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
+        @media (max-width: 768px) {
+            .achievement-reward {
+                top: 8px;
+                right: 8px;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+                gap: 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-reward {
+                top: 6px;
+                right: 6px;
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
+        }
+
         .achievement-name {
             font-size: 1rem;
             font-weight: 600;
@@ -133,10 +237,38 @@
             line-height: 1.4;
         }
 
+        @media (max-width: 768px) {
+            .achievement-name {
+                font-size: 0.9rem;
+                line-height: 1.3;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-name {
+                font-size: 0.85rem;
+                line-height: 1.2;
+            }
+        }
+
         .achievement-description {
             font-size: 0.875rem;
             line-height: 1.5;
             color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .achievement-description {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-description {
+                font-size: 0.75rem;
+                line-height: 1.3;
+            }
         }
 
         /* Type-specific styles */
@@ -271,11 +403,37 @@
             padding: 1.25rem;
         }
 
+        @media (max-width: 768px) {
+            .achievement-content {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-content {
+                padding: 0.8rem;
+            }
+        }
+
         .achievement-header {
             display: flex;
             align-items: flex-start;
             gap: 1rem;
             margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .achievement-header {
+                gap: 0.8rem;
+                margin-bottom: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-header {
+                gap: 0.6rem;
+                margin-bottom: 0.3rem;
+            }
         }
 
         .achievement-info {
@@ -345,40 +503,32 @@
             <div class="subtitle">Pantau prestasi dan pencapaian belajarmu</div>
             <div class="gradient-border"></div>
 
-            <div class="max-w-6xl mx-auto">
-                <div class="mb-8 bg-gradient-to-r from-blue-50 to-teal-50 p-5 rounded-lg shadow-md border border-teal-200">
+            <div class="max-w-6xl mx-auto px-2 md:px-0">
+                <div class="mb-8 bg-gradient-to-r from-blue-50 to-teal-50 p-3 md:p-5 rounded-lg shadow-md border border-teal-200">
                     <div class="flex flex-col md:flex-row justify-between items-center">
-                        <div class="mb-4 md:mb-0 flex items-center">
-                            <div class="text-3xl mr-4 bg-teal-100 p-3 rounded-full text-teal-600">
+                        <div class="mb-4 md:mb-0 flex flex-col md:flex-row items-center">
+                            <div class="text-2xl md:text-3xl mb-3 md:mb-0 md:mr-4 bg-teal-100 p-2 md:p-3 rounded-full text-teal-600">
                                 <i class="fas fa-trophy"></i>
                             </div>
-                            <div>
-                                <h2 class="text-2xl font-bold text-gray-800">Progress Pencapaian</h2>
-                                <p class="text-gray-600">Kamu telah membuka <span class="font-bold text-teal-600">{{ $unlockedCount }}</span> dari <span class="font-bold">{{ $totalCount }}</span> pencapaian</p>
+                            <div class="text-center md:text-left">
+                                <h2 class="text-xl md:text-2xl font-bold text-gray-800">Progress Pencapaian</h2>
+                                <p class="text-sm md:text-base text-gray-600">Kamu telah membuka <span class="font-bold text-teal-600">{{ $unlockedCount }}</span> dari <span class="font-bold">{{ $totalCount }}</span> pencapaian</p>
                             </div>
                         </div>
                         <div class="w-full md:w-1/3">
-                            <div class="w-full bg-gray-200 rounded-full h-5 mb-2">
-                                <div class="bg-gradient-to-r from-teal-500 to-teal-600 h-5 rounded-full transition-all duration-1000" style="width: {{ ($unlockedCount / max(1, $totalCount)) * 100 }}%"></div>
+                            <div class="w-full bg-gray-200 rounded-full h-4 md:h-5 mb-2">
+                                <div class="bg-gradient-to-r from-teal-500 to-teal-600 h-4 md:h-5 rounded-full transition-all duration-1000" style="width: {{ ($unlockedCount / max(1, $totalCount)) * 100 }}%"></div>
                             </div>
-                            <span class="text-sm font-bold">{{ round(($unlockedCount / max(1, $totalCount)) * 100) }}% Selesai</span>
+                            <span class="text-xs md:text-sm font-bold">{{ round(($unlockedCount / max(1, $totalCount)) * 100) }}% Selesai</span>
                         </div>
                     </div>
-                    {{-- <div class="mt-4 flex justify-end">
-                        <a href="{{ route('test.achievements') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                            <i class="fas fa-sync-alt mr-2"></i> Periksa Pencapaian Baru
-                        </a>
-                        <a href="{{ route('test.speed.achievement') }}" class="ml-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-orange-700 transition">
-                            <i class="fas fa-bolt mr-2"></i> Tes Pencapaian Kecepatan
-                        </a>
-                    </div> --}}
                 </div>
 
-                <div class="mb-6">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Semua Pencapaian</h2>
+                <div class="mb-4 md:mb-6">
+                    <h2 class="text-lg md:text-xl font-bold text-white mb-4">Semua Pencapaian</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-1 md:px-0">
                     @foreach($achievements as $achievement)
                         @php
                             // Determine type styling
@@ -432,22 +582,22 @@
                         @endphp
 
                         <div class="achievement-card {{ $achievement->is_unlocked ? 'unlocked type-' . $achievement->type : 'locked' }} rounded-lg">
-                            <div class="p-6">
+                            <div class="p-4 md:p-6">
                                 <div class="achievement-reward {{ $achievement->is_unlocked ? 'bg-yellow-100/90 text-yellow-700' : 'bg-gray-100/90 text-gray-500' }}">
                                     <i class="fas fa-star"></i>
                                     <span>{{ $achievement->points_reward }}</span>
                                 </div>
 
                                 <div class="achievement-content">
-                                    <div class="flex items-start space-x-4">
-                                        <div class="achievement-icon w-16 h-16 flex items-center justify-center rounded-xl {{ $bgColor }}">
+                                    <div class="flex items-start space-x-3 md:space-x-4">
+                                        <div class="achievement-icon w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl {{ $bgColor }}">
                                             @if($achievement->is_unlocked)
-                                                <span class="text-2xl {{ $textColor }}">{!! $typeIcon !!}</span>
+                                                <span class="text-lg md:text-2xl {{ $textColor }}">{!! $typeIcon !!}</span>
                                             @else
-                                                <span class="text-2xl text-gray-400"><i class="fas fa-lock"></i></span>
+                                                <span class="text-lg md:text-2xl text-gray-400"><i class="fas fa-lock"></i></span>
                                             @endif
                                         </div>
-                                        <div class="flex-1">
+                                        <div class="flex-1 min-w-0">
                                             <h3 class="achievement-name {{ $achievement->is_unlocked ? $textColor : 'text-gray-500' }}">
                                                 {{ $achievement->name }}
                                             </h3>

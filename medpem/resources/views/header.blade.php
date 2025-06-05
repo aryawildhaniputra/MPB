@@ -50,6 +50,23 @@
             <script>
                 function toggleDropdown(event) {
                     event.stopPropagation();
+
+                    // Check if any modal is currently active
+                    const isAnyModalActive = () => {
+                        const deleteModal = document.getElementById('deleteModal');
+                        const logoutModal = document.getElementById('logoutModal');
+                        const achievementModal = document.getElementById('achievementModal');
+
+                        return (deleteModal && deleteModal.classList.contains('active')) ||
+                               (logoutModal && logoutModal.classList.contains('active')) ||
+                               (achievementModal && achievementModal.style.display !== 'none');
+                    };
+
+                    // If any modal is active, don't show dropdown
+                    if (isAnyModalActive()) {
+                        return false;
+                    }
+
                     var dropdown = document.getElementById('userDropdownDiv');
                     dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
                 }
@@ -257,7 +274,7 @@
         border-radius: 1rem;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         overflow: hidden;
-        z-index: 9999;
+        z-index: 1001;
         transition: all 0.2s ease-in-out;
         transform-origin: top right;
         opacity: 1;
@@ -400,7 +417,7 @@
     .logout-modal {
         display: none;
         position: fixed;
-        z-index: 9999;
+        z-index: 8999;
         left: 0;
         top: 0;
         width: 100%;
@@ -427,7 +444,7 @@
 
     .logout-modal-content {
         position: relative;
-        z-index: 10000;
+        z-index: 9000;
         background-color: #fefefe;
         margin: 15% auto;
         padding: 20px;
@@ -612,6 +629,41 @@
     body.modal-open-blur .main-content {
         filter: blur(5px);
         transition: filter 0.3s ease;
+    }
+
+    /* Apply blur to header when modal is open */
+    body.modal-open-blur .duolingo-header {
+        filter: blur(5px) !important;
+        transition: filter 0.3s ease;
+    }
+
+    /* Apply blur to sidebar when modal is open */
+    body.modal-open-blur .sidebar {
+        filter: blur(5px) !important;
+        transition: filter 0.3s ease;
+    }
+
+    /* Apply blur to all main content areas when modal is open */
+    body.modal-open-blur .main-content-wrapper,
+    body.modal-open-blur .container,
+    body.modal-open-blur #sidebar {
+        filter: blur(5px) !important;
+        transition: filter 0.3s ease;
+    }
+
+    /* Ensure dropdown is hidden when any modal is active */
+    .modal-backdrop.active ~ * #userDropdownDiv,
+    .logout-modal.active ~ * #userDropdownDiv,
+    body.modal-open #userDropdownDiv {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    /* Force dropdown below modals when modal is active */
+    body.modal-open .header-dropdown-container,
+    body.modal-open #userDropdownDiv {
+        z-index: 100 !important;
     }
 </style>
 
@@ -876,24 +928,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Tambahkan failsafe interval check
-    setInterval(function() {
+    // Optimized one-time setup instead of polling interval
+    const path = window.location.pathname;
+    if (path.includes('/belajar') || path.includes('/materi')) {
         const btn = document.getElementById('profileDropdownBtn');
-        const path = window.location.pathname;
-
-        // Jika tombol tidak bisa diklik, coba metode lain
-        if (btn && (path.includes('/belajar') || path.includes('/materi'))) {
+        if (btn && !btn.hasAttribute('data-click-setup')) {
             btn.style.pointerEvents = 'auto';
             btn.style.cursor = 'pointer';
             btn.style.zIndex = '100000';
-
-            // Coba modifikasi onclick attribute langsung jika belum ada
-            if (!btn.hasAttribute('data-click-setup')) {
-                btn.setAttribute('onclick', "event.stopPropagation(); toggleDropdownManually(); return false;");
-                btn.setAttribute('data-click-setup', 'true');
-            }
+            btn.setAttribute('onclick', "event.stopPropagation(); toggleDropdownManually(); return false;");
+            btn.setAttribute('data-click-setup', 'true');
         }
-    }, 2000);
+    }
 });
 </script>
 
@@ -1006,6 +1052,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to show modal with special effects for belajar and materi pages
     function showLogoutModal() {
         if (logoutModal) {
+            // Hide user dropdown before showing modal
+            const userDropdown = document.getElementById('userDropdownDiv');
+            if (userDropdown) {
+                userDropdown.style.display = 'none';
+            }
+
             logoutModal.classList.add('active');
 
             // Add extra blur class for specific pages
@@ -1013,12 +1065,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (pageType === 'belajar' || pageType === 'materi' || pageType === 'user-materi') {
                 document.body.classList.add('modal-open-blur');
 
-                // Apply blur to main content directly
+                // Apply blur to main content AND header
                 try {
                     const mainContent = document.querySelector('.main-content');
                     if (mainContent) {
                         mainContent.style.filter = 'blur(5px)';
                         mainContent.style.transition = 'filter 0.3s ease';
+                    }
+
+                    // Apply blur to header
+                    const header = document.getElementById('Header');
+                    if (header) {
+                        header.style.filter = 'blur(5px)';
+                        header.style.transition = 'filter 0.3s ease';
                     }
                 } catch (e) {
                     console.error('Error applying blur:', e);
@@ -1038,6 +1097,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (mainContent) {
                     mainContent.style.filter = '';
                 }
+
+                // Remove blur from header
+                const header = document.getElementById('Header');
+                if (header) {
+                    header.style.filter = '';
+                }
             } catch (e) {
                 console.error('Error removing blur:', e);
             }
@@ -1047,6 +1112,49 @@ document.addEventListener('DOMContentLoaded', function() {
     // Expose functions globally
     window.showLogoutModal = showLogoutModal;
     window.hideLogoutModal = hideLogoutModal;
+
+    // Add global modal state watcher
+    const modalObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' &&
+                (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
+
+                // Check if any modal became active
+                const deleteModal = document.getElementById('deleteModal');
+                const logoutModal = document.getElementById('logoutModal');
+                const achievementModal = document.getElementById('achievementModal');
+
+                const isAnyModalActive = (deleteModal && deleteModal.classList.contains('active')) ||
+                                       (logoutModal && logoutModal.classList.contains('active')) ||
+                                       (achievementModal && achievementModal.style.display === 'flex');
+
+                // If any modal is active, hide dropdown
+                if (isAnyModalActive) {
+                    const userDropdown = document.getElementById('userDropdownDiv');
+                    if (userDropdown && userDropdown.style.display === 'block') {
+                        userDropdown.style.display = 'none';
+                    }
+                }
+            }
+        });
+    });
+
+    // Start observing modal elements
+    setTimeout(() => {
+        const deleteModal = document.getElementById('deleteModal');
+        const logoutModal = document.getElementById('logoutModal');
+        const achievementModal = document.getElementById('achievementModal');
+
+        if (deleteModal) {
+            modalObserver.observe(deleteModal, { attributes: true });
+        }
+        if (logoutModal) {
+            modalObserver.observe(logoutModal, { attributes: true });
+        }
+        if (achievementModal) {
+            modalObserver.observe(achievementModal, { attributes: true });
+        }
+    }, 1000);
 });
 </script>
 

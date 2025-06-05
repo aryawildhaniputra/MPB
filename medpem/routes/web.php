@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CheckDeviceToken;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\SuperAdminController;
 
 Route::get('/', function () {
     return view('landing');
@@ -181,4 +182,27 @@ Route::get('/images/materi/{filename}', function ($filename) {
     }
     return response()->file($path);
 })->name('materi.image');
+
+// SuperAdmin routes
+Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('dashboard');
+
+    // Enhanced user management with admin capabilities
+    Route::get('/users', [SuperAdminController::class, 'users'])->name('users.index');
+    Route::get('/users/create', [SuperAdminController::class, 'createUser'])->name('users.create');
+    Route::post('/users', [SuperAdminController::class, 'storeUser'])->name('users.store');
+    Route::get('/users/{user}/edit', [SuperAdminController::class, 'editUser'])->name('users.edit');
+    Route::put('/users/{user}', [SuperAdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [SuperAdminController::class, 'deleteUser'])->name('users.delete');
+    Route::get('/users/export', [SuperAdminController::class, 'exportUsers'])->name('users.export');
+
+    // Materi management (same as admin)
+    Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
+    Route::get('/materi/create', [MateriController::class, 'create'])->name('materi.create');
+    Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+    Route::get('/materi/{materi}', [MateriController::class, 'show'])->name('materi.show');
+    Route::get('/materi/{materi}/edit', [MateriController::class, 'edit'])->name('materi.edit');
+    Route::put('/materi/{materi}', [MateriController::class, 'update'])->name('materi.update');
+    Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.delete');
+});
 

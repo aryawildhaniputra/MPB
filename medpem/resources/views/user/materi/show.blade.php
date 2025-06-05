@@ -13,16 +13,6 @@
             font-family: 'Comic Neue', cursive;
             background-color: #151b2e;
             color: #ffffff;
-            background-image: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f31f.svg'),
-                            url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4d6.svg'),
-                            url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f9e0.svg'),
-                            url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4da.svg');
-            background-size: 80px, 120px, 70px, 100px;
-            background-position: top 20px left 20px, top right 20px, bottom left 40px, bottom right 40px;
-            background-repeat: no-repeat;
-            background-blend-mode: soft-light;
-            background-opacity: 0.3;
-            overflow-x: hidden;
         }
 
         /* Fix untuk header dropdown */
@@ -46,65 +36,21 @@
             z-index: 1;
         }
 
-        /* Pastikan header tidak memiliki garis */
-        .duolingo-header {
-            border-bottom: none !important;
-            box-shadow: none !important;
-        }
-
-        /* Mobile adjustments */
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding: 70px 15px 2rem 15px;
-            }
-
-            .page-title {
-                font-size: 2rem !important;
-                padding: 0.5rem 1rem !important;
-            }
-
-            .subtitle {
-                font-size: 1rem !important;
-            }
-
-            .content-container {
-                padding: 1.5rem !important;
-            }
-
-            .materi-content {
-                font-size: 1rem !important;
-                padding: 1rem !important;
-            }
-
-            .button {
-                padding: 10px 20px !important;
-                font-size: 1rem !important;
-            }
-
-            .document-header {
-                flex-direction: column !important;
-                gap: 10px !important;
-            }
-
-            .document-actions {
-                width: 100% !important;
-                justify-content: space-between !important;
-            }
-
-            .document-button {
-                flex: 1 !important;
-                justify-content: center !important;
-            }
-
-            .document-content iframe {
-                height: 300px !important;
-            }
-
-            .decoration {
-                display: none !important;
-            }
+        /* Header styling - simplified and consistent */
+        .content-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: #4f46e5;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+            padding: 0.5rem 2rem;
+            border-radius: 8px;
         }
 
         .subtitle {
@@ -121,164 +67,217 @@
             font-weight: 600;
         }
 
-        .page-title {
-            font-size: 3rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            background: #7028E4;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-left: auto;
-            margin-right: auto;
-            width: fit-content;
-            padding: 0.5rem 2rem;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
         .gradient-border {
             height: 4px;
             width: 100%;
             max-width: none;
-            background: #7028E4;
+            background: #4f46e5;
             margin-bottom: 2rem;
             border-radius: 2px;
             margin-left: 0;
             margin-right: auto;
         }
 
+        /* Mobile styling */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding-top: 90px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+
+            .content-container {
+                padding: 1.5rem !important;
+            }
+
+            .materi-content {
+                font-size: 1rem !important;
+                padding: 1rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1rem;
+                height: 3px;
+            }
+
+            .content-container {
+                padding: 1rem !important;
+            }
+
+            .materi-content {
+                padding: 0.8rem !important;
+                font-size: 0.9rem !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
+        /* Button responsiveness */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-responsive {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-responsive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: stretch;
+            }
+
+            .btn-responsive {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .button-container {
+                gap: 0.5rem;
+            }
+
+            .btn-responsive {
+                padding: 0.875rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .btn-back {
+            background-color: #6B7280;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background-color: #4B5563;
+        }
+
+        .btn-complete {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .btn-complete:hover {
+            background-color: #059669;
+        }
+
+        .btn-completed {
+            background-color: #34D399;
+            color: white;
+            cursor: default;
+        }
+
+        /* Simplified progress container */
         .progress-container {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(17, 24, 39, 0.7));
-            border-radius: 20px;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
             padding: 1.5rem;
             margin-bottom: 2rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            border: 4px solid rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(5px);
-            animation: fadeIn 0.8s ease-out;
-            position: relative;
-            overflow: hidden;
         }
 
-        .progress-container::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 80px;
-            height: 80px;
-            background-image: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f680.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            transform: rotate(15deg);
-            opacity: 0.2;
+        @media (max-width: 768px) {
+            .progress-container {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @media (max-width: 480px) {
+            .progress-container {
+                padding: 0.8rem;
+                margin-bottom: 1rem;
+            }
         }
 
-        .progress-bar {
-            height: 18px;
-            border-radius: 10px;
-            transition: width 1s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg,
-                        rgba(255,255,255,0.15) 25%,
-                        rgba(255,255,255,0.3) 50%,
-                        rgba(255,255,255,0.15) 75%);
-            width: 50%;
-            animation: progressShine 2s infinite linear;
-        }
-
-        @keyframes progressShine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
+        /* Simplified content container */
         .content-container {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 2.5rem;
-            padding-top: 3rem;
+            border-radius: 16px;
+            padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
             color: #1e293b;
             position: relative;
-            border: 4px solid #38B2AC;
-            animation: slideUp 0.8s ease-out;
-            animation-delay: 0.3s;
-            animation-fill-mode: both;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .content-container::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            right: -15px;
-            width: 90px;
-            height: 90px;
-            background-image: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f9d0.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.7;
-            transform: rotate(10deg);
-            z-index: 1;
-        }
-
-        .content-icon {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 3rem;
-            background: linear-gradient(45deg, #38B2AC, #4FD1C5);
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 2;
-            border: 3px solid white;
+            border: 2px solid #4f46e5;
         }
 
         .materi-content {
             background-color: #f8fafc;
-            background-image:
-                radial-gradient(rgba(56, 178, 172, 0.1) 3px, transparent 3px),
-                radial-gradient(rgba(56, 178, 172, 0.1) 3px, transparent 3px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
-            border-radius: 16px;
-            padding: 1.8rem;
-            line-height: 1.9;
-            font-size: 1.2rem;
+            border-radius: 12px;
+            padding: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: 2px dashed #38B2AC;
-            position: relative;
-            overflow: visible;
-            height: auto;
+            border: 1px solid #e2e8f0;
         }
 
         .materi-content::-webkit-scrollbar {
-            width: 14px;
+            width: 12px;
         }
 
         .materi-content::-webkit-scrollbar-track {
@@ -287,13 +286,13 @@
         }
 
         .materi-content::-webkit-scrollbar-thumb {
-            background: #38B2AC;
+            background: #4f46e5;
             border-radius: 10px;
             border: 3px solid #f1f5f9;
         }
 
         .materi-content::-webkit-scrollbar-thumb:hover {
-            background: #2C9A94;
+            background: #3730a3;
         }
 
         /* Rich content styling */
@@ -310,13 +309,13 @@
             font-weight: bold;
             margin-top: 1.5rem;
             margin-bottom: 1rem;
-            color: #2C7A7B;
+            color: #4f46e5;
         }
 
-        .materi-content h1 { font-size: 2rem; }
-        .materi-content h2 { font-size: 1.8rem; }
-        .materi-content h3 { font-size: 1.6rem; }
-        .materi-content h4 { font-size: 1.4rem; }
+        .materi-content h1 { font-size: 1.8rem; }
+        .materi-content h2 { font-size: 1.6rem; }
+        .materi-content h3 { font-size: 1.4rem; }
+        .materi-content h4 { font-size: 1.2rem; }
 
         .materi-content ul,
         .materi-content ol {
@@ -328,198 +327,38 @@
         .materi-content ol { list-style-type: decimal; }
 
         .materi-content a {
-            color: #38B2AC;
+            color: #4f46e5;
             text-decoration: underline;
-            font-weight: bold;
         }
 
         .materi-content img {
             max-width: 100%;
             height: auto;
             margin: 1rem 0;
-            border-radius: 12px;
-            border: 3px solid #38B2AC;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
 
         .materi-content table {
             border-collapse: collapse;
             width: 100%;
-            margin-bottom: 1.5rem;
-            border: 2px solid #38B2AC;
-            border-radius: 8px;
-            overflow: hidden;
+            margin-bottom: 1rem;
         }
 
         .materi-content table th,
         .materi-content table td {
-            border: 1px solid #B2F5EA;
-            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem;
         }
 
         .materi-content table th {
-            background-color: #38B2AC;
-            color: white;
+            background-color: #f1f5f9;
             font-weight: bold;
         }
 
-        .materi-content table tr:nth-child(even) {
-            background-color: #E6FFFA;
-        }
-
-        .materi-content table tr:hover {
-            background-color: #B2F5EA;
-        }
-
-        .materi-content .youtube-embed,
-        .materi-content .document-embed,
-        .materi-content .presentation-embed {
-            margin: 1.5rem 0;
-            border: 3px solid #38B2AC;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .button {
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .back-button {
-            background-color: #6B7280;
-            color: white;
-        }
-
-        .back-button:hover {
-            background-color: #4B5563;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .completed-button {
-            background-color: #58CC02;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            font-size: 1.2rem;
-        }
-
-        .completed-button:hover {
-            background-color: #4CAF50;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 6px 12px rgba(88, 204, 2, 0.3);
-        }
-
-        .completed-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .completed-button:hover::before {
-            left: 100%;
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .float {
-            animation: floating 6s infinite;
-            display: inline-block;
-            font-size: 2.5rem;
-            margin-left: 10px;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
-        }
-
-        .decoration {
-            position: absolute;
-            z-index: -1;
-            opacity: 0.7;
-            font-size: 3.5rem;
-            filter: drop-shadow(0 3px 3px rgba(0,0,0,0.2));
-        }
-
-        .decoration-1 {
-            top: 100px;
-            right: 10%;
-            animation: floating 8s infinite;
-        }
-
-        .decoration-2 {
-            bottom: 15%;
-            left: 7%;
-            animation: floating 10s infinite 1s;
-        }
-
-        .decoration-3 {
-            top: 40%;
-            left: 3%;
-            font-size: 2.5rem;
-            animation: floating 7s infinite 0.5s;
-        }
-
-        .decoration-4 {
-            bottom: 30%;
-            right: 5%;
-            font-size: 2.5rem;
-            animation: floating 9s infinite 1.5s;
-        }
-
-        .reading-guide {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #38B2AC, #4FD1C5);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            font-size: 1.1rem;
-        }
-
-        .reading-guide.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .progress-emoji {
-            font-size: 2rem;
-            margin-right: 12px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Success notification - Moved below header */
+        /* Success notification */
         .success-notification {
             position: fixed;
-            top: 70px; /* Adjusted to be below header */
+            top: 70px;
             left: 50%;
             transform: translateX(-50%) translateY(-100%);
             background: linear-gradient(135deg, #10B981, #059669);
@@ -532,10 +371,8 @@
             z-index: 999;
             opacity: 0;
             transition: all 0.5s ease;
-            border: 2px solid rgba(255, 255, 255, 0.3);
             width: 90%;
             max-width: 500px;
-            margin: 0 auto;
         }
 
         .success-notification.show {
@@ -551,6 +388,7 @@
 
             .success-notification .icon {
                 font-size: 1.25rem;
+                margin-right: 10px;
             }
 
             .success-notification .message {
@@ -559,106 +397,49 @@
         }
 
         .success-notification .icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-right: 15px;
-            animation: bounce 2s infinite;
         }
 
         .success-notification .message {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             line-height: 1.4;
         }
 
-        /* Reading tracking animation */
-        .reading-tracker {
-            position: absolute;
-            right: -40px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 30px;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .tracker-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: rgba(56, 178, 172, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .tracker-dot.active {
-            background-color: #38B2AC;
-            box-shadow: 0 0 10px #38B2AC;
-            transform: scale(1.3);
-        }
-
-        /* Section headers */
-        .section-header {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        .section-header::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #38B2AC, transparent);
-            border-radius: 2px;
-        }
-
-        /* Fun quote box */
-        .fun-fact-box {
-            background-color: rgba(56, 178, 172, 0.1);
-            border: 2px dashed #38B2AC;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
-            position: relative;
-            font-size: 1rem;
-        }
-
-        .fun-fact-box::before {
-            content: '💡 Tips Seru!';
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background-color: #38B2AC;
-            color: white;
-            padding: 2px 15px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
+        /* Completion badge */
         .completion-badge {
             display: inline-flex;
             align-items: center;
             background: linear-gradient(135deg, #10B981, #059669);
             color: white;
-            padding: 6px 15px;
-            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.9rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .completion-badge i {
             margin-right: 8px;
-            font-size: 1.2rem;
         }
 
+        @media (max-width: 768px) {
+            .completion-badge {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .completion-badge {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Loader overlay */
         .loader-overlay {
             position: fixed;
             top: 0;
@@ -702,7 +483,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Styles untuk tampilan dokumen yang diupload */
+        /* Document embed styles */
         .document-embed {
             margin: 15px 0;
             border-radius: 10px;
@@ -712,7 +493,7 @@
         }
 
         .document-header {
-            padding: 10px 15px;
+            padding: 12px 18px;
             display: flex;
             align-items: center;
             background-color: #f1f5f9;
@@ -729,7 +510,7 @@
         }
 
         .document-icon {
-            margin-right: 10px;
+            margin-right: 12px;
             font-size: 1.5rem;
         }
 
@@ -751,15 +532,15 @@
         }
 
         .document-button {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 6px;
             font-size: 0.875rem;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             font-weight: 500;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .document-view {
@@ -791,12 +572,12 @@
             border: none;
         }
 
-        /* Media query for smaller screens */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .document-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
+                gap: 12px;
+                padding: 10px 15px;
             }
 
             .document-actions {
@@ -806,18 +587,53 @@
             .document-button {
                 flex: 1;
                 justify-content: center;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .document-content iframe {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .document-header {
+                padding: 8px 12px;
+            }
+
+            .document-button {
+                padding: 5px 10px;
+                font-size: 0.75rem;
             }
 
             .document-content iframe {
                 height: 300px;
             }
         }
+
+        /* Section headers */
+        .section-header {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #4f46e5, transparent);
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body>
     @include('header')
 
-    <!-- Success notification moved here, right after header -->
+    <!-- Success notification -->
     <div id="successNotification" class="success-notification">
         <span class="icon">🎉</span>
         <span class="message">HEBAT! Kamu telah menyelesaikan materi ini!<br><span class="text-sm font-normal">Lanjutkan ke materi berikutnya untuk terus belajar.</span></span>
@@ -827,16 +643,13 @@
         @include('sidebar')
 
         <div class="main-content px-6">
-            <!-- Decorative elements -->
-            <div class="decoration decoration-1"></div>
-            <div class="decoration decoration-2">🎓</div>
-            <div class="decoration decoration-3">✏️</div>
-            <div class="decoration decoration-4">🔍</div>
-
             <div class="max-w-5xl mx-auto">
-                <h1 class="page-title">{{ $materi->title }} <i class="fas fa-book ml-3 text-white"></i></h1>
-                {{-- <p class="subtitle">Belajar dengan menyenangkan</p> --}}
-                <div class="gradient-border"></div>
+                <!-- Simplified Header -->
+                <div class="text-center mb-8">
+                    <h1 class="content-title">{{ $materi->title }}</h1>
+                    <p class="subtitle">Belajar dengan menyenangkan</p>
+                    <div class="gradient-border"></div>
+                </div>
 
                 @auth
                 @if($userProgress >= 100)
@@ -847,16 +660,15 @@
                 @endauth
 
                 <div class="content-container">
-                    {{-- <span class="content-icon">📝</span> --}}
                     <div class="mt-6">
-                        <h2 class="text-3xl font-bold text-indigo-800 mb-4 section-header">Penjelasan Singkat</h2>
-                        <p class="text-gray-700 mb-8 text-xl">{{ $materi->description }}</p>
+                        <h2 class="text-2xl font-bold text-indigo-800 mb-4 section-header">Penjelasan Singkat</h2>
+                        <p class="text-gray-700 mb-6 text-lg">{{ $materi->description }}</p>
 
-                        <div class="fun-fact-box">
-                            <p class="mb-0">Bacalah dengan teliti dan pelan-pelan. Kamu juga bisa minta bantuan guru atau orang tua jika ada yang tidak kamu mengerti. Selamat belajar, Sobat Pintar! 😊</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+                            <p class="text-blue-800 mb-0">💡 <strong>Tips:</strong> Bacalah dengan teliti dan pelan-pelan. Kamu juga bisa minta bantuan guru atau orang tua jika ada yang tidak kamu mengerti. Selamat belajar, Sobat Pintar! 😊</p>
                         </div>
 
-                        <h2 class="text-3xl font-bold text-indigo-800 mb-4 mt-8 section-header">Materinya</h2>
+                        <h2 class="text-2xl font-bold text-indigo-800 mb-4 mt-8 section-header">Materinya</h2>
                         <div id="materi-content" class="materi-content">
                             {!! $materi->content !!}
                         </div>
@@ -864,10 +676,9 @@
                 </div>
 
                 <div class="content-container">
-                    {{-- <span class="content-icon">📄</span> --}}
                     <div class="mt-6">
-                        <h2 class="text-3xl font-bold text-indigo-800 mb-4 section-header">Dokumen Pendukung</h2>
-                        <p class="text-gray-700 mb-4 text-xl">Dokumen dan file pendukung untuk membantu pembelajaran kamu.</p>
+                        <h2 class="text-2xl font-bold text-indigo-800 mb-4 section-header">Dokumen Pendukung</h2>
+                        <p class="text-gray-700 mb-4 text-lg">Dokumen dan file pendukung untuk membantu pembelajaran kamu.</p>
 
                         <div id="documents-container" class="documents-container">
                             <!-- Display documents directly from the database -->
@@ -912,18 +723,19 @@
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center">
-                    <a href="{{ route('user.materi.index') }}" class="button back-button">
+                <!-- Responsive Button Container -->
+                <div class="button-container">
+                    <a href="{{ route('user.materi.index') }}" class="btn-responsive btn-back">
                         <i class="fas fa-arrow-left mr-2"></i> Kembali
                     </a>
                     @auth
                     @if($userProgress < 100)
-                    <button id="mark-completed" class="button completed-button">
+                    <button id="mark-completed" class="btn-responsive btn-complete">
                         <i class="fas fa-check-circle mr-2"></i> Sudah Paham!
                     </button>
                     @else
-                    <div class="text-green-400 font-bold flex items-center text-xl bg-green-900 bg-opacity-30 px-4 py-2 rounded-xl">
-                        <i class="fas fa-trophy mr-3 text-yellow-400 text-2xl"></i> Materi ini sudah kamu kuasai!
+                    <div class="btn-responsive btn-completed">
+                        <i class="fas fa-trophy mr-2 text-yellow-400"></i> Materi ini sudah kamu kuasai!
                     </div>
                     @endif
                     @endauth

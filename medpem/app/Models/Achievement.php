@@ -61,21 +61,16 @@ class Achievement extends Model
                 ]
             ]);
 
-            // Award points if not already awarded
-            $userAchievement = $this->users()->where('user_id', $userId)->first();
-            \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Checking if points should be awarded");
-
-            if (!$userAchievement->pivot->points_awarded) {
+            // Award points if this achievement has a points reward and hasn't been awarded yet
+            if ($this->points_reward > 0) {
+                // Award points and mark as awarded
                 $user = Users::find($userId);
                 if ($user) {
-                    \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Awarding {$this->points_reward} points to user {$userId}");
-                    $user->increment('total_points', $this->points_reward);
+                    $user->addPoints($this->points_reward);
+                    $pivot = $this->users()->where('user_id', $userId)->first()->pivot;
+                    $pivot->points_awarded = true;
+                    $pivot->save();
                 }
-
-                \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Marking points as awarded");
-                $this->users()->updateExistingPivot($userId, [
-                    'points_awarded' => true
-                ]);
             }
 
             \Illuminate\Support\Facades\Log::info("Achievement {$this->id}: Successfully unlocked for user {$userId}");

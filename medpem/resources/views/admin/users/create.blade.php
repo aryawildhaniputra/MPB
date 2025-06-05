@@ -16,31 +16,131 @@
 
         .main-content {
             margin-left: 250px;
-            padding-top: 100px;
+            padding-top: 90px;
             padding-bottom: 2rem;
             min-height: calc(100vh - 70px);
             width: calc(100% - 250px);
             transition: all 0.3s ease;
         }
 
+        .content-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: #4f46e5;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+            padding: 0.5rem 2rem;
+            border-radius: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 8px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 600;
+        }
+
+        .gradient-border {
+            height: 4px;
+            width: 100%;
+            max-width: none;
+            background: #4f46e5;
+            margin-bottom: 2rem;
+            border-radius: 2px;
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        /* Mobile styling */
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 160px;
+                padding-top: 90px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+
+            .form-card {
+                padding: 1.5rem;
             }
         }
 
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #ffffff;
-            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1rem;
+                height: 3px;
+            }
+
+            .form-card {
+                padding: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.2rem;
+            }
+
+            .form-input {
+                padding: 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
+            }
         }
 
         .form-card {
@@ -61,6 +161,20 @@
             color: #2d3748;
         }
 
+        @media (max-width: 768px) {
+            .form-label {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-label {
+                font-size: 0.85rem;
+                margin-bottom: 0.3rem;
+            }
+        }
+
         .form-input {
             width: 100%;
             padding: 0.75rem;
@@ -70,6 +184,13 @@
             color: #2d3748;
             background-color: #f8fafc;
             transition: all 0.15s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .form-input {
+                padding: 0.65rem;
+                font-size: 0.8rem;
+            }
         }
 
         .form-input:focus {
@@ -84,6 +205,18 @@
             color: #e53e3e;
         }
 
+        @media (max-width: 768px) {
+            .form-error {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-error {
+                font-size: 0.75rem;
+            }
+        }
+
         .btn {
             display: inline-block;
             font-weight: 600;
@@ -92,6 +225,13 @@
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .btn {
+                padding: 0.65rem 1.3rem;
+                font-size: 0.9rem;
+            }
         }
 
         .btn-primary {
@@ -121,13 +261,15 @@
     <div class="flex">
         @include('sidebar')
 
-        <div class="main-content p-6">
-            <div class="container mx-auto max-w-3xl">
-                <h1 class="page-title">Tambah Pengguna Baru</h1>
+        <div class="main-content p-4 md:p-6">
+            <div class="container mx-auto max-w-3xl px-2 md:px-0">
+                <h1 class="content-title">Tambah Pengguna</h1>
+                <div class="subtitle">Buat akun pengguna baru</div>
+                <div class="gradient-border"></div>
 
                 <!-- Back button -->
-                <div class="mb-6">
-                    <a href="{{ route('admin.users.index') }}" class="flex items-center text-blue-400 hover:text-blue-600 transition">
+                <div class="mb-4 md:mb-6">
+                    <a href="{{ route('admin.users.index') }}" class="flex items-center text-blue-400 hover:text-blue-600 transition text-sm md:text-base">
                         <i class="fas fa-arrow-left mr-2"></i> Kembali ke daftar pengguna
                     </a>
                 </div>
@@ -184,11 +326,11 @@
                             @enderror
                         </div>
 
-                        <div class="flex justify-between">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="flex flex-col md:flex-row justify-between gap-3 md:gap-0">
+                            <button type="submit" class="btn btn-primary order-2 md:order-1">
                                 <i class="fas fa-save mr-2"></i> Simpan
                             </button>
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-danger">
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-danger order-1 md:order-2">
                                 <i class="fas fa-times mr-2"></i> Batal
                             </a>
                         </div>

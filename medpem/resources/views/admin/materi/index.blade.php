@@ -28,13 +28,13 @@
 
         /* Fix untuk header dropdown pada halaman materi */
         .header-dropdown-container, .duolingo-header, .user-avatar, #userAvatarControl, #avatarClickOverlay {
-            z-index: 10000 !important;
+            z-index: 1000 !important;
             position: relative !important;
         }
 
-        /* Pastikan user dropdown muncul di atas konten */
+        /* Pastikan user dropdown muncul di atas konten tapi di bawah modal */
         #userDropdownDiv {
-            z-index: 10001 !important;
+            z-index: 1001 !important;
         }
 
         /* Fix untuk main content yang mungkin menutupi header */
@@ -54,7 +54,7 @@
             font-weight: 900;
             text-align: center;
             margin-bottom: 1rem;
-            background: #F25252;
+            background: #4f46e5;
             color: white;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -83,7 +83,7 @@
             height: 4px;
             width: 100%;
             max-width: none;
-            background: #7028E4;
+            background: #4f46e5;
             margin-bottom: 2rem;
             border-radius: 2px;
             margin-left: 0;
@@ -374,7 +374,53 @@
             .main-content {
                 margin-left: 0;
                 width: 100%;
-                padding-top: 120px;
+                padding-top: 90px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .content-title {
+                font-size: 2.5rem;
+                padding: 0.4rem 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0.4rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1.5rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 2rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0.3rem;
+            }
+
+            .gradient-border {
+                margin-bottom: 1rem;
+                height: 3px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-title {
+                font-size: 1.8rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0.25rem 0.5rem;
             }
         }
 
@@ -494,54 +540,214 @@
             z-index: 1;
         }
 
-        /* Delete Modal Styles - Updated */
+        /* Delete Modal Styles - Updated with higher z-index */
         .modal-backdrop {
             position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
             opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .modal-backdrop.show {
+        .modal-backdrop.active {
             opacity: 1;
-            pointer-events: auto;
+            visibility: visible;
         }
 
         .modal-content {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.95);
-            background: white;
-            padding: 2rem;
+            background-color: white;
             border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            z-index: 1000;
+            transform: scale(0.95);
             opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            max-width: 90%;
-            width: 500px;
+            transition: transform 0.3s, opacity 0.3s;
+            overflow: hidden;
+            z-index: 9999;
+            position: relative;
         }
 
-        .modal-content.show {
-            transform: translate(-50%, -50%) scale(1);
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                max-width: 400px;
+                border-radius: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 98%;
+                max-width: 350px;
+                border-radius: 0.5rem;
+            }
+        }
+
+        .modal-backdrop.active .modal-content {
+            transform: scale(1);
             opacity: 1;
-            pointer-events: auto;
         }
 
-        /* Ensure header stays below modal */
-        .duolingo-header {
-            z-index: 40 !important;
+        /* Ensure modal covers header when active */
+        .modal-backdrop.active {
+            z-index: 9998 !important;
         }
 
-        /* Ensure sidebar stays below modal */
-        .sidebar {
-            z-index: 30 !important;
+        /* Hide header dropdown when modal is active */
+        .modal-backdrop.active ~ * #userDropdownDiv,
+        body.modal-open #userDropdownDiv {
+            display: none !important;
+        }
+
+        /* Ensure header elements are below modal */
+        body.modal-open .header-dropdown-container,
+        body.modal-open .duolingo-header,
+        body.modal-open .user-avatar,
+        body.modal-open #userAvatarControl,
+        body.modal-open #avatarClickOverlay {
+            z-index: 100 !important;
+        }
+
+        /* Modal covers everything */
+        .modal-backdrop {
+            z-index: 9998 !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+        }
+
+        .modal-header {
+            padding: 1.25rem;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .modal-header {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-header {
+                padding: 0.8rem;
+            }
+        }
+
+        .modal-icon {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fee2e2;
+            color: #dc2626;
+            border-radius: 50%;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            color: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            .modal-body {
+                padding: 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-body {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .modal-footer {
+                padding: 0.8rem 1.2rem;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-footer {
+                padding: 0.6rem 1rem;
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+        }
+
+        .modal-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .modal-button {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-button {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+                width: 100%;
+            }
+        }
+
+        .modal-button.cancel {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .modal-button.cancel:hover {
+            background-color: #cbd5e1;
+        }
+
+        .modal-button.confirm {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .modal-button.confirm:hover {
+            background-color: #b91c1c;
         }
     </style>
 </head>
@@ -604,38 +810,15 @@
 
             <!-- Flash Message Notification -->
             @if(session('success'))
-            <div id="successNotification" class="mb-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 rounded-2xl border-2 border-green-400 shadow-lg transform hover:scale-[1.01] transition-all animate-fadeInUp">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <span class="text-4xl mr-4 bounce">✅</span>
-                        <div>
-                            <span class="font-bold text-xl">Berhasil!</span>
-                            <p class="text-green-100 mt-1">{{ session('success') }}</p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="document.getElementById('successNotification').style.display='none'" class="text-white hover:text-green-200 transition-colors">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
+                <div class="bg-green-500 text-white p-3 md:p-4 rounded-lg mb-4 md:mb-6 shadow text-sm md:text-base">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
                 </div>
-            </div>
             @endif
 
-            <!-- Error Message Notification -->
             @if(session('error'))
-            <div id="errorNotification" class="mb-8 bg-gradient-to-r from-red-500 to-red-700 text-white p-6 rounded-2xl border-2 border-red-400 shadow-lg transform hover:scale-[1.01] transition-all animate-fadeInUp">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <span class="text-4xl mr-4 bounce">⚠️</span>
-                        <div>
-                            <span class="font-bold text-xl">Error!</span>
-                            <p class="text-red-100 mt-1">{{ session('error') }}</p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="document.getElementById('errorNotification').style.display='none'" class="text-white hover:text-red-200 transition-colors">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
+                <div class="bg-red-500 text-white p-3 md:p-4 rounded-lg mb-4 md:mb-6 shadow text-sm md:text-base">
+                    <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
                 </div>
-            </div>
             @endif
 
             <!-- Material Cards Grid -->
@@ -724,7 +907,7 @@
                                             <form id="delete-form-{{ $materi->id }}" action="{{ route('admin.materi.destroy', $materi->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" onclick="confirmDelete({{ $materi->id }})" class="action-button delete-button">
+                                                <button type="button" onclick="showDeleteModal('{{ $materi->title }}', {{ $materi->id }})" class="action-button delete-button">
                                                     <i class="fas fa-trash"></i>
                                     </button>
                                             </form>
@@ -765,93 +948,90 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal - Updated Structure -->
-    <div id="deleteModal" class="modal-backdrop" aria-hidden="true">
+    <!-- Delete Confirmation Modal - Updated to match users index -->
+    <div id="deleteModal" class="modal-backdrop">
         <div class="modal-content">
-            <div class="text-center">
-                <div class="flex justify-end mb-2">
-                    <button onclick="closeDeleteModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
-                        <i class="fas fa-times"></i>
-                    </button>
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <i class="fas fa-exclamation-triangle text-xl"></i>
                 </div>
-                <div class="text-6xl mb-4">🗑️</div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-4">Konfirmasi Hapus</h3>
-                <p class="text-gray-600 mb-8">Apakah Anda yakin ingin menghapus materi ini?</p>
-
-                <div class="flex justify-center space-x-4">
-                    <button id="cancelDelete" class="px-10 py-3 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 font-medium transition">
-                        Batal
-                    </button>
-                    <button id="confirmDelete" class="px-10 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 font-medium transition">
-                        Ya, Hapus
-                    </button>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900">Konfirmasi Hapus Materi</h3>
+                    <p class="text-sm text-gray-600">Tindakan ini tidak dapat dibatalkan</p>
                 </div>
+            </div>
+            <div class="modal-body">
+                <p class="text-gray-800">Apakah Anda yakin ingin menghapus materi <span id="materiTitle" class="font-semibold"></span>?</p>
+                <p class="text-gray-600 text-sm mt-2">Semua data terkait materi ini akan dihapus secara permanen.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-button cancel" onclick="hideDeleteModal()">
+                    Batal
+                </button>
+                <form id="deleteForm" method="POST" action="">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="modal-button confirm">
+                        <i class="fas fa-trash mr-1"></i> Hapus Materi
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
-        // Updated modal functions
-        function confirmDelete(id) {
-            const modal = document.getElementById('deleteModal');
-            const modalContent = modal.querySelector('.modal-content');
-            const confirmButton = document.getElementById('confirmDelete');
-            const cancelButton = document.getElementById('cancelDelete');
+        // Updated modal functions to match users index
+        function showDeleteModal(title, id) {
+            // Set the materi title in the modal
+            document.getElementById('materiTitle').textContent = title;
 
-            // Show the modal and backdrop
-            modal.classList.add('show');
-            modalContent.classList.add('show');
+            // Set the form action to the correct route
+            document.getElementById('deleteForm').action = "{{ url('admin/materi') }}/" + id;
 
-            // Set up event listeners
-            confirmButton.onclick = function() {
-                document.getElementById('delete-form-' + id).submit();
-                closeDeleteModal();
-            };
+            // Hide any open dropdowns
+            const userDropdown = document.getElementById('userDropdownDiv');
+            if (userDropdown) {
+                userDropdown.style.display = 'none';
+            }
 
-            cancelButton.onclick = closeDeleteModal;
+            // Add modal-open class to body
+            document.body.classList.add('modal-open');
 
-            // Close modal if clicked outside
-            modal.onclick = function(event) {
-                if (event.target === modal) {
-                    closeDeleteModal();
-                }
-            };
+            // Show the modal
+            document.getElementById('deleteModal').classList.add('active');
+
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeDeleteModal() {
-            const modal = document.getElementById('deleteModal');
-            const modalContent = modal.querySelector('.modal-content');
+        function hideDeleteModal() {
+            // Hide the modal
+            document.getElementById('deleteModal').classList.remove('active');
 
-            modalContent.classList.remove('show');
-            modal.classList.remove('show');
+            // Remove modal-open class from body
+            document.body.classList.remove('modal-open');
+
+            // Allow body scrolling again
+            document.body.style.overflow = 'auto';
         }
 
-        // Add fade-in animation when page loads
+        // Close modal when clicking outside the modal content
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideDeleteModal();
+            }
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('deleteModal').classList.contains('active')) {
+                hideDeleteModal();
+            }
+        });
+
+        // Close any open dropdowns when modal is shown
         document.addEventListener('DOMContentLoaded', function() {
-            // Auto-hide the success notification after 5 seconds
-            const successNotification = document.getElementById('successNotification');
-            if (successNotification) {
-                setTimeout(function() {
-                    successNotification.style.opacity = '0';
-                    successNotification.style.transition = 'opacity 1s ease';
-                    setTimeout(function() {
-                        successNotification.style.display = 'none';
-                    }, 1000);
-                }, 5000);
-            }
-
-            // Auto-hide the error notification after 5 seconds
-            const errorNotification = document.getElementById('errorNotification');
-            if (errorNotification) {
-                setTimeout(function() {
-                    errorNotification.style.opacity = '0';
-                    errorNotification.style.transition = 'opacity 1s ease';
-                    setTimeout(function() {
-                        errorNotification.style.display = 'none';
-                    }, 1000);
-                }, 5000);
-            }
-
+            // Add fade-in animation when page loads
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
@@ -859,39 +1039,58 @@
                 }, index * 100);
             });
 
-            // Keep the dropdown functionality but remove the debugging
+            // Keep the dropdown functionality but prevent when modal is active
             var profileBtn = document.getElementById('profileDropdownBtn');
             var dropdownDiv = document.getElementById('userDropdownDiv');
             var clickOverlay = document.getElementById('avatarClickOverlay');
 
+            // Function to check if modal is active
+            const isModalActive = () => {
+                const modal = document.getElementById('deleteModal');
+                return modal && modal.classList.contains('active');
+            };
+
+            // Enhanced dropdown toggle with modal check
+            const toggleDropdown = (e) => {
+                if (isModalActive()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+
+                e.stopPropagation();
+                if (dropdownDiv) {
+                    dropdownDiv.style.display = dropdownDiv.style.display === 'block' ? 'none' : 'block';
+                }
+            };
+
             // Keep the essential dropdown functionality
             if (clickOverlay) {
-                clickOverlay.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (dropdownDiv) {
-                        dropdownDiv.style.display = dropdownDiv.style.display === 'block' ? 'none' : 'block';
-                    }
-                });
+                clickOverlay.addEventListener('click', toggleDropdown);
             }
 
             if (profileBtn) {
-                profileBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (dropdownDiv) {
-                        dropdownDiv.style.display = dropdownDiv.style.display === 'block' ? 'none' : 'block';
-                    }
-                });
+                profileBtn.addEventListener('click', toggleDropdown);
             }
 
-            // Keep the hotkey functionality without debug logging
+            // Keep the hotkey functionality but prevent when modal is active
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'd' || e.key === 'D') {
-                    if (dropdownDiv) {
+                    if (!isModalActive() && dropdownDiv) {
                         dropdownDiv.style.display = dropdownDiv.style.display === 'block' ? 'none' : 'block';
                     }
                 }
             });
         });
+
+        // Legacy function for backward compatibility
+        function confirmDelete(id) {
+            document.getElementById('delete-form-' + id).submit();
+        }
+
+        function closeDeleteModal() {
+            hideDeleteModal();
+        }
     </script>
 
     @include('components.achievement-notification')
