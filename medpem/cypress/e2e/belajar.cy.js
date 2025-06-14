@@ -6,232 +6,133 @@ describe('Fitur Belajar', () => {
 
   it('should display belajar index page', () => {
     cy.url().should('include', '/belajar');
-
+    cy.get('.content-title').should('contain', 'BELAJAR');
+    cy.get('.lesson-path-container').should('exist');
     cy.get('body').then($body => {
-      const hasBelajarTitle =
-        $body.text().includes('Pilih Pelajaran') ||
-        $body.text().includes('Belajar') ||
-        $body.text().includes('Pelajaran') ||
-        $body.text().includes('Lesson');
-
-      expect(hasBelajarTitle).to.be.true;
-    });
-  });
-
-  it('should show available lessons or empty state', () => {
-    cy.get('body').then($body => {
-      const hasLessonCards =
-        $body.find('.lesson-card, .card.lesson, .belajar-item, .item-pelajaran, .lesson-list-item').length > 0;
-
-      const hasEmptyState =
-        $body.text().includes('belum ada pelajaran') ||
-        $body.text().includes('no lessons') ||
-        $body.text().includes('empty');
-
-      if (hasLessonCards) {
-        cy.log('Found lesson cards on the page');
-      } else if (hasEmptyState) {
-        cy.log('Found empty state message (no lessons)');
+      if ($body.find('.lesson-circle').length > 0) {
+        cy.get('.lesson-circle').should('exist');
       } else {
-        cy.log('No explicit lesson cards or empty state found, but page loaded');
+        cy.contains('Belum Ada Pelajaran').should('exist');
       }
     });
   });
 
-  it('should navigate to lesson detail if available', () => {
+  it('should start a new lesson', () => {
     cy.get('body').then($body => {
-      const lessonCardSelectors = [
-        '.lesson-card', '.card.lesson', '.belajar-item',
-        '.list-group-item', '.item-pelajaran', '.lesson-list-item'
-      ];
-
-      let hasLessonCards = false;
-      let firstSelector = '';
-
-      for (const selector of lessonCardSelectors) {
-        if ($body.find(selector).length > 0) {
-          hasLessonCards = true;
-          firstSelector = selector;
-          break;
-        }
-      }
-
-      if (hasLessonCards) {
-        cy.get(firstSelector).first().click({force: true});
-
-        cy.url().should('not.include', '/belajar$');
-
-        cy.get('body').then($detailBody => {
-          const hasDetailElements =
-            $detailBody.find('.lesson-detail, .pelajaran-detail, .lesson-content').length > 0 ||
-            $detailBody.text().match(/mulai pelajaran|start lesson|detail|mulai/i) !== null;
-
-          expect(hasDetailElements || true).to.be.true;
-        });
+      const lessonCircles = $body.find('.lesson-circle.active');
+      if (lessonCircles.length > 0) {
+        cy.get('.lesson-circle.active').first().trigger('mouseover');
+        cy.get('.lesson-node.active .lesson-tooltip form').should('exist');
+        cy.get('.lesson-node.active .lesson-tooltip form').first().submit();
+        cy.url().should('include', '/question');
       } else {
-        cy.log('No lesson cards found to click - test passed conditionally');
+        cy.log('No active lesson circles available to start');
       }
     });
   });
 
-  it('should start a lesson if available', () => {
+  it('should answer questions in a lesson', () => {
     cy.get('body').then($body => {
-      const lessonSelectors = [
-        '.lesson-card', '.card.lesson', '.belajar-item',
-        '.list-group-item', '.item-pelajaran', '.lesson-list-item'
-      ];
-
-      let hasLessons = false;
-      let lessonSelector = '';
-
-      for (const selector of lessonSelectors) {
-        if ($body.find(selector).length > 0) {
-          hasLessons = true;
-          lessonSelector = selector;
-          break;
-        }
-      }
-
-      if (hasLessons) {
-        cy.get(lessonSelector).first().click({force: true});
-
-        cy.get('body').then($detailBody => {
-          const startButtonTexts = [
-            'Mulai Pelajaran', 'Start Lesson', 'Mulai', 'Start'
-          ];
-
-          let hasStartButton = false;
-
-          for (const text of startButtonTexts) {
-            if ($detailBody.text().includes(text)) {
-              hasStartButton = true;
-              cy.contains(text).click({force: true});
-              break;
-            }
-          }
-
-          if (!hasStartButton) {
-            cy.log('No start button found - test passed conditionally');
+      const lessonCircles = $body.find('.lesson-circle.active');
+      if (lessonCircles.length > 0) {
+        cy.get('.lesson-circle.active').first().trigger('mouseover');
+        cy.get('.lesson-node.active .lesson-tooltip form').first().submit();
+        // Answer questions
+        cy.get('.question-prompt').should('exist');
+        cy.get('.option-item').first().click({force: true});
+        cy.get('.next-button').click({force: true});
+        // Check if we're still in question mode or moved to complete
+        cy.url().then(url => {
+          if (url.includes('/question')) {
+            cy.get('.question-prompt').should('exist');
+          } else if (url.includes('/complete')) {
+            cy.get('.completion-message').should('exist');
           }
         });
       } else {
-        cy.log('No lessons found - test passed conditionally');
-      }
-    });
-  });
-
-  it('should answer questions in a lesson if available', () => {
-    cy.get('body').then($body => {
-      const lessonSelectors = [
-        '.lesson-card', '.card.lesson', '.belajar-item',
-        '.list-group-item', '.item-pelajaran', '.lesson-list-item'
-      ];
-
-      let hasLessons = false;
-
-      for (const selector of lessonSelectors) {
-        if ($body.find(selector).length > 0) {
-          hasLessons = true;
-          cy.get(selector).first().click({force: true});
-          break;
-        }
-      }
-
-      if (hasLessons) {
-        cy.get('body').then($detailBody => {
-          const startButtonTexts = [
-            'Mulai Pelajaran', 'Start Lesson', 'Mulai', 'Start'
-          ];
-
-          let hasStartButton = false;
-
-          for (const text of startButtonTexts) {
-            if ($detailBody.text().includes(text)) {
-              hasStartButton = true;
-              cy.contains(text).click({force: true});
-              break;
-            }
-          }
-
-          if (!hasStartButton) {
-            cy.log('No start button found - test passed conditionally');
-          }
-        });
-      } else {
-        cy.log('No lessons found - test passed conditionally');
+        cy.log('No active lesson circles available to test questions');
       }
     });
   });
 
   it('should complete a lesson', () => {
-    cy.visit('/belajar/1/complete', { failOnStatusCode: false });
-
     cy.get('body').then($body => {
-      const hasCompletionMessage =
-        $body.text().match(/selesai|selamat|complete|congratulations/i) !== null;
-
-      const hasBackButton =
-        $body.text().match(/kembali|back|dashboard/i) !== null;
-
-      expect(hasCompletionMessage || hasBackButton || true).to.be.true;
-    });
-  });
-
-  it('should review a completed lesson or handle missing page', () => {
-    cy.visit('/belajar/1/review', { failOnStatusCode: false });
-
-    cy.get('body').then($body => {
-      const hasReviewContent =
-        $body.text().match(/ringkasan|review|ulasan|summary/i) !== null ||
-        $body.find('.review-container, .summary-container, .ringkasan').length > 0;
-
-      if (!hasReviewContent) {
-        cy.log('Review page not found or doesn\'t have expected content - test passed conditionally');
-      }
-    });
-  });
-
-  it('should earn points after completing a lesson', () => {
-    cy.visit('/belajar/1/complete', { failOnStatusCode: false });
-
-    cy.get('body').then($body => {
-      const hasPointsMessage =
-        $body.text().match(/poin|xp|point|score/i) !== null ||
-        $body.find('.points, .xp, .score, .point-badge').length > 0;
-
-      expect(hasPointsMessage || true).to.be.true;
-    });
-  });
-
-  it('should show progress if available', () => {
-    cy.get('body').then($body => {
-      const lessonSelectors = [
-        '.lesson-card', '.card.lesson', '.belajar-item',
-        '.list-group-item', '.item-pelajaran', '.lesson-list-item'
-      ];
-
-      let hasLessons = false;
-
-      for (const selector of lessonSelectors) {
-        if ($body.find(selector).length > 0) {
-          hasLessons = true;
-          cy.get(selector).first().click({force: true});
-          break;
-        }
-      }
-
-      if (hasLessons) {
-        cy.get('body').then($detailBody => {
-          const hasProgressIndicator =
-            $detailBody.find('.progress-bar, .progress-indicator, [role="progressbar"], .progress').length > 0;
-
-          if (!hasProgressIndicator) {
-            cy.log('No progress indicator found - test passed conditionally');
-          }
-        });
+      const lessonCircles = $body.find('.lesson-circle.active');
+      if (lessonCircles.length > 0) {
+        cy.get('.lesson-circle.active').first().trigger('mouseover');
+        cy.get('.lesson-node.active .lesson-tooltip form').first().submit();
+        // Answer all questions
+        cy.get('.question-prompt').should('exist');
+        cy.get('.option-item').first().click({force: true});
+        cy.get('.next-button').click({force: true});
+        // Should reach completion page
+        cy.url().should('include', '/complete');
+        cy.get('.completion-message').should('exist');
+        cy.get('.points-earned').should('exist');
+        cy.get('.review-button').should('exist');
       } else {
-        cy.visit('/belajar/1', { failOnStatusCode: false });
-        cy.log('No lessons found - direct navigation attempted - test passed conditionally');
+        cy.log('No active lesson circles available to test completion');
+      }
+    });
+  });
+
+  it('should review a completed lesson', () => {
+    cy.get('body').then($body => {
+      const lessonCircles = $body.find('.lesson-circle.active');
+      if (lessonCircles.length > 0) {
+        cy.get('.lesson-circle.active').first().trigger('mouseover');
+        cy.get('.lesson-node.active .lesson-tooltip form').first().submit();
+        // Complete the lesson
+        cy.get('.question-prompt').should('exist');
+        cy.get('.option-item').first().click({force: true});
+        cy.get('.next-button').click({force: true});
+        // Go to review
+        cy.url().should('include', '/complete');
+        cy.get('.review-button').click({force: true});
+        cy.url().should('include', '/review');
+        cy.get('.review-container').should('exist');
+        cy.get('.question-review').should('exist');
+      } else {
+        cy.log('No active lesson circles available to test review');
+      }
+    });
+  });
+
+  it('should handle incorrect answer format', () => {
+    cy.get('body').then($body => {
+      const lessonCircles = $body.find('.lesson-circle.active');
+      if (lessonCircles.length > 0) {
+        cy.get('.lesson-circle.active').first().trigger('mouseover');
+        cy.get('.lesson-node.active .lesson-tooltip form').first().submit();
+        // Try to proceed without selecting an answer
+        cy.get('.next-button').click({force: true});
+        cy.get('.error-message').should('exist');
+        cy.get('.error-message').should('contain', 'Pilih jawaban terlebih dahulu');
+        // Select an answer and proceed
+        cy.get('.option-item').first().click({force: true});
+        cy.get('.next-button').click({force: true});
+        cy.get('.error-message').should('not.exist');
+      } else {
+        cy.log('No active lesson circles available to test error handling');
+      }
+    });
+  });
+
+  it('should handle skipping questions', () => {
+    cy.get('body').then($body => {
+      const lessonCircles = $body.find('.lesson-circle.active');
+      if (lessonCircles.length > 0) {
+        cy.get('.lesson-circle.active').first().trigger('mouseover');
+        cy.get('.lesson-node.active .lesson-tooltip form').first().submit();
+        // Try to skip without answering
+        cy.get('.skip-button').click({force: true});
+        cy.get('.skip-confirmation').should('exist');
+        cy.get('.skip-confirmation .confirm-skip').click({force: true});
+        // Should move to next question
+        cy.get('.question-prompt').should('exist');
+        cy.get('.attempts-counter').should('exist');
+      } else {
+        cy.log('No active lesson circles available to test skipping');
       }
     });
   });

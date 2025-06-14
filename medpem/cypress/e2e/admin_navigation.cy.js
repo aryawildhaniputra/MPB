@@ -1,25 +1,36 @@
 describe('Admin Navigation', () => {
   beforeEach(() => {
-    // Use the custom login command
-    cy.loginAsAdmin();
-  });
+    cy.visit('/login')
+    cy.get('input[name="username"]').type('admin')
+    cy.get('input[name="password"]').type('admin123')
+    cy.get('#login-button').click()
+    cy.url().should('include', '/admin/dashboard')
+  })
 
   it('should access all admin pages', () => {
-    // Visit dashboard
-    cy.visit('/dashboard');
-    cy.url().should('include', '/dashboard');
-    cy.contains(/dashboard|menu utama|beranda/i).should('exist');
+    // Dashboard
+    cy.get('.sidebar-item .sidebar-text').contains('MENU UTAMA').click()
+    cy.url().should('include', '/admin/dashboard')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'MENU UTAMA')
 
-    // Visit admin materi page
-    cy.visit('/materi');
-    cy.url().should('include', '/materi');
-    cy.contains(/materi|kelola materi/i).should('exist');
+    // Kelola User
+    cy.get('.sidebar-item .sidebar-text').contains('KELOLA USER').click()
+    cy.url().should('include', '/admin/users')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'KELOLA USER')
 
-    // Visit user management page
-    cy.visit('/admin/users');
-    cy.url().should('include', '/admin/users');
-    cy.contains(/manajemen pengguna|kelola user|user management/i).should('exist');
-  });
+    // Kelola Materi
+    cy.get('.sidebar-item .sidebar-text').contains('KELOLA MATERI').click()
+    cy.url().should('include', '/admin/materi')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'KELOLA MATERI')
+    cy.get('.content-title').should('contain', 'MATERI')
+    cy.get('body').then($body => {
+      if ($body.find('.card').length > 0) {
+        cy.get('.card').should('exist')
+      } else {
+        cy.contains('Belum Ada Materi').should('exist')
+      }
+    })
+  })
 
   it('should navigate using admin sidebar menu', () => {
     cy.visit('/dashboard');

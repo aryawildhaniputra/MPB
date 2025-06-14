@@ -1,13 +1,24 @@
 describe('Fitur Permainan', () => {
   beforeEach(() => {
-    cy.loginAsUser();
-    cy.visit('/permainan');
-  });
+    cy.visit('/login')
+    cy.get('input[name="username"]').type('user')
+    cy.get('input[name="password"]').type('user123')
+    cy.get('#login-button').click()
+    cy.url().should('include', '/dashboard')
+    cy.get('.sidebar-item .sidebar-text').contains('PERMAINAN').click()
+    cy.url().should('include', '/permainan')
+  })
 
   it('should display permainan index page', () => {
-    cy.url().should('include', '/permainan');
-    cy.contains(/permainan|game/i).should('exist');
-  });
+    cy.get('.content-title').should('contain', 'PERMAINAN')
+    cy.get('body').then($body => {
+      if ($body.find('.game-card').length > 0) {
+        cy.get('.game-card').should('exist')
+      } else {
+        cy.contains('Belum Ada Permainan').should('exist')
+      }
+    })
+  })
 
   it('should show available games', () => {
     cy.get('body').then($body => {

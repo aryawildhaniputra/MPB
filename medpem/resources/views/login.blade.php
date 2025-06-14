@@ -598,10 +598,11 @@
                 <label for="username" class="form-label">
                     <i class="fas fa-user text-yellow-500 mr-2"></i>Nama Pengguna
                 </label>
-                <input type="text" name="username" id="username" class="form-input @error('username') error @enderror" placeholder="Ketik nama pengguna kamu di sini" value="{{ old('username') }}" required>
+                <input type="text" name="username" id="username" class="form-input @error('username') error @enderror" placeholder="Ketik nama pengguna kamu di sini" value="{{ old('username') }}">
                 @error('username')
                     <div class="error-message active">{{ $message }}</div>
                 @enderror
+                <div class="error-message" id="username-error" style="display:none"></div>
             </div>
 
             <div class="form-control">
@@ -609,7 +610,7 @@
                     <i class="fas fa-key text-yellow-500 mr-2"></i>Kata Sandi
                 </label>
                 <div class="relative">
-                    <input type="password" name="password" id="password" class="form-input @error('password') error @enderror" placeholder="Ketik kata sandi rahasiamu di sini" required>
+                    <input type="password" name="password" id="password" class="form-input @error('password') error @enderror" placeholder="Ketik kata sandi rahasiamu di sini">
                     <span class="password-toggle" id="password-toggle">
                         <i class="fas fa-eye"></i>
                     </span>
@@ -620,6 +621,7 @@
                 @if(session('error'))
                     <div class="error-message active">{{ session('error') }}</div>
                 @endif
+                <div class="error-message" id="password-error" style="display:none"></div>
             </div>
 
             <button type="submit" class="login-button" id="login-button">
@@ -687,6 +689,54 @@
                 password.setAttribute('type', type);
                 passwordToggle.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
             });
+
+            // Client-side validation for required fields
+            form.addEventListener('submit', function(e) {
+                let valid = true;
+                // Reset error messages
+                document.getElementById('username-error').style.display = 'none';
+                document.getElementById('password-error').style.display = 'none';
+
+                // Username validation
+                if (username.value.trim() === '') {
+                    document.getElementById('username-error').textContent = 'Nama pengguna harus diisi';
+                    document.getElementById('username-error').style.display = 'flex';
+                    username.classList.add('error');
+                    valid = false;
+                } else {
+                    username.classList.remove('error');
+                }
+
+                // Password validation
+                if (password.value.trim() === '') {
+                    document.getElementById('password-error').textContent = 'Kata sandi harus diisi';
+                    document.getElementById('password-error').style.display = 'flex';
+                    password.classList.add('error');
+                    valid = false;
+                } else {
+                    password.classList.remove('error');
+                }
+
+                if (!valid) {
+                    e.preventDefault();
+                }
+
+                // Auto-hide error messages after 5 seconds (client-side)
+                setTimeout(autoHideErrorMessages, 10);
+            });
+
+            // Auto-hide all error messages after 5 seconds (for server-side and client-side)
+            function autoHideErrorMessages() {
+                document.querySelectorAll('.error-message').forEach(function(el) {
+                    if (el.style.display !== 'none' && el.textContent.trim() !== '') {
+                        setTimeout(function() {
+                            el.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            }
+            // Run on page load (for server-side errors)
+            autoHideErrorMessages();
         });
     </script>
 </body>

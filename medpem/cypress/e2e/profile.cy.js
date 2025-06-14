@@ -1,9 +1,20 @@
 describe('User Profile', () => {
   beforeEach(() => {
-    // Use the custom login command
-    cy.loginAsUser();
-    cy.visit('/dashboard');
-  });
+    cy.visit('/login')
+    cy.get('input[name="username"]').type('user')
+    cy.get('input[name="password"]').type('user123')
+    cy.get('#login-button').click()
+    cy.url().should('include', '/dashboard')
+    cy.visit('/profile')
+    cy.url().should('include', '/profile')
+  })
+
+  it('should display profile page', () => {
+    cy.get('.content-title').should('contain', 'PROFIL')
+    cy.get('.profile-card').should('exist')
+    cy.get('.profile-name').should('exist')
+    cy.get('.profile-avatar').should('exist')
+  })
 
   it('should access profile from header dropdown', () => {
     // Click on the user avatar in the header
@@ -82,3 +93,100 @@ describe('User Profile', () => {
     });
   });
 });
+
+describe('Profile Tests', () => {
+  beforeEach(() => {
+    cy.login('testuser', 'password123')
+    cy.visit('/profil')
+  })
+
+  it('should display user profile information', () => {
+    cy.get('[data-testid="profile-container"]').should('be.visible')
+    cy.get('[data-testid="user-name"]').should('be.visible')
+    cy.get('[data-testid="user-email"]').should('be.visible')
+    cy.get('[data-testid="user-role"]').should('be.visible')
+  })
+
+  it('should update profile information', () => {
+    cy.get('[data-testid="edit-profile-button"]').click()
+
+    // Update name
+    cy.get('input[name="name"]').clear().type('Updated Name')
+
+    // Update email
+    cy.get('input[name="email"]').clear().type('updated@test.com')
+
+    // Save changes
+    cy.get('[data-testid="save-profile"]').click()
+    cy.get('.success-message').should('be.visible')
+
+    // Verify changes
+    cy.get('[data-testid="user-name"]').should('contain', 'Updated Name')
+    cy.get('[data-testid="user-email"]').should('contain', 'updated@test.com')
+  })
+
+  it('should change password successfully', () => {
+    cy.get('[data-testid="change-password-button"]').click()
+
+    // Enter current and new password
+    cy.get('input[name="current_password"]').type('password123')
+    cy.get('input[name="new_password"]').type('newpassword123')
+    cy.get('input[name="confirm_password"]').type('newpassword123')
+
+    // Save new password
+    cy.get('[data-testid="save-password"]').click()
+    cy.get('.success-message').should('be.visible')
+  })
+
+  it('should validate required fields when saving profile', () => {
+    cy.get('[data-testid="edit-profile-button"]').click()
+
+    // Clear required fields
+    cy.get('input[name="name"]').clear()
+    cy.get('input[name="email"]').clear()
+
+    // Try to save
+    cy.get('[data-testid="save-profile"]').click()
+    cy.get('[data-testid="error-message"]').should('be.visible')
+  })
+
+  it('should validate password criteria', () => {
+    cy.get('[data-testid="change-password-button"]').click()
+
+    // Enter short password
+    cy.get('input[name="current_password"]').type('password123')
+    cy.get('input[name="new_password"]').type('123')
+    cy.get('input[name="confirm_password"]').type('123')
+
+    // Try to save
+    cy.get('[data-testid="save-password"]').click()
+    cy.get('[data-testid="error-message"]').should('be.visible')
+  })
+
+  it('should validate password confirmation', () => {
+    cy.get('[data-testid="change-password-button"]').click()
+
+    // Enter mismatched passwords
+    cy.get('input[name="current_password"]').type('password123')
+    cy.get('input[name="new_password"]').type('newpassword123')
+    cy.get('input[name="confirm_password"]').type('differentpassword')
+
+    // Try to save
+    cy.get('[data-testid="save-password"]').click()
+    cy.get('[data-testid="error-message"]').should('be.visible')
+  })
+
+  it('should handle profile picture upload', () => {
+    cy.get('[data-testid="edit-profile-button"]').click()
+
+    // Upload image
+    cy.get('input[type="file"]').attachFile('profile-picture.jpg')
+    cy.get('[data-testid="save-profile"]').click()
+    cy.get('.success-message').should('be.visible')
+
+    // Verify new profile picture
+    cy.get('[data-testid="profile-picture"]')
+      .should('have.attr', 'src')
+      .and('include', 'profile-picture.jpg')
+  })
+})

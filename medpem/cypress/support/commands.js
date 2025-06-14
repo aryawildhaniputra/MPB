@@ -8,36 +8,141 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-// Login command with wait for redirection
-Cypress.Commands.add('login', (username = 'user', password = '123') => {
-  cy.visit('/login');
-  cy.intercept('POST', '/login').as('loginRequest');
+// Environment configuration
+const config = {
+  baseUrl: 'https://mpb.oopedia.com',
+  testUsers: {
+    student: {
+      username: 'user',
+      password: 'user123'
+    },
+    admin: {
+      username: 'admin',
+      password: 'admin123'
+    },
+    superadmin: {
+      username: 'superadmin',
+      password: '12345'
+    }
+  }
+}
 
-  cy.get('input[name="username"]').type(username);
-  cy.get('input[name="password"]').type(password);
-  cy.get('button[type="submit"], .login-button, button#login-button').click();
+// Custom command for student login
+Cypress.Commands.add('login', (username = config.testUsers.student.username, password = config.testUsers.student.password) => {
+  cy.visit('/login')
+  cy.get('input[name="username"]').type(username)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+  cy.url().should('include', '/dashboard')
+})
 
-  // Wait for login request to complete
-  cy.wait('@loginRequest');
+// Custom command for admin login
+Cypress.Commands.add('adminLogin', (username = config.testUsers.admin.username, password = config.testUsers.admin.password) => {
+  cy.visit('/login')
+  cy.get('input[name="username"]').type(username)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+  cy.url().should('include', '/admin/dashboard')
+})
 
-  // Check for redirect to dashboard
-  cy.url().should('include', '/dashboard');
-});
+// Custom command for superadmin login
+Cypress.Commands.add('superadminLogin', (username = config.testUsers.superadmin.username, password = config.testUsers.superadmin.password) => {
+  cy.visit('/login')
+  cy.get('input[name="username"]').type(username)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+  cy.url().should('include', '/superadmin/dashboard')
+})
 
-// Standard user login command
+// Custom command for user login
 Cypress.Commands.add('loginAsUser', () => {
-  cy.login('user', '123');
+  cy.login(config.testUsers.student.username, config.testUsers.student.password);
 });
 
-// Admin login command
-Cypress.Commands.add('loginAsAdmin', () => {
-  cy.login('admin', 'admin123');
-});
+// Custom command to check if element is visible and contains text
+Cypress.Commands.add('shouldBeVisibleAndContain', (selector, text) => {
+  cy.get(selector).should('be.visible').and('contain', text)
+})
 
-// Superadmin login command
-Cypress.Commands.add('loginAsSuperadmin', () => {
-  cy.login('superadmin', 'super123');
-});
+// Custom command to check if element is visible and has class
+Cypress.Commands.add('shouldBeVisibleAndHaveClass', (selector, className) => {
+  cy.get(selector).should('be.visible').and('have.class', className)
+})
+
+// Custom command to check if element is visible and has attribute
+Cypress.Commands.add('shouldBeVisibleAndHaveAttr', (selector, attr, value) => {
+  cy.get(selector).should('be.visible').and('have.attr', attr, value)
+})
+
+// Custom command to check if element is visible and has length
+Cypress.Commands.add('shouldBeVisibleAndHaveLength', (selector, length) => {
+  cy.get(selector).should('be.visible').and('have.length', length)
+})
+
+// Custom command to check if element is visible and has value
+Cypress.Commands.add('shouldBeVisibleAndHaveValue', (selector, value) => {
+  cy.get(selector).should('be.visible').and('have.value', value)
+})
+
+// Custom command to check if element is visible and has text
+Cypress.Commands.add('shouldBeVisibleAndHaveText', (selector, text) => {
+  cy.get(selector).should('be.visible').and('have.text', text)
+})
+
+// Custom command to check if element is visible and has placeholder
+Cypress.Commands.add('shouldBeVisibleAndHavePlaceholder', (selector, placeholder) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'placeholder', placeholder)
+})
+
+// Custom command to check if element is visible and has type
+Cypress.Commands.add('shouldBeVisibleAndHaveType', (selector, type) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'type', type)
+})
+
+// Custom command to check if element is visible and has name
+Cypress.Commands.add('shouldBeVisibleAndHaveName', (selector, name) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'name', name)
+})
+
+// Custom command to check if element is visible and has id
+Cypress.Commands.add('shouldBeVisibleAndHaveId', (selector, id) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'id', id)
+})
+
+// Custom command to check if element is visible and has data-testid
+Cypress.Commands.add('shouldBeVisibleAndHaveTestId', (selector, testId) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'data-testid', testId)
+})
+
+// Custom command to check if element is visible and has role
+Cypress.Commands.add('shouldBeVisibleAndHaveRole', (selector, role) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'role', role)
+})
+
+// Custom command to check if element is visible and has aria-label
+Cypress.Commands.add('shouldBeVisibleAndHaveAriaLabel', (selector, label) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'aria-label', label)
+})
+
+// Custom command to check if element is visible and has aria-describedby
+Cypress.Commands.add('shouldBeVisibleAndHaveAriaDescribedBy', (selector, describedBy) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'aria-describedby', describedBy)
+})
+
+// Custom command to check if element is visible and has aria-expanded
+Cypress.Commands.add('shouldBeVisibleAndHaveAriaExpanded', (selector, expanded) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'aria-expanded', expanded)
+})
+
+// Custom command to check if element is visible and has aria-hidden
+Cypress.Commands.add('shouldBeVisibleAndHaveAriaHidden', (selector, hidden) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'aria-hidden', hidden)
+})
+
+// Custom command to check if element is visible and has aria-selected
+Cypress.Commands.add('shouldBeVisibleAndHaveAriaSelected', (selector, selected) => {
+  cy.get(selector).should('be.visible').and('have.attr', 'aria-selected', selected)
+})
 
 // Simple file upload command
 Cypress.Commands.add('uploadFile', { prevSubject: 'element' }, (subject, fileName, fileType = '') => {

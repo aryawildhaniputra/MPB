@@ -1,8 +1,23 @@
 describe('Dashboard', () => {
   beforeEach(() => {
-    cy.loginAsUser();
-    cy.visit('/dashboard');
-  });
+    cy.visit('/login')
+    cy.get('input[name="username"]').type('user')
+    cy.get('input[name="password"]').type('user123')
+    cy.get('#login-button').click()
+    cy.url().should('include', '/dashboard')
+  })
+
+  it('should display dashboard title and subtitle', () => {
+    cy.get('h1.content-title').should('contain', 'DASHBOARD')
+    cy.get('p.subtitle').should('contain', 'Selamat datang')
+  })
+
+  it('should display main statistics', () => {
+    cy.get('.stat-card.blue .stat-label').should('contain', 'Materi Dipelajari')
+    cy.get('.stat-card.green .stat-label').should('contain', 'Permainan Diselesaikan')
+    cy.get('.stat-card.orange .stat-label').should('contain', 'Total Poin')
+    cy.get('.stat-card.purple .stat-label').should('contain', 'Pencapaian')
+  })
 
   it('should display dashboard page', () => {
     cy.url().should('include', '/dashboard');

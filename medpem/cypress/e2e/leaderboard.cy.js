@@ -1,13 +1,25 @@
 describe('Leaderboard Feature', () => {
   beforeEach(() => {
-    cy.loginAsUser();
-    cy.visit('/skor');
-  });
+    cy.visit('/login')
+    cy.get('input[name="username"]').type('user')
+    cy.get('input[name="password"]').type('user123')
+    cy.get('#login-button').click()
+    cy.url().should('include', '/dashboard')
+    cy.get('.sidebar-item .sidebar-text').contains('PAPAN PERINGKAT').click()
+    cy.url().should('include', '/skor')
+  })
 
   it('should display leaderboard page', () => {
-    cy.url().should('include', '/skor');
-    cy.contains(/leaderboard|papan skor|papan peringkat|ranking/i).should('exist');
-  });
+    cy.get('.content-title').should('contain', 'PERINGKAT')
+    cy.get('.leaderboard-container').should('exist')
+    cy.get('body').then($body => {
+      if ($body.find('.user-card').length > 0 || $body.find('.user-row').length > 0) {
+        cy.get('.user-card, .user-row').should('exist')
+      } else {
+        cy.contains('Belum Ada Peringkat').should('exist')
+      }
+    })
+  })
 
   it('should show user rankings', () => {
     cy.get('body').then($body => {

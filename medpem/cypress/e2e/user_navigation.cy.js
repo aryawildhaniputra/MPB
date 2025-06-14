@@ -1,40 +1,38 @@
 describe('User Navigation', () => {
   beforeEach(() => {
-    // Use the custom login command
-    cy.loginAsUser();
-  });
+    cy.visit('/login')
+    cy.get('input[name="username"]').type('user')
+    cy.get('input[name="password"]').type('user123')
+    cy.get('#login-button').click()
+    cy.url().should('include', '/dashboard')
+  })
 
   it('should access all main navigation pages', () => {
-    // Visit dashboard
-    cy.visit('/dashboard');
-    cy.url().should('include', '/dashboard');
-    cy.contains(/dashboard|menu utama|beranda/i).should('exist');
+    // Dashboard
+    cy.get('.sidebar-item .sidebar-text').contains('MENU UTAMA').click()
+    cy.url().should('include', '/dashboard')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'MENU UTAMA')
 
-    // Visit belajar page
-    cy.visit('/belajar');
-    cy.url().should('include', '/belajar');
-    cy.contains(/belajar|pelajaran|lesson/i).should('exist');
+    // Materi Belajar
+    cy.get('.sidebar-item .sidebar-text').contains('MATERI BELAJAR').click()
+    cy.url().should('include', '/user/materi')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'MATERI BELAJAR')
 
-    // Visit materi page - might be at different paths
-    cy.visit('/user/materi');
-    // Just check the page loaded and contains the expected content
-    cy.contains(/materi|material/i).should('exist');
+    // Belajar Singkat
+    cy.get('.sidebar-item .sidebar-text').contains('BELAJAR SINGKAT').click()
+    cy.url().should('include', '/belajar')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'BELAJAR SINGKAT')
 
-    // Visit permainan page
-    cy.visit('/permainan');
-    cy.url().should('include', '/permainan');
-    cy.contains(/permainan|game/i).should('exist');
+    // Permainan
+    cy.get('.sidebar-item .sidebar-text').contains('PERMAINAN').click()
+    cy.url().should('include', '/permainan')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'PERMAINAN')
 
-    // Visit leaderboard/skor page
-    cy.visit('/skor');
-    cy.url().should('include', '/skor');
-    cy.contains(/skor|peringkat|leaderboard/i).should('exist');
-
-    // Visit profile page
-    cy.visit('/profile');
-    cy.url().should('include', '/profile');
-    cy.contains(/profil|profile/i).should('exist');
-  });
+    // Papan Peringkat
+    cy.get('.sidebar-item .sidebar-text').contains('PAPAN PERINGKAT').click()
+    cy.url().should('include', '/skor')
+    cy.get('.sidebar-item.active .sidebar-text').should('contain', 'PAPAN PERINGKAT')
+  })
 
   it('should navigate using sidebar menu', () => {
     cy.visit('/dashboard');
