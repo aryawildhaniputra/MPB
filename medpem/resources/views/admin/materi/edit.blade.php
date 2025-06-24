@@ -665,7 +665,7 @@
     <script>
         // Initialize TinyMCE
         tinymce.init({
-            selector: '#editor',
+            selector: '#content',
             plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help wordcount emoticons directionality template',
             toolbar: 'undo redo | formatselect | ' +
             'bold italic backcolor | alignleft aligncenter ' +
@@ -677,7 +677,6 @@
             promotion: false,
             image_advtab: true,
             automatic_uploads: true,
-            // Template untuk berbagai jenis dokumen
             templates: [
                 {
                     title: 'Dokumen PDF',
@@ -697,19 +696,14 @@
                 }
             ],
             setup: function(editor) {
-                // Initialize flag to track if editor has been manually changed
                 let editorInitialized = false;
-
                 editor.on('init', function() {
-                    // Mark editor as initialized after it's fully loaded
                     setTimeout(function() {
                         editorInitialized = true;
                     }, 500);
                 });
-
                 editor.on('change', function() {
                     editor.save();
-                    // Only mark as changed if it's a user action after initialization
                     if (editorInitialized) {
                         formChanged = true;
                     }
@@ -718,119 +712,6 @@
             content_style: 'body { font-family: Nunito, sans-serif; font-size: 16px; }',
             extended_valid_elements: 'a[href|target=_blank|rel=noopener|class|style]',
             convert_urls: false,
-            automatic_uploads: true,
-            // Template untuk berbagai jenis dokumen
-            templates: [
-                {
-                    title: 'Dokumen PDF',
-                    description: 'Template untuk dokumen PDF',
-                    content: '<div class="document-embed document-pdf">' +
-                            '<div class="document-header">' +
-                                '<div class="document-title"><i class="fas fa-file-pdf document-icon"></i> Dokumen PDF</div>' +
-                                '<div class="document-actions">' +
-                                    '<a href="#" target="_blank" class="document-button document-view"><i class="fas fa-eye"></i> Lihat</a>' +
-                                    '<a href="#" class="document-button document-download"><i class="fas fa-download"></i> Unduh</a>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="document-content">' +
-                                '<iframe src="#" frameborder="0"></iframe>' +
-                            '</div>' +
-                        '</div>'
-                }
-            ],
-            file_picker_callback: function (callback, value, meta) {
-                // Provide file and text for the link dialog
-                if (meta.filetype === 'file') {
-                    // Create file input and set configuration
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'file');
-                    input.setAttribute('accept', '.pdf');
-
-                    input.onchange = function() {
-                        const file = this.files[0];
-
-                        // Create form data for upload
-                        const formData = new FormData();
-                        formData.append('file', file);
-                        formData.append('_token', '{{ csrf_token() }}');
-
-                        // Upload file to server
-                        fetch('{{ route('document.upload') }}', {
-                            method: 'POST',
-                            body: formData
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.location) {
-                                // Determine document type and create appropriate embed
-                                const fileExt = data.name.split('.').pop().toLowerCase();
-
-                                if (fileExt === 'pdf') {
-                                    // Create PDF template
-                                    const embedCode = `<div class="document-embed document-pdf">
-                                        <div class="document-header">
-                                            <div class="document-title"><i class="fas fa-file-pdf document-icon"></i> ${data.name}</div>
-                                            <div class="document-actions">
-                                                <a href="${data.location}" target="_blank" class="document-button document-view"><i class="fas fa-eye"></i> Lihat</a>
-                                                <a href="${data.location}" download class="document-button document-download"><i class="fas fa-download"></i> Unduh</a>
-                                            </div>
-                                        </div>
-                                        <div class="document-content">
-                                            <iframe src="${data.location}" frameborder="0" width="100%" height="500px"></iframe>
-                                        </div>
-                                    </div>`;
-
-                                    // Insert document at cursor position or at end of editor
-                                    tinymce.activeEditor.execCommand('mceInsertContent', false, embedCode);
-
-                                    // Show success message
-                                    alert(`Dokumen ${data.name} berhasil diupload dan ditambahkan ke materi.`);
-                                } else {
-                                    alert('Jenis file tidak didukung. Silakan upload file PDF.');
-                                }
-                            } else {
-                                console.error('Upload error:', data.error);
-                                alert('Gagal mengupload file: ' + (data.error || 'Terjadi kesalahan'));
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Upload error:', error);
-                            alert('Gagal mengupload file: Terjadi kesalahan');
-                        });
-                    };
-
-                    input.click();
-                }
-
-                // Provide image and alt text for the image dialog
-                if (meta.filetype === 'image') {
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'file');
-                    input.setAttribute('accept', 'image/*');
-
-                    input.onchange = function () {
-                        const file = this.files[0];
-
-                const reader = new FileReader();
-                        reader.onload = function () {
-                            callback(reader.result, {
-                                alt: file.name
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    };
-
-                    input.click();
-                }
-
-                // Provide alternative source and posted for the media dialog
-                if (meta.filetype === 'media') {
-                    callback('movie.mp4', {
-                        source2: 'alt.ogg',
-                        poster: 'image.jpg'
-                    });
-                }
-            },
         });
 
         // Form change tracking variables
@@ -839,9 +720,7 @@
 
         // Modal functions
         function showModal(id) {
-            // Immediately show the modal without any delay
             document.getElementById(id).classList.remove('hidden');
-            // Force browser to recognize the change immediately
             document.getElementById(id).offsetHeight;
         }
 
@@ -866,7 +745,7 @@
                 closeModal('confirmationModal');
                 if (typeof confirmCallback === 'function') {
                     confirmCallback();
-            }
+                }
             };
             showModal('confirmationModal');
         }
@@ -880,7 +759,7 @@
             };
             document.getElementById('leaveButton').onclick = function() {
                 closeModal('unsavedChangesModal');
-                formChanged = false; // Reset to prevent further prompts
+                formChanged = false;
                 if (typeof callbackLeave === 'function') {
                     callbackLeave();
                 }
@@ -890,24 +769,18 @@
 
         // Track form changes
         document.addEventListener('DOMContentLoaded', function() {
-            // Explicitly set formChanged to false when the page loads
             formChanged = false;
 
-            // Track changes in form inputs
             const inputs = document.querySelectorAll('input, textarea, select');
             inputs.forEach(function(input) {
-                // For text inputs and textareas, use input event for immediate tracking
                 if (input.type === 'text' || input.type === 'textarea') {
                     input.addEventListener('input', function() {
-                        // Only mark as changed if the input has a value
                         if (this.value.trim() !== '') {
                             formChanged = true;
                         }
                     });
-            } else {
-                    // For other inputs (checkboxes, radios, select), use change event
+                } else {
                     input.addEventListener('change', function() {
-                        // For file inputs, only mark as changed if a file is selected
                         if (this.type === 'file') {
                             if (this.files && this.files.length > 0) {
                                 formChanged = true;
@@ -919,40 +792,33 @@
                 }
             });
 
-            // Check for unsaved changes when clicking on links
             document.querySelectorAll('a:not([target="_blank"])').forEach(function(link) {
                 link.addEventListener('click', function(e) {
                     if (formChanged) {
-                        // Immediately prevent default navigation and show modal first
                         e.preventDefault();
                         const href = this.getAttribute('href');
 
-                        // Show the modal immediately, then handle navigation after user decision
                         document.getElementById('unsavedChangesModal').classList.remove('hidden');
 
-                        // Setup handlers after modal is shown
                         document.getElementById('stayButton').onclick = function() {
                             document.getElementById('unsavedChangesModal').classList.add('hidden');
                         };
 
                         document.getElementById('leaveButton').onclick = function() {
                             document.getElementById('unsavedChangesModal').classList.add('hidden');
-                            formChanged = false; // Reset to prevent further prompts
-                            // Navigate only after user clicks the leave button
+                            formChanged = false;
                             window.location.href = href;
                         };
                     }
                 });
             });
 
-            // Reset form changed flag when form is submitted
             if (form) {
                 form.addEventListener('submit', function() {
                     formChanged = false;
                 });
             }
 
-            // Info modal functionality
             const showUploadInfoBtn = document.getElementById('showUploadInfoBtn');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const uploadInfoModal = document.getElementById('uploadInfoModal');
@@ -968,7 +834,6 @@
                     uploadInfoModal.classList.add('hidden');
                 });
 
-                // Close modal when clicking outside the content
                 uploadInfoModal.addEventListener('click', function(e) {
                     if (e.target === uploadInfoModal) {
                         uploadInfoModal.classList.add('hidden');
@@ -976,7 +841,6 @@
                 });
             }
 
-            // Add more document upload fields
             const addMoreDocBtn = document.getElementById('addMoreDocBtn');
             const documentUploadsContainer = document.getElementById('document-uploads');
 
@@ -1001,20 +865,17 @@
 
                     documentUploadsContainer.appendChild(newDocItem);
 
-                    // Add event listener to the remove button
                     const removeBtn = newDocItem.querySelector('.remove-doc-btn');
                     if (removeBtn) {
                         removeBtn.addEventListener('click', function() {
                             newDocItem.remove();
                         });
-                }
+                    }
 
-                    // Mark form as changed when adding a new document field
                     formChanged = true;
                 });
             }
 
-            // Handle document deletion
             const deleteDocumentBtns = document.querySelectorAll('.delete-document-btn');
             deleteDocumentBtns.forEach(btn => {
                 btn.addEventListener('click', function(e) {
@@ -1023,7 +884,6 @@
                     const documentElement = this.closest('.existing-document');
 
                     showConfirmationModal('Apakah Anda yakin ingin menghapus dokumen ini?', function() {
-                        // Send AJAX request to delete the document
                         fetch(`/materi/document/${documentId}/delete`, {
                             method: 'DELETE',
                             headers: {
@@ -1035,11 +895,9 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                // Remove the document from the DOM
                                 documentElement.remove();
                                 showSuccessModal('Berhasil!', 'Dokumen berhasil dihapus');
 
-                                // Check if there are no more documents
                                 const remainingDocuments = document.querySelectorAll('.existing-document');
                                 if (remainingDocuments.length === 0) {
                                     const existingDocumentsContainer = document.getElementById('existing-documents');

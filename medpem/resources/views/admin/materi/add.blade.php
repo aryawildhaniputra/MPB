@@ -717,7 +717,7 @@
     <script>
         // Initialize TinyMCE
         tinymce.init({
-            selector: '#editor',
+            selector: '#content',
             plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help wordcount emoticons directionality template',
             toolbar: 'undo redo | formatselect | ' +
             'bold italic backcolor | alignleft aligncenter ' +
@@ -729,7 +729,6 @@
             promotion: false,
             image_advtab: true,
             automatic_uploads: true,
-            // Template untuk berbagai jenis dokumen
             templates: [
                 {
                     title: 'Dokumen PDF',
@@ -842,19 +841,14 @@
                 }
             },
             setup: function(editor) {
-                // Initialize flag to track if editor has been manually changed
                 let editorInitialized = false;
-
                 editor.on('init', function() {
-                    // Mark editor as initialized after it's fully loaded
                     setTimeout(function() {
                         editorInitialized = true;
                     }, 500);
                 });
-
                 editor.on('change', function() {
                     editor.save();
-                    // Only mark as changed if it's a user action after initialization
                     if (editorInitialized) {
                         formChanged = true;
                     }
