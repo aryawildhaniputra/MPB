@@ -339,4 +339,13 @@ class Users extends Authenticatable
             'achievements' => $newlyUnlocked
         ];
     }
+
+    /**
+     * Add points to the user and save.
+     */
+    public function addPoints($points)
+    {
+        $this->total_points += $points;
+        $this->save();
+    }
 }

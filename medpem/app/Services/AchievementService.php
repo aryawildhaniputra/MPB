@@ -66,6 +66,11 @@ class AchievementService
                     Log::info("Unlocking achievement {$achievement->name} for user {$user->id}");
                     $pivot = $achievement->unlockForUser($user->id);
                     if ($pivot) {
+                        // Award points if any
+                        if ($achievement->points_reward > 0) {
+                            $user->total_points += $achievement->points_reward;
+                            $user->save();
+                        }
                         $newlyUnlocked[] = [
                             'achievement' => $achievement,
                             'pivot' => $pivot
@@ -104,6 +109,11 @@ class AchievementService
             if (!$user->hasAchievement($achievement->id)) {
                 $pivot = $achievement->unlockForUser($user->id);
                 if ($pivot) {
+                    // Award points if any
+                    if ($achievement->points_reward > 0) {
+                        $user->total_points += $achievement->points_reward;
+                        $user->save();
+                    }
                     $newlyUnlocked[] = [
                         'achievement' => $achievement,
                         'pivot' => $pivot
@@ -141,6 +151,11 @@ class AchievementService
             if (!$user->hasAchievement($achievement->id)) {
                 $pivot = $achievement->unlockForUser($user->id);
                 if ($pivot) {
+                    // Award points if any
+                    if ($achievement->points_reward > 0) {
+                        $user->total_points += $achievement->points_reward;
+                        $user->save();
+                    }
                     $newlyUnlocked[] = [
                         'achievement' => $achievement,
                         'pivot' => $pivot
@@ -176,6 +191,11 @@ class AchievementService
             if (!$user->hasAchievement($achievement->id)) {
                 $pivot = $achievement->unlockForUser($user->id);
                 if ($pivot) {
+                    // Award points if any
+                    if ($achievement->points_reward > 0) {
+                        $user->total_points += $achievement->points_reward;
+                        $user->save();
+                    }
                     $newlyUnlocked[] = [
                         'achievement' => $achievement,
                         'pivot' => $pivot
@@ -252,6 +272,11 @@ class AchievementService
                     if (!$hasAchievement) {
                         $pivot = $achievement->unlockForUser($user->id);
                         if ($pivot) {
+                            // Award points if any
+                            if ($achievement->points_reward > 0) {
+                                $user->total_points += $achievement->points_reward;
+                                $user->save();
+                            }
                             $newlyUnlocked[] = [
                                 'achievement' => $achievement,
                                 'pivot' => $pivot
@@ -283,6 +308,11 @@ class AchievementService
         if (!$user->hasAchievement($achievement->id)) {
             $pivot = $achievement->unlockForUser($user->id);
             if ($pivot) {
+                // Award points if any
+                if ($achievement->points_reward > 0) {
+                    $user->total_points += $achievement->points_reward;
+                    $user->save();
+                }
                 return [
                     'achievement' => $achievement,
                     'pivot' => $pivot

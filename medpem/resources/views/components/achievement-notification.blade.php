@@ -41,29 +41,18 @@
 
 <script>
     // Achievement modal functions
-    function showAchievementModal(achievements) {
+    function showAchievementModalSequential(achievements) {
+        let current = 0;
         const modalContent = document.getElementById('achievementModalContent');
         const modal = document.getElementById('achievementModal');
         const overlay = document.getElementById('achievementModalOverlay');
         const modalContainer = modal.querySelector('.achievement-modal-container');
 
-        // Make sure achievements is an array
-        if (!Array.isArray(achievements)) {
-            console.error('Invalid achievements data:', achievements);
-            return;
-        }
-
-        let content = '<div class="achievement-congratulations">Selamat!</div>';
-
-        if (achievements.length > 1) {
-            content += `<div class="achievement-subtitle">Kamu telah membuka ${achievements.length} pencapaian baru!</div>`;
-        }
-
-        achievements.forEach((item, index) => {
-            // Handle different achievement data structures
+        function showCurrent() {
+            const item = achievements[current];
             const achievement = item.achievement || item;
-
-            // Create card-like element for each achievement
+            let content = '<div class="achievement-congratulations">Selamat!</div>';
+            content += `<div class="achievement-subtitle">Kamu telah membuka pencapaian baru!</div>`;
             content += `<div class="achievement-item">`;
             content += `<div class="achievement-name">${achievement.name}</div>`;
             content += `<div class="achievement-description">${achievement.description}</div>`;
@@ -71,26 +60,48 @@
                 content += `<div class="achievement-points"><i class="fas fa-coins"></i>+${achievement.points_reward} poin</div>`;
             }
             content += `</div>`;
+            modalContent.innerHTML = content;
+
+            // Apply initial state for animation
+            modalContainer.style.opacity = '0';
+            modalContainer.style.transform = 'scale(0.95) translateY(-10px)';
+            overlay.style.display = 'block';
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modalContainer.style.opacity = '1';
+                modalContainer.style.transform = 'scale(1) translateY(0)';
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCurrent() {
+            const modal = document.getElementById('achievementModal');
+            const overlay = document.getElementById('achievementModalOverlay');
+            const modalContainer = modal.querySelector('.achievement-modal-container');
+            modalContainer.style.opacity = '0';
+            modalContainer.style.transform = 'scale(0.95) translateY(-10px)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+                current++;
+                if (current < achievements.length) {
+                    setTimeout(showCurrent, 200); // Show next achievement
+                }
+            }, 200);
+        }
+
+        // Attach event listeners
+        document.getElementById('closeAchievementModal').onclick = closeCurrent;
+        document.getElementById('confirmAchievementModal').onclick = closeCurrent;
+        document.getElementById('achievementModalOverlay').onclick = closeCurrent;
+        document.addEventListener('keydown', function escHandler(e) {
+            if (e.key === 'Escape' && modal.style.display !== 'none') {
+                closeCurrent();
+            }
         });
 
-        modalContent.innerHTML = content;
-
-        // Apply initial state for animation
-        modalContainer.style.opacity = '0';
-        modalContainer.style.transform = 'scale(0.95) translateY(-10px)';
-
-        // Show overlay and modal
-        overlay.style.display = 'block';
-        modal.style.display = 'flex';
-
-        // Animate in with a small delay
-        setTimeout(() => {
-            modalContainer.style.opacity = '1';
-            modalContainer.style.transform = 'scale(1) translateY(0)';
-        }, 10);
-
-        // Prevent body scrolling when modal is open
-        document.body.style.overflow = 'hidden';
+        showCurrent();
     }
 
     // Close modal event handlers
@@ -132,14 +143,11 @@
 
         // Check for newly unlocked achievements in session
         @if(session('achievement_unlocked'))
-            // Show notification for newly unlocked achievements
             const newAchievements = @json(session('achievement_unlocked'));
-
             if (newAchievements.length > 0) {
-                // Show modal with achievements
                 setTimeout(() => {
-                    showAchievementModal(newAchievements);
-                }, 500); // Short delay to ensure page is loaded
+                    showAchievementModalSequential(newAchievements);
+                }, 500);
             }
         @endif
 

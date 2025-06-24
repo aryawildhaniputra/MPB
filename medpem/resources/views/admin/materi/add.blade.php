@@ -580,6 +580,10 @@
                 font-size: 0.9rem;
             }
         }
+
+        .modal-open .duolingo-header {
+            pointer-events: none !important;
+        }
     </style>
 </head>
 <body>
@@ -665,7 +669,7 @@
     </div>
 
     <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center">
                 <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
@@ -681,7 +685,7 @@
     </div>
 
     <!-- Error Modal -->
-    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center">
                 <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
@@ -697,7 +701,7 @@
     </div>
 
     <!-- Unsaved Changes Modal -->
-    <div id="unsavedChangesModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div id="unsavedChangesModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-3">Perubahan Belum Disimpan</h3>
@@ -865,14 +869,14 @@
 
         // Modal functions
         function showModal(id) {
-            // Immediately show the modal without any delay
             document.getElementById(id).classList.remove('hidden');
-            // Force browser to recognize the change immediately
             document.getElementById(id).offsetHeight;
+            document.body.classList.add('modal-open');
         }
 
         function closeModal(id) {
             document.getElementById(id).classList.add('hidden');
+            document.body.classList.remove('modal-open');
         }
 
         function showSuccessModal(title, message) {

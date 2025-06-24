@@ -10,6 +10,7 @@ use App\Models\Lesson;
 use App\Models\Achievement;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Services\AchievementService;
 
 /**
  * DashboardController manages dashboard views for both regular users and admins.
@@ -139,142 +140,24 @@ class DashboardController extends Controller
      * Check and update user achievements based on their stats.
      *
      * @param Users $user The user to check achievements for
-     * @return void
+     * @return array The list of newly unlocked achievements
      */
     public function checkAndUpdateAchievements($user)
     {
-        try {
-            // Log the start of the method
-            \Illuminate\Support\Facades\Log::info("DashboardController: Starting checkAndUpdateAchievements for user {$user->id}");
+        // Get the achievement service from the service container
+        $achievementService = app(AchievementService::class);
 
-            // Array to collect newly unlocked achievements
-            $newlyUnlocked = [];
+        // Call the central achievement checking method
+        $newlyUnlocked = $achievementService->checkAchievements($user);
 
-            // Get user stats that are needed for achievement calculations
-            $completedMaterials = $user->materi()
-                ->wherePivot('completed', true)
-                ->count();
-
-            // Count completed bagian (parts/sections)
-            $completedBagian = 0;
-
-            // Direct SQL query to count completed parts
-            $userLessons = \Illuminate\Support\Facades\DB::table('user_lessons')
-                ->where('user_id', $user->id)
-                ->get();
-
-            // Check direct database state for counting
-            foreach ($userLessons as $lesson) {
-                // Count all completed parts
-                if ($lesson->part1_completed) $completedBagian++;
-                if ($lesson->part2_completed) $completedBagian++;
-                if ($lesson->part3_completed) $completedBagian++;
-                if ($lesson->part4_completed) $completedBagian++;
-                if ($lesson->part5_completed) $completedBagian++;
-                if ($lesson->part6_completed) $completedBagian++;
-            }
-
-            \Illuminate\Support\Facades\Log::info("Direct SQL count in DashboardController: User has completed {$completedBagian} parts");
-
-            // Count completed Belajar Singkat materials
-            // Note: 'type' column doesn't exist in materi table yet
-            // Setting to 0 until a proper way to identify Belajar Singkat materials is implemented
-            $completedBelajarSingkat = 0;
-
-            $totalPoints = $user->total_points ?? 0;
-
-            $rank = Users::where('role', 'user')
-                ->where('total_points', '>', $totalPoints)
-                ->count() + 1;
-
-            // Check for bagian (section) completion achievements
-            $bagianAchievements = Achievement::where('type', 'bagian_completion')
-                ->where('active', true)
-                ->get();
-
-            \Illuminate\Support\Facades\Log::info("Found {$bagianAchievements->count()} bagian_completion achievements");
-
-            foreach ($bagianAchievements as $achievement) {
-                \Illuminate\Support\Facades\Log::info("Checking bagian achievement: {$achievement->name}, requirement: {$achievement->requirement}, user has: {$completedBagian}");
-                if ($completedBagian >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                    \Illuminate\Support\Facades\Log::info("Unlocking bagian achievement: {$achievement->name} for user {$user->id}");
-                    $pivot = $achievement->unlockForUser($user->id);
-                    if ($pivot) {
-                        $newlyUnlocked[] = [
-                            'achievement' => $achievement,
-                            'pivot' => $pivot
-                        ];
-                    }
-                }
-            }
-
-            // Check for materi-based achievements
-            $materiAchievements = Achievement::where('type', 'materi_completion')
-                ->where('active', true)
-                ->get();
-
-            foreach ($materiAchievements as $achievement) {
-                if ($completedMaterials >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                    $pivot = $achievement->unlockForUser($user->id);
-                    if ($pivot) {
-                        $newlyUnlocked[] = [
-                            'achievement' => $achievement,
-                            'pivot' => $pivot
-                        ];
-                    }
-                }
-            }
-
-            // Check for Belajar Singkat materi achievements
-            $belajarSingkatAchievements = Achievement::where('type', 'belajar_singkat_materi')
-                ->where('active', true)
-                ->get();
-
-            foreach ($belajarSingkatAchievements as $achievement) {
-                if ($completedBelajarSingkat >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                    $pivot = $achievement->unlockForUser($user->id);
-                    if ($pivot) {
-                        $newlyUnlocked[] = [
-                            'achievement' => $achievement,
-                            'pivot' => $pivot
-                        ];
-                    }
-                }
-            }
-
-            // Check for points-based achievements
-            $pointsAchievements = Achievement::where('type', 'points')
-                ->where('active', true)
-                ->get();
-
-            foreach ($pointsAchievements as $achievement) {
-                if ($totalPoints >= $achievement->requirement && !$user->hasAchievement($achievement->id)) {
-                    $pivot = $achievement->unlockForUser($user->id);
-                    if ($pivot) {
-                        $newlyUnlocked[] = [
-                            'achievement' => $achievement,
-                            'pivot' => $pivot
-                        ];
-                    }
-                }
-            }
-
-            // Flash newly unlocked achievements to the session so they can be displayed
-            if (!empty($newlyUnlocked)) {
-                \Illuminate\Support\Facades\Log::info("DashboardController: Flashing " . count($newlyUnlocked) . " newly unlocked achievements to session");
-                session()->flash('achievement_unlocked', $newlyUnlocked);
-            }
-
-            \Illuminate\Support\Facades\Log::info("DashboardController: Completed checkAndUpdateAchievements for user {$user->id}");
-
-            // Return the newly unlocked achievements in case needed by the caller
-            return $newlyUnlocked;
-        } catch (\Exception $e) {
-            // Log any errors
-            \Illuminate\Support\Facades\Log::error("Error in checkAndUpdateAchievements: " . $e->getMessage());
-            \Illuminate\Support\Facades\Log::error($e->getTraceAsString());
-            return [];
+        // Flash newly unlocked achievements to the session so they can be displayed
+        if (!empty($newlyUnlocked)) {
+            \Illuminate\Support\Facades\Log::info("DashboardController: Flashing " . count($newlyUnlocked) . " newly unlocked achievements to session");
+            session()->flash('achievement_unlocked', $newlyUnlocked);
         }
+
+        // Return the newly unlocked achievements in case the caller needs them
+        return $newlyUnlocked;
     }
 
     private function getAdminStats()
@@ -348,72 +231,53 @@ class DashboardController extends Controller
      */
     private function getMostPopularMateri()
     {
-        $popularMateri = DB::table('materi')
-            ->join('user_materi', 'materi.id', '=', 'user_materi.materi_id')
+        $popular = DB::table('user_materi')
+            ->join('materi', 'user_materi.materi_id', '=', 'materi.id')
             ->select('materi.title', DB::raw('COUNT(user_materi.user_id) as access_count'))
-            ->groupBy('materi.id', 'materi.title')
-            ->orderByDesc(DB::raw('COUNT(user_materi.user_id)'))
+            ->groupBy('materi.title')
+            ->orderByDesc('access_count')
             ->first();
 
-        return $popularMateri ? $popularMateri->title : 'Tidak ada data';
+        return $popular ? $popular->title : 'N/A';
     }
 
     /**
-     * Get count of lessons completed in the past week
+     * Get the number of lessons completed in the past week
      */
     private function getCompletedLessonsThisWeek()
     {
-        $lastWeek = Carbon::now()->subDays(7);
-
-        $completedCount = DB::table('user_lessons')
+        return DB::table('user_lessons')
             ->where('completed', true)
-            ->where('completed_at', '>=', $lastWeek)
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
-
-        return $completedCount;
     }
 
     /**
-     * Calculate the change in completion rate compared to previous week
+     * Calculate the percentage change in completion rate compared to the previous week
      */
     private function getCompletionRateChange()
     {
-        // Current week completion rate
-        $currentWeekStart = Carbon::now()->startOfWeek();
-        $lastWeekStart = Carbon::now()->subWeek()->startOfWeek();
-
-        // Calculate current week completion rate
         $currentWeekCompletions = DB::table('user_materi')
             ->where('completed', true)
-            ->where('updated_at', '>=', $currentWeekStart)
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
-        $currentWeekAttempts = DB::table('user_materi')
-            ->where('updated_at', '>=', $currentWeekStart)
-            ->count();
-
-        // Calculate last week completion rate
-        $lastWeekCompletions = DB::table('user_materi')
+        $previousWeekCompletions = DB::table('user_materi')
             ->where('completed', true)
-            ->whereBetween('updated_at', [$lastWeekStart, $currentWeekStart])
+            ->whereBetween('updated_at', [Carbon::now()->subWeeks(2), Carbon::now()->subWeek()])
             ->count();
 
-        $lastWeekAttempts = DB::table('user_materi')
-            ->whereBetween('updated_at', [$lastWeekStart, $currentWeekStart])
-            ->count();
+        if ($previousWeekCompletions == 0) {
+            return $currentWeekCompletions > 0 ? 100 : 0;
+        }
 
-        // Calculate rates
-        $currentRate = $currentWeekAttempts > 0 ? ($currentWeekCompletions / $currentWeekAttempts) * 100 : 0;
-        $lastRate = $lastWeekAttempts > 0 ? ($lastWeekCompletions / $lastWeekAttempts) * 100 : 0;
+        $change = (($currentWeekCompletions - $previousWeekCompletions) / $previousWeekCompletions) * 100;
 
-        // Calculate change
-        $change = $currentRate - $lastRate;
-
-        return round($change, 1);
+        return round($change);
     }
 
     /**
-     * Get top performing students based on points, completion rate and activity
+     * Get the top 5 performing students
      */
     private function getTopStudents()
     {
@@ -474,27 +338,22 @@ class DashboardController extends Controller
      */
     private function getLowCompletionMaterials()
     {
-        // Get materials with low completion rates (less than 50%)
-        $lowCompletionMaterials = DB::table('materi')
-            ->join('user_materi', 'materi.id', '=', 'user_materi.materi_id')
+        return DB::table('materi')
+            ->leftJoin('user_materi', 'materi.id', '=', 'user_materi.materi_id')
             ->select(
-                'materi.id',
                 'materi.title',
                 DB::raw('COUNT(user_materi.user_id) as access_count'),
-                DB::raw('SUM(CASE WHEN user_materi.completed = true THEN 1 ELSE 0 END) * 100.0 / COUNT(user_materi.user_id) as completion_rate')
+                DB::raw('(SUM(CASE WHEN user_materi.completed = true THEN 1 ELSE 0 END) * 100.0) / COUNT(user_materi.user_id) as completion_rate')
             )
-            ->groupBy('materi.id', 'materi.title')
-            ->having(DB::raw('SUM(CASE WHEN user_materi.completed = true THEN 1 ELSE 0 END) * 100.0 / COUNT(user_materi.user_id)'), '<', 50)
-            ->having(DB::raw('COUNT(user_materi.user_id)'), '>=', 3) // At least 3 students attempted
-            ->orderBy(DB::raw('SUM(CASE WHEN user_materi.completed = true THEN 1 ELSE 0 END) * 100.0 / COUNT(user_materi.user_id)'))
-            ->take(2)
+            ->groupBy('materi.title')
+            ->havingRaw('COUNT(user_materi.user_id) > 0') // Only include materials that have been attempted
+            ->orderBy('completion_rate', 'asc')
+            ->take(3)
             ->get();
-
-        return $lowCompletionMaterials;
     }
 
     /**
-     * Get recent system activities for admin dashboard
+     * Get recent system activities for the admin dashboard
      */
     private function getRecentActivities()
     {
@@ -556,44 +415,32 @@ class DashboardController extends Controller
 
         if ($newLesson) {
             $activities[] = [
-                'type' => 'new_lesson',
-                'icon' => 'fa-tasks',
+                'type' => 'lesson_added',
+                'icon' => 'fa-graduation-cap',
                 'color' => 'purple-400',
                 'title' => 'Pelajaran Baru',
-                'message' => "Pelajaran \"{$newLesson->title}\" telah ditambahkan",
+                'message' => "Pelajaran baru \"{$newLesson->title}\" ditambahkan",
                 'time' => $newLesson->created_at
             ];
         }
 
-        // Sort activities by time (most recent first)
-        usort($activities, function($a, $b) {
-            return $b['time']->timestamp - $a['time']->timestamp;
+        // Sort activities by time descending
+        usort($activities, function ($a, $b) {
+            return $b['time'] <=> $a['time'];
         });
 
-        return $activities;
+        return array_slice($activities, 0, 5); // Limit to 5 recent activities
     }
 
-    /**
-     * Calculate a user's current learning streak based on activity
-     * Note: This method is kept but not used as streak tracking is removed
-     *
-     * @param int $userId
-     * @return int
-     */
     private function calculateLearningStreak($userId)
     {
-        // This would ideally calculate continuous days of activity
-        // For now, we'll return a placeholder value between 1-7
-        return rand(1, 7);
+        // This is a placeholder for a more complex streak calculation
+        return 0;
     }
 
     private function calculateUserRank($user)
     {
-        $higherRanked = \DB::table('users')
-            ->where('role', 'user')
-            ->where('total_points', '>', $user->total_points)
-            ->count();
-
-        return $higherRanked + 1;
+        // This is a placeholder for rank calculation
+        return 0;
     }
 }

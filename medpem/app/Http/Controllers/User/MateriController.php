@@ -108,16 +108,26 @@ class MateriController extends Controller
         $completed = $request->progress >= 100;
         $progress = $user->trackMateriProgress($materi->id, $request->progress, $completed);
 
-        // Points awarding is disabled
         $pointsAwarded = 0;
-
         $newAchievements = [];
-        if ($completed && $progress->completed) {
-            // Log that points are not awarded (disabled)
-            Log::info("Points NOT awarded for materi completion (disabled): user {$user->id} for materi {$materi->id}");
 
-            // Set points_awarded to 0 to indicate it's been processed
-            $materi->users()->updateExistingPivot($user->id, ['points_awarded' => 0]);
+        if ($completed && $progress->completed) {
+            // Check current user progress in database
+            $userMateri = $materi->users()
+                ->where('user_id', $user->id)
+                ->first();
+
+            // Only award points if not previously awarded
+            if ($userMateri && $userMateri->pivot->points_awarded == 0) {
+                $pointsToAward = 10;
+                $user->total_points = ($user->total_points ?? 0) + $pointsToAward;
+                $user->save();
+
+                $materi->users()->updateExistingPivot($user->id, ['points_awarded' => $pointsToAward]);
+                $pointsAwarded = $pointsToAward;
+
+                Log::info("Points awarded for materi completion: {$pointsAwarded} to user {$user->id} for materi {$materi->id}");
+            }
 
             // Check for achievements after completing a materi
             $newAchievements = $this->checkAchievements($user);
@@ -127,7 +137,7 @@ class MateriController extends Controller
             'progress' => $progress->progress,
             'completed' => $progress->completed,
             'last_accessed_at' => $progress->last_accessed_at,
-            'points_awarded' => 0,
+            'points_awarded' => $pointsAwarded, // Return the actual points
             'has_achievements' => !empty($newAchievements),
             'achievements' => $newAchievements
         ]);

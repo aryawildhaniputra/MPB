@@ -475,6 +475,10 @@
             margin-bottom: 1.5rem;
             position: relative;
         }
+
+        .modal-open .duolingo-header {
+            pointer-events: none !important;
+        }
     </style>
 </head>
 <body>
@@ -538,20 +542,16 @@
 
                         <div class="mb-6">
                             <label class="block text-gray-700 text-sm font-bold mb-2">Dokumen yang Ada</label>
-                            <div class="space-y-4">
+                            <div class="space-y-4" id="existing-documents">
                                 @foreach($documents as $document)
-                                <div class="flex items-center justify-between bg-gray-100 p-4 rounded-lg">
+                                <div class="existing-document flex items-center justify-between bg-gray-100 p-4 rounded-lg">
                                     <div class="flex items-center">
                                         <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
                                         <span class="text-gray-700">{{ $document->title }}</span>
                                     </div>
-                                    <form action="{{ route('admin.materi.document.delete', $document->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="text-red-500 hover:text-red-700 delete-document" data-id="{{ $document->id }}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="text-red-500 hover:text-red-700 delete-document-btn" data-id="{{ $document->id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                                 @endforeach
                             </div>
@@ -592,7 +592,7 @@
     </div>
 
     <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center">
                 <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
@@ -608,7 +608,7 @@
     </div>
 
     <!-- Error Modal -->
-    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center">
                 <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
@@ -624,7 +624,7 @@
     </div>
 
     <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center">
                 <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-4">
@@ -645,7 +645,7 @@
     </div>
 
     <!-- Unsaved Changes Modal -->
-    <div id="unsavedChangesModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div id="unsavedChangesModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
         <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-3">Perubahan Belum Disimpan</h3>
@@ -722,10 +722,12 @@
         function showModal(id) {
             document.getElementById(id).classList.remove('hidden');
             document.getElementById(id).offsetHeight;
+            document.body.classList.add('modal-open');
         }
 
         function closeModal(id) {
             document.getElementById(id).classList.add('hidden');
+            document.body.classList.remove('modal-open');
         }
 
         function showSuccessModal(title, message) {
@@ -882,9 +884,8 @@
                     e.preventDefault();
                     const documentId = this.dataset.id;
                     const documentElement = this.closest('.existing-document');
-
                     showConfirmationModal('Apakah Anda yakin ingin menghapus dokumen ini?', function() {
-                        fetch(`/materi/document/${documentId}/delete`, {
+                        fetch(`{{ route('admin.materi.document.delete', ':id') }}`.replace(':id', documentId), {
                             method: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -897,7 +898,6 @@
                             if (data.success) {
                                 documentElement.remove();
                                 showSuccessModal('Berhasil!', 'Dokumen berhasil dihapus');
-
                                 const remainingDocuments = document.querySelectorAll('.existing-document');
                                 if (remainingDocuments.length === 0) {
                                     const existingDocumentsContainer = document.getElementById('existing-documents');
@@ -910,13 +910,16 @@
                             }
                         })
                         .catch(error => {
-                            console.error('Error:', error);
                             showErrorModal('Terjadi kesalahan saat menghapus dokumen.');
                         });
                     });
                 });
             });
+
+            document.body.classList.add('modal-open');
         });
+
+        document.body.classList.remove('modal-open');
     </script>
 </body>
 </html>

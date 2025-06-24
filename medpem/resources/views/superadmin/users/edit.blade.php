@@ -225,6 +225,10 @@
                 padding: 1rem;
             }
         }
+
+        .modal-open .duolingo-header {
+            pointer-events: none !important;
+        }
     </style>
 </head>
 <body>
@@ -438,6 +442,24 @@
         </div>
     </div>
 
+    <!-- Unsaved Changes Modal -->
+    <div id="unsavedChangesModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden" style="z-index: 10000;">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Perubahan Belum Disimpan</h3>
+                <p class="text-gray-600 mb-6">Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin tetap meninggalkan halaman ini?</p>
+                <div class="flex justify-center space-x-4">
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" id="stayButton">
+                        Tetap di Halaman Ini
+                    </button>
+                    <button type="button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors" id="leaveButton">
+                        Tinggalkan Halaman
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function togglePassword(fieldId) {
             const field = document.getElementById(fieldId);
@@ -492,6 +514,79 @@
                     this.value = currentRole;
                     return false;
                 }
+            }
+        });
+
+        // Unsaved Changes Modal Logic
+        let formChanged = false;
+        const form = document.querySelector('form');
+
+        function showModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).offsetHeight;
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        function showUnsavedChangesModal(callbackStay, callbackLeave) {
+            document.getElementById('stayButton').onclick = function() {
+                closeModal('unsavedChangesModal');
+                if (typeof callbackStay === 'function') {
+                    callbackStay();
+                }
+            };
+            document.getElementById('leaveButton').onclick = function() {
+                closeModal('unsavedChangesModal');
+                formChanged = false;
+                if (typeof callbackLeave === 'function') {
+                    callbackLeave();
+                }
+            };
+            showModal('unsavedChangesModal');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            formChanged = false;
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(function(input) {
+                if (input.type === 'text' || input.type === 'textarea') {
+                    input.addEventListener('input', function() {
+                        if (this.value.trim() !== '') {
+                            formChanged = true;
+                        }
+                    });
+                } else {
+                    input.addEventListener('change', function() {
+                        if (this.type === 'file') {
+                            if (this.files && this.files.length > 0) {
+                                formChanged = true;
+                            }
+                        } else {
+                            formChanged = true;
+                        }
+                    });
+                }
+            });
+            document.querySelectorAll('a:not([target="_blank"])').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if (formChanged) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        showUnsavedChangesModal(
+                            function() {},
+                            function() { window.location.href = href; }
+                        );
+                    }
+                });
+            });
+            if (form) {
+                form.addEventListener('submit', function() {
+                    formChanged = false;
+                });
             }
         });
     </script>
