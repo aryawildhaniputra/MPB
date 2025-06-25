@@ -45,6 +45,25 @@ class DashboardController extends Controller
             // Get top performing students
             $topStudents = $this->getTopStudents();
 
+            // Get all students for the full table
+            $allStudents = \App\Models\Users::where('role', 'user')
+                ->orderByDesc('total_points')
+                ->get();
+
+            // Tambahkan statistik tambahan untuk setiap siswa
+            foreach ($allStudents as $student) {
+                $student->completed_materials = $student->materi()
+                    ->wherePivot('completed', true)
+                    ->count();
+                $student->completed_lessons = $student->lessons()
+                    ->wherePivot('completed', true)
+                    ->count();
+                $student->streak = $this->calculateLearningStreak($student->id);
+                $student->achievements_count = $student->achievements()
+                    ->wherePivot('unlocked', true)
+                    ->count();
+            }
+
             // Get popular and low completion materials
             $popularMaterials = $this->getPopularMaterials();
             $lowCompletionMaterials = $this->getLowCompletionMaterials();
@@ -52,7 +71,7 @@ class DashboardController extends Controller
             // Get recent system activities
             $recentActivities = $this->getRecentActivities();
 
-            return view('admin.dashboard', compact('user', 'stats', 'topStudents', 'popularMaterials', 'lowCompletionMaterials', 'recentActivities'));
+            return view('admin.dashboard', compact('user', 'stats', 'topStudents', 'allStudents', 'popularMaterials', 'lowCompletionMaterials', 'recentActivities'));
         } else {
             // Get user achievements for display
             $achievements = $this->getUserAchievements($user);

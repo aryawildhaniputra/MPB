@@ -525,7 +525,7 @@
                 </div>
 
                 <div class="mb-4 md:mb-6">
-                    <h2 class="text-lg md:text-xl font-bold text-white mb-4">Semua Pencapaian</h2>
+                    <h2 class="text-lg md:text-xl font-bold text-black mb-4">Semua Pencapaian</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-1 md:px-0">

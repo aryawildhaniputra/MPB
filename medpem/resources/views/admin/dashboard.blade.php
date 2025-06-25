@@ -682,6 +682,27 @@
             visibility: visible;
             opacity: 1;
         }
+
+        /* Custom scrollbar for student table scroll */
+        .table-container[style*="overflow-y: auto"] {
+            scrollbar-width: thin;
+            scrollbar-color: #6366f1 #1e293b;
+        }
+        .table-container[style*="overflow-y: auto"]::-webkit-scrollbar {
+            width: 10px;
+        }
+        .table-container[style*="overflow-y: auto"]::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 8px;
+        }
+        .table-container[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
+            border-radius: 8px;
+            border: 2px solid #1e293b;
+        }
+        .table-container[style*="overflow-y: auto"]::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+        }
     </style>
 </head>
 <body>
@@ -761,14 +782,14 @@
                     </div>
 
                     <div class="data-section-heading">
-                        <i class="fas fa-user-graduate"></i> 5 Siswa Teratas
+                        <i class="fas fa-user-graduate"></i> Semua Siswa
                         <div class="info-tooltip">
                             <i class="fas fa-info-circle text-blue-400"></i>
-                            <span class="tooltip-text">Siswa dengan performa terbaik berdasarkan poin, tingkat penyelesaian, dan konsistensi.</span>
+                            <span class="tooltip-text">Daftar semua siswa beserta performanya. Scroll ke bawah untuk melihat lebih banyak.</span>
                         </div>
                     </div>
 
-                    <div class="table-container">
+                    <div class="table-container" style="max-height: 350px; overflow-y: auto;">
                         <table class="admin-table">
                             <thead>
                                 <tr>
@@ -781,7 +802,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($topStudents as $student)
+                                @forelse($allStudents as $student)
                                 <tr>
                                     <td>{{ $student->name }}</td>
                                     <td>{{ $student->total_points }}</td>

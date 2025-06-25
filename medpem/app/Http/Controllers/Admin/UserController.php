@@ -15,15 +15,30 @@ class UserController extends Controller
     /**
      * Display a listing of the users.
      */
-    public function index()
+    public function index(Request $request)
     {
         // For admin, display only regular users
         // For superadmin, display all users
-        if (Auth::user()->role === 'admin') {
-            $users = Users::where('role', 'user')->orderBy('name')->paginate(10);
-        } else {
-            $users = Users::orderBy('role')->orderBy('name')->paginate(10);
+        $query = Auth::user()->role === 'admin'
+            ? Users::where('role', 'user')
+            : Users::query();
+
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('username', 'like', "%$search%") ;
+            });
         }
+
+        // Order and paginate
+        if (Auth::user()->role === 'admin') {
+            $query->orderBy('name');
+        } else {
+            $query->orderBy('role')->orderBy('name');
+        }
+        $users = $query->paginate(10)->appends($request->only('search'));
 
         return view('admin.users.index', compact('users'));
     }

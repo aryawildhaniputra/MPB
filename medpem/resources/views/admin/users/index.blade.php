@@ -606,10 +606,18 @@
                     </div>
                 @endif
 
-                <!-- Control buttons -->
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-3 md:gap-0">
-                    <h2 class="text-lg md:text-xl font-semibold text-white">Daftar Pengguna</h2>
-                    <a href="{{ route('admin.users.create') }}" class="add-button">
+                <!-- Improved search & control layout -->
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-6 mb-4 md:mb-6">
+                    <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full md:w-auto">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau username..." class="form-input w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900" />
+                        <div class="flex gap-2">
+                            <button type="submit" class="add-button px-4 py-2 flex items-center"><i class="fas fa-search mr-2"></i>Cari</button>
+                            @if(request('search'))
+                            <a href="{{ route('admin.users.index') }}" class="add-button px-4 py-2 bg-gray-400 hover:bg-gray-500 flex items-center" style="background: #64748b; color: #fff;"><i class="fas fa-times mr-2"></i>Reset</a>
+                            @endif
+                        </div>
+                    </form>
+                    <a href="{{ route('admin.users.create') }}" class="add-button self-end md:self-auto w-full md:w-auto flex items-center justify-center">
                         <i class="fas fa-plus-circle mr-2"></i> Tambah Pengguna
                     </a>
                 </div>
@@ -623,8 +631,8 @@
                                     <th class="px-2 md:px-4 py-3 md:py-4 text-center" style="width: 5%">No</th>
                                     <th class="px-3 md:px-6 py-3 md:py-4" style="width: 18%">Nama</th>
                                     <th class="px-3 md:px-6 py-3 md:py-4 hidden md:table-cell" style="width: 18%">Username</th>
+                                    <th class="px-3 md:px-6 py-3 md:py-4" style="width: 14%">Total Poin</th>
                                     <th class="px-3 md:px-6 py-3 md:py-4" style="width: 14%">Peran</th>
-                                    <th class="px-3 md:px-6 py-3 md:py-4 hidden lg:table-cell" style="width: 14%">Total Poin</th>
                                     <th class="px-3 md:px-6 py-3 md:py-4 hidden lg:table-cell" style="width: 14%">Tgl Dibuat</th>
                                     <th class="px-3 md:px-6 py-3 md:py-4 text-right action-cell" style="width: 17%">Aksi</th>
                                 </tr>
@@ -643,15 +651,15 @@
                                         {{ $user->username }}
                                     </td>
                                     <td class="table-cell">
-                                        <span class="role-badge {{ $user->role }}">
-                                            <i class="fas {{ $user->role === 'superadmin' ? 'fa-crown' : ($user->role === 'admin' ? 'fa-user-shield' : 'fa-user') }} mr-1"></i>
-                                            <span class="hidden sm:inline">{{ ucfirst($user->role) }}</span>
-                                        </span>
-                                    </td>
-                                    <td class="table-cell hidden lg:table-cell">
                                         <span class="flex items-center">
                                             <i class="fas fa-star text-yellow-500 mr-2"></i>
                                             {{ $user->total_points ?? 0 }}
+                                        </span>
+                                    </td>
+                                    <td class="table-cell">
+                                        <span class="role-badge {{ $user->role }}">
+                                            <i class="fas {{ $user->role === 'superadmin' ? 'fa-crown' : ($user->role === 'admin' ? 'fa-user-shield' : 'fa-user') }} mr-1"></i>
+                                            <span class="hidden sm:inline">{{ ucfirst($user->role) }}</span>
                                         </span>
                                     </td>
                                     <td class="table-cell hidden lg:table-cell">
