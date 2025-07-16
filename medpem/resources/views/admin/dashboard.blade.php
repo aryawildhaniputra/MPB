@@ -908,7 +908,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Quick Actions -->
+                {{-- <!-- Admin Quick Actions -->
                 <div class="stat-card full-card">
                     <h3 class="text-lg font-bold text-white mb-3">Aksi Cepat</h3>
                     <div class="flex flex-wrap mt-2">
@@ -928,7 +928,7 @@
                             <i class="fas fa-users"></i> Manajemen Pengguna
                         </a>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Recent Activity Log -->
                 <div class="stat-card wide-card">
@@ -943,7 +943,7 @@
                             <div class="text-{{ $activity['color'] }} mt-1"><i class="fas {{ $activity['icon'] }}"></i></div>
                             <div>
                                 <div class="text-sm">
-                                    <span class="font-semibold text-white">{{ $activity['title'] }}</span> - {{ $activity['message'] }}
+                                    <span class="font-bold text-white">{{ $activity['title'] }}</spanclass="font-semibold text-white"> - {{ $activity['message'] }}
                                 </div>
                                 <div class="text-xs text-gray-400">{{ $activity['time']->format('d M Y, H:i') }}</div>
                             </div>

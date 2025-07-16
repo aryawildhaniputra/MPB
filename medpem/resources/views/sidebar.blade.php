@@ -88,7 +88,16 @@
             <span class="sidebar-text">MENU UTAMA</span>
         </a>
 
-        @if(Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin']))
+        @if(Auth::check() && Auth::user()->role === 'superadmin')
+        {{-- Superadmin: Only show Dashboard, User Management, and Leaderboard --}}
+        <a href="{{ route('admin.users.index') }}" class="sidebar-item {{ request()->is('admin/users*') ? 'active' : '' }}" data-title="Manajemen Pengguna">
+            <div class="sidebar-icon bg-gradient-to-br from-green-400 to-green-500">
+                <i class="fas fa-users-cog"></i>
+            </div>
+            <span class="sidebar-text">KELOLA USER</span>
+        </a>
+        @elseif(Auth::check() && Auth::user()->role === 'admin')
+        {{-- Admin: Show all admin features --}}
         <a href="{{ route('admin.users.index') }}" class="sidebar-item {{ request()->is('admin/users*') ? 'active' : '' }}" data-title="Manajemen Pengguna">
             <div class="sidebar-icon bg-gradient-to-br from-green-400 to-green-500">
                 <i class="fas fa-users-cog"></i>
@@ -103,6 +112,7 @@
             <span class="sidebar-text">KELOLA MATERI</span>
         </a>
         @else
+        {{-- Regular users: Show user materi --}}
         <a href="{{ route('user.materi.index') }}" class="sidebar-item {{ request()->is('user/materi*') ? 'active' : '' }}" data-title="Materi">
             <div class="sidebar-icon bg-gradient-to-br from-red-400 to-red-500">
                 <i class="fas fa-graduation-cap"></i>
@@ -111,6 +121,8 @@
         </a>
         @endif
 
+        @if(Auth::check() && Auth::user()->role !== 'superadmin')
+        {{-- Hide these menu items for superadmin --}}
         <a href="{{ route('belajar.index') }}" class="sidebar-item {{ request()->is('belajar') ? 'active' : '' }}" data-title="Belajar">
             <div class="sidebar-icon bg-gradient-to-br from-blue-400 to-blue-500">
                 <i class="fas fa-book-open"></i>
@@ -124,6 +136,7 @@
             </div>
             <span class="sidebar-text">PERMAINAN</span>
         </a>
+        @endif
 
         <a href="{{ route('leaderboard') }}" class="sidebar-item {{ request()->is('skor') ? 'active' : '' }}" data-title="Papan Peringkat">
             <div class="sidebar-icon bg-gradient-to-br from-purple-400 to-purple-500">

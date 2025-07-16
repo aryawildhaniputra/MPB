@@ -492,7 +492,7 @@
                     </div>
 
                     <!-- Quick Actions -->
-                    <div class="dashboard-section">
+                    {{-- <div class="dashboard-section">
                         <h2 class="section-title"><i class="fas fa-bolt"></i> Aksi Cepat</h2>
                         <div class="quick-actions">
                             <a href="#" class="action-btn">
@@ -512,7 +512,7 @@
                                 <span class="action-text">Profil</span>
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- New Game Completion section for bottom-right red area -->
                     <div class="dashboard-section">
